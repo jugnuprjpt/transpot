@@ -73,7 +73,7 @@ const LoginForm = () => {
         error={errors.password}
         className="h-[48px]"
       />
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <Checkbox
           value={checked}
           onChange={() => setChecked(!checked)}
@@ -85,7 +85,7 @@ const LoginForm = () => {
         >
           Forgot Password?{" "}
         </Link>
-      </div>
+      </div> */}
 
       <button className="btn btn-dark block w-full text-center">Sign in</button>
     </form>

@@ -210,10 +210,10 @@ function App() {
         />
         <Route path="/*" element={<Layout />}>
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="ecommerce" element={<Ecommerce />} />
-          <Route path="crm" element={<CrmPage />} />
+          {/* <Route path="ecommerce" element={<Ecommerce />} /> */}
+          {/* <Route path="crm" element={<CrmPage />} /> */}
           <Route path="project" element={<ProjectPage />} />
-          <Route path="banking" element={<BankingPage />} />
+          {/* <Route path="banking" element={<BankingPage />} /> */}
           {/* App pages */}
           <Route path="todo" element={<TodoPage />} />
           <Route path="email" element={<EmailPage />} />

@@ -18,18 +18,20 @@ const login = () => {
       <div className="loginwrapper">
         <div className="lg-inner-column">
           <div className="left-column relative z-[1]">
-            <div className="max-w-[520px] pt-20 ltr:pl-20 rtl:pr-20">
+            <div className="max-w-[400px] ltr:pl-20 rtl:pr-20">
               <Link to="/">
-                <img src={isDark ? LogoWhite : Logo} alt="" className="mb-10" />
+                <img src={isDark ? LogoWhite : Logo} alt="" className="" />
+                <div className="w-fit">
+                  <h4>
+                    Unlock your Loader
+                    <span className="text-slate-800 dark:text-slate-400 font-bold ml-3">
+                      Experience
+                    </span>
+                  </h4>
+                </div>
               </Link>
-              <h4>
-                Unlock your Project
-                <span className="text-slate-800 dark:text-slate-400 font-bold">
-                  performance
-                </span>
-              </h4>
             </div>
-            <div className="absolute left-0 2xl:bottom-[-160px] bottom-[-130px] h-full w-full z-[-1]">
+            <div className="absolute left-0 2xl:bottom-[-160px] h-full w-full z-[-1]">
               <img
                 src={Illustration}
                 alt=""
@@ -52,7 +54,7 @@ const login = () => {
                 <div className="text-center 2xl:mb-10 mb-4">
                   <h4 className="font-medium">Sign in</h4>
                   <div className="text-slate-500 text-base">
-                    Sign in to your account to start using Dashcode
+                    Sign in to your account to start using Transpoat Loading
                   </div>
                 </div>
                 <LoginForm />
@@ -61,10 +63,10 @@ const login = () => {
                     Or continue with
                   </div>
                 </div> */}
-                <div className="max-w-[242px] mx-auto mt-8 w-full">
+                {/* <div className="max-w-[242px] mx-auto mt-8 w-full">
                   <Social />
-                </div>
-                <div className="md:max-w-[345px] mx-auto font-normal text-slate-500 dark:text-slate-400 mt-12 uppercase text-sm">
+                </div> */}
+                {/* <div className="md:max-w-[345px] mx-auto font-normal text-slate-500 dark:text-slate-400 mt-12 uppercase text-sm">
                   Don’t have an account?{" "}
                   <Link
                     to="/register"
@@ -72,10 +74,10 @@ const login = () => {
                   >
                     Sign up
                   </Link>
-                </div>
+                </div> */}
               </div>
               <div className="auth-footer text-center">
-                Copyright 2021, Dashcode All Rights Reserved.
+                Copyright 2024, Transport All Rights Reserved.
               </div>
             </div>
           </div>
