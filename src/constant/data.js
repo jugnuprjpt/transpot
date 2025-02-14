@@ -376,9 +376,9 @@ export const menuItems = [
   },
 
   {
-    title: "Loader",
+    title: "Load Management",
     icon: "heroicons-outline:table",
-    link: "icons",
+    link: "loadManagement",
     // child: [
     //   {
     //     childtitle: "Basic Table",
