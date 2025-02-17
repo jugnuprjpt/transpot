@@ -4,10 +4,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 // home pages  & dashboard
 //import Dashboard from "./pages/dashboard";
 const Dashboard = lazy(() => import("./pages/dashboard"));
-const Ecommerce = lazy(() => import("./pages/dashboard/ecommerce"));
-const CrmPage = lazy(() => import("./pages/dashboard/crm"));
+
 const ProjectPage = lazy(() => import("./pages/dashboard/project"));
-const BankingPage = lazy(() => import("./pages/dashboard/banking"));
 
 const Login = lazy(() => import("./pages/auth/login"));
 const Login2 = lazy(() => import("./pages/auth/login2"));
@@ -90,7 +88,7 @@ const FaqPage = lazy(() => import("./pages/utility/faq"));
 const Settings = lazy(() => import("./pages/utility/settings"));
 const Profile = lazy(() => import("./pages/utility/profile"));
 const IconPage = lazy(() => import("./pages/icons"));
-const NotificationPage = lazy(() => import("./pages/utility/notifications"));
+// const NotificationPage = lazy(() => import("./pages/utility/notifications"));
 const ChangelogPage = lazy(() => import("./pages/changelog"));
 
 // widget pages
@@ -109,6 +107,8 @@ const KanbanPage = lazy(() => import("./pages/app/kanban"));
 const CalenderPage = lazy(() => import("./pages/app/calender"));
 import Loading from "@/components/Loading";
 import LoadManagment from "./pages/loadManagment/LoadManagment";
+import DocumentManagement from "./pages/documentManagement/DocumentManagement";
+
 function App() {
   return (
     <main className="App  relative">
@@ -212,6 +212,7 @@ function App() {
         <Route path="/*" element={<Layout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="loadManagement" element={<LoadManagment />} />
+          <Route path="documentManagement" element={<DocumentManagement />} />
           {/* <Route path="ecommerce" element={<Ecommerce />} /> */}
           {/* <Route path="crm" element={<CrmPage />} /> */}
           <Route path="project" element={<ProjectPage />} />
@@ -276,7 +277,7 @@ function App() {
           <Route path="basic" element={<BasicWidget />} />
           <Route path="statistic" element={<StatisticWidget />} />
           <Route path="icons" element={<IconPage />} />
-          <Route path="notifications" element={<NotificationPage />} />
+          {/* <Route path="notifications" element={<NotificationPage />} /> */}
           <Route path="changelog" element={<ChangelogPage />} />
           <Route path="*" element={<Navigate to="/404" />} />
         </Route>
