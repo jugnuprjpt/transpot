@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import LoadManagmentTable from "./LoadManagmentTable";
+
 import Icon from "@/components/ui/Icon";
-import LoadManagementCreate from "./LoadManagementCreate";
+import DocumentManagmentTable from "./DocumentManagmentTable";
+import DocumentManagementCreate from "./DocumentManagementCreate";
+
 // import Card from "@/components/ui/Card";
 // import ExampleOne from "./react-tables/ExampleOne";
 // import ExampleTwo from "./react-tables/ExampleTwo";
 
-const LoadManagment = () => {
+const DocumentManagement = () => {
   const [open, setOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const handleCreate = () => {
@@ -29,12 +31,12 @@ const LoadManagment = () => {
               icon="heroicons:plus"
               className="w-5 h-5 float-left mr-[5px] mt-[2px]"
             />
-            Add Load
+            Add Document
           </span>
         </div>
       </div>
       <div className=" float-left w-full">
-        <LoadManagmentTable
+        <DocumentManagmentTable
         //   tableData={tableData}
         //   setIsDeleteDone={setIsDeleteDone}
         //   setIsCreateOpen={setIsCreateOpen}
@@ -43,7 +45,7 @@ const LoadManagment = () => {
         //   loading={loading}
         />
       </div>
-      <LoadManagementCreate
+      <DocumentManagementCreate
         open={open}
         setOpen={setOpen}
         isEditOpen={isEditOpen}
@@ -63,4 +65,4 @@ const LoadManagment = () => {
   );
 };
 
-export default LoadManagment;
+export default DocumentManagement;
