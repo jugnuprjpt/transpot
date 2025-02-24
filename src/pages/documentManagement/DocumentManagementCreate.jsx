@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
 import Icon from "@/components/ui/Icon";
 import CommonTextInput from "../components/InputField/CommonTextInput";
 import CommonFileInput from "../components/InputField/CommonFileInput";
 import CommonSelectInput from "../components/InputField/CommonSelectInput";
+import { ValidaterHelper } from "../components/validationFunction/ValidationCheck";
 
 const DocumentManagementCreate = ({
   open,
@@ -12,6 +13,31 @@ const DocumentManagementCreate = ({
   setIsEditOpen,
 }) => {
   const inputRef = useRef(null);
+  const [FormState, SetFormState] = useState({
+    driver_name: { errors: "", valid: false },
+    parent_folder_name: { errors: "", valid: false },
+    annual_dot_inspection: { errors: "", valid: false },
+    roc: { errors: "", valid: false },
+    pod: { errors: "", valid: false },
+    fuel_reciept: { errors: "", valid: false },
+    truck_and_trailer_repair: { errors: "", valid: false },
+    ifta_quaterly: { errors: "", valid: false },
+    truck_trailer_serivices: { errors: "", valid: false },
+    driver_equipment_information: { errors: "", valid: false },
+  });
+  const [allData, setAllData] = useState({
+    driver_name: "",
+    parent_folder_name: "",
+    annual_dot_inspection: "",
+    roc: "",
+    pod: "",
+    fuel_reciept: "",
+    truck_and_trailer_repair: "",
+    ifta_quaterly: "",
+    truck_trailer_serivices: "",
+    driver_equipment_information: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const annualInspection = [
     { value: 1, label: "DISPATCH RECORD" },
@@ -27,7 +53,52 @@ const DocumentManagementCreate = ({
     setOpen(false);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    const isFormValid = ValidaterHelper.ValidateFromState(
+      FormState,
+      SetFormState,
+      {
+        ...allData,
+      }
+    );
+
+    if (!isFormValid) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    setIsLoading(true);
+
+    // if (isEditOpen == true) {
+    //   const updatedData = {
+    //     ...data,
+    //     check_list_name: data?.check_list_name,
+    //     old_check_list_name: oldChecklistName,
+    //   };
+    //   checklistService.checklistUpdate(updatedData).then((res) => {
+    //     if (res.Success == true) {
+    //       setIsLoading(false);
+    //       ShowSuccessToast(res?.Message);
+    //       setIsEditDone(isEditDone == true ? false : true);
+    //       handleCloseDrawer();
+    //     } else {
+    //       setIsLoading(false);
+    //       ShowErrorToast("Something Went Wrong");
+    //     }
+    //   });
+    // } else {
+    //   checklistService.checklistInsert(data).then((res) => {
+    //     if (res.Success == true) {
+    //       setIsLoading(false);
+    //       ShowSuccessToast(res?.Message);
+    //       setIsCreateDone(isCreateDone == true ? false : true);
+    //       handleCloseDrawer();
+    //     } else {
+    //       setIsLoading(false);
+    //       ShowErrorToast(res.Message);
+    //     }
+    //   });
+    // }
+  };
   return (
     <div>
       {" "}
@@ -65,61 +136,65 @@ ${
                     Driver Name*
                   </label>
                   <CommonTextInput
-                    // value={allData?.driver_name}
+                    value={allData?.driver_name}
                     id="driver_name"
                     type="text"
                     placeholder="Driver Name"
                     name="driver_name"
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
-                    // SetFormState={SetFormState}
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
                     IsValidate={true}
                   />
-                  {/* <span className="text-red-500 text-sm">
+                  <span className="text-red-500 text-sm">
                     {FormState?.driver_name?.errors}
-                  </span> */}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Parent folder Name *
                   </label>
                   <CommonTextInput
-                    // value={allData?.parent_folder_name}
+                    value={allData?.parent_folder_name}
                     id="parent_folder_name"
                     type="text"
                     placeholder="Parent folder Name"
                     name="parent_folder_name"
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
-                    // SetFormState={SetFormState}
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
                     IsValidate={true}
                   />
-                  {/* <span className="text-red-500 text-sm">
+                  <span className="text-red-500 text-sm">
                     {FormState?.parent_folder_name?.errors}
-                  </span> */}
+                  </span>
                 </div>
+
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Sub folder Name*
+                    Annual Dot Inspection
                   </label>
-                  <CommonTextInput
-                    // value={allData?.sub_folder_name}
-                    id="sub_folder_name"
-                    type="text"
-                    placeholder="Sub folder Name"
-                    name="sub_folder_name"
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
-                    // SetFormState={SetFormState}
-                    IsValidate={true}
+                  <CommonSelectInput
+                    isClearable={true}
+                    className="react-select"
+                    classNamePrefix="select"
+                    name="annual_dot_inspection"
+                    placeholder="Select Annual Dot Inspection"
+                    options={annualInspection}
+                    value={annualInspection}
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={false}
                   />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.sub_folder_name?.errors}
-                  </span> */}
+                  <span className="text-red-500 text-sm">
+                    {FormState?.annual_dot_inspection?.errors}
+                  </span>
                 </div>
+
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Roc *
+                    Roc
                   </label>
                   <CommonFileInput
                     className="react-select text-[#000]"
@@ -127,18 +202,18 @@ ${
                     type="file"
                     name="roc"
                     placeholder="Roc"
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
                     inputRef={inputRef}
                   />
-                  {/* <span className="text-red-500 text-sm">
+                  <span className="text-red-500 text-sm">
                     {FormState?.roc?.errors}
-                  </span> */}
+                  </span>
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Pod *
+                    Pod
                   </label>
                   <CommonFileInput
                     className="react-select text-[#000]"
@@ -146,18 +221,18 @@ ${
                     type="file"
                     name="pod"
                     placeholder="Pod"
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
                     inputRef={inputRef}
                   />
-                  {/* <span className="text-red-500 text-sm">
-                      {FormState?.pod?.errors}
-                    </span> */}
+                  <span className="text-red-500 text-sm">
+                    {FormState?.pod?.errors}
+                  </span>
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Fuel Reciept*
+                    Fuel Reciept
                   </label>
                   <CommonFileInput
                     className="react-select text-[#000]"
@@ -165,39 +240,18 @@ ${
                     type="file"
                     name="fuel_reciept"
                     placeholder="Fuel Reciept"
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
                     inputRef={inputRef}
                   />
-                  {/* <span className="text-red-500 text-sm">
+                  <span className="text-red-500 text-sm">
                     {FormState?.fuel_reciept?.errors}
-                  </span> */}
+                  </span>
                 </div>
+
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Annual Dot Inspection
-                  </label>
-                  <CommonSelectInput
-                    // isClearable={true}
-                    // className="react-select"
-                    // classNamePrefix="select"
-                    // name="annual_dot_inspection"
-                    // placeholder="Select City"
-                    options={annualInspection}
-                    value={annualInspection}
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
-                    // SetFormState={SetFormState}
-                    // // IsValidate={false}
-                    // disabled={!allData?.state_id}
-                  />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.annual_dot_inspection?.errors}
-                  </span> */}
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Truck and Trailer Repair *
+                    Truck and Trailer Repair
                   </label>
                   <CommonFileInput
                     className="react-select text-[#000]"
@@ -205,17 +259,17 @@ ${
                     type="file"
                     name="truck_and_trailer_repair"
                     placeholder="Truck and Trailer Repair"
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
                     inputRef={inputRef}
                   />
-                  {/* <span className="text-red-500 text-sm">
+                  <span className="text-red-500 text-sm">
                     {FormState?.truck_and_trailer_repair?.errors}
-                  </span> */}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Ifta Quaterly*
+                    Ifta Quaterly
                   </label>
                   <CommonFileInput
                     className="react-select text-[#000]"
@@ -223,17 +277,17 @@ ${
                     type="file"
                     name="ifta_quaterly"
                     placeholder="Ifta Quaterly"
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
                     inputRef={inputRef}
                   />
-                  {/* <span className="text-red-500 text-sm">
+                  <span className="text-red-500 text-sm">
                     {FormState?.ifta_quaterly?.errors}
-                  </span> */}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Truck Trailer Serivices*
+                    Truck Trailer Serivices
                   </label>
                   <CommonFileInput
                     className="react-select text-[#000]"
@@ -241,18 +295,18 @@ ${
                     type="file"
                     name="truck_trailer_serivices"
                     placeholder="Truck Trailer Serivices"
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
                     inputRef={inputRef}
                   />
-                  {/* <span className="text-red-500 text-sm">
+                  <span className="text-red-500 text-sm">
                     {FormState?.truck_trailer_serivices?.errors}
-                  </span> */}
+                  </span>
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Driver Equipment Information*
+                    Driver Equipment Information
                   </label>
                   <CommonFileInput
                     className="react-select text-[#000]"
@@ -260,13 +314,13 @@ ${
                     type="file"
                     name="driver_equipment_information"
                     placeholder="Driver Equipment Information"
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
                     inputRef={inputRef}
                   />
-                  {/* <span className="text-red-500 text-sm">
+                  <span className="text-red-500 text-sm">
                     {FormState?.driver_equipment_information?.errors}
-                  </span> */}
+                  </span>
                 </div>
               </div>
 

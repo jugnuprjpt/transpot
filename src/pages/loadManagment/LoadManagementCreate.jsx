@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import SimpleBar from "simplebar-react";
 import Icon from "@/components/ui/Icon";
 import CommonTextInput from "../components/InputField/CommonTextInput";
@@ -7,6 +7,31 @@ const LoadManagementCreate = ({ open, setOpen, isEditOpen, setIsEditOpen }) => {
   const handleCloseDrawer = () => {
     setOpen(false);
   };
+
+  const [FormState, SetFormState] = useState({
+    driver_name: { errors: "", valid: false },
+    parent_folder_name: { errors: "", valid: false },
+    annual_dot_inspection: { errors: "", valid: false },
+    roc: { errors: "", valid: false },
+    pod: { errors: "", valid: false },
+    fuel_reciept: { errors: "", valid: false },
+    truck_and_trailer_repair: { errors: "", valid: false },
+    ifta_quaterly: { errors: "", valid: false },
+    truck_trailer_serivices: { errors: "", valid: false },
+    driver_equipment_information: { errors: "", valid: false },
+  });
+  const [allData, setAllData] = useState({
+    load_numbers: "",
+    Source: "",
+    Destination: "",
+    Shipping_Date: "",
+    Delivery_Date: "",
+    ETA: "",
+    date: "",
+    ifta_quaterly: "",
+    truck_trailer_serivices: "",
+    driver_equipment_information: "",
+  });
 
   const handleSubmit = () => {};
   return (
@@ -41,25 +66,6 @@ ${
                 </div>
               </header>
               <div className="grid xl:grid-cols-2 gap-2 py-2 text-sm">
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Load add and modify *
-                  </label>
-                  <CommonTextInput
-                  // value={allData?.first_name}
-                  // id="first_name"
-                  // type="text"
-                  // placeholder="First Name"
-                  // name="first_name"
-                  // tenderForm={allData}
-                  // setTenderForm={setAllData}
-                  // SetFormState={SetFormState}
-                  // IsValidate={true}
-                  />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.first_name?.errors}
-                  </span> */}
-                </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Load numbers *

@@ -108,6 +108,9 @@ const CalenderPage = lazy(() => import("./pages/app/calender"));
 import Loading from "@/components/Loading";
 import LoadManagment from "./pages/loadManagment/LoadManagment";
 import DocumentManagement from "./pages/documentManagement/DocumentManagement";
+import LoadAddModifyForm from "./pages/LoadAddModify/LoadAddModifyForm";
+import BriefCase from "./pages/BriefCase/BriefCase";
+import LoadTab from "./pages/Load/LoadTab";
 
 function App() {
   return (
@@ -213,6 +216,9 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="loadManagement" element={<LoadManagment />} />
           <Route path="documentManagement" element={<DocumentManagement />} />
+          <Route path="loadAddModify" element={<LoadAddModifyForm />} />
+          <Route path="briefCase" element={<BriefCase />} />
+          <Route path="loadTab" element={<LoadTab />} />
           {/* <Route path="ecommerce" element={<Ecommerce />} /> */}
           {/* <Route path="crm" element={<CrmPage />} /> */}
           <Route path="project" element={<ProjectPage />} />

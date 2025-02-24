@@ -41,15 +41,43 @@ export const menuItems = [
   },
 
   {
+    title: "Load",
+    icon: "heroicons-outline:table",
+    link: "loadTab",
+  },
+
+  {
+    title: "Document Management",
+    icon: "heroicons-outline:table",
+    link: "#",
+    child: [
+      {
+        childtitle: "Add Document",
+        childlink: "documentManagement",
+      },
+      {
+        childtitle: "Briefcase",
+        childlink: "briefCase",
+      },
+    ],
+  },
+
+  {
     title: "Load Management",
     icon: "heroicons-outline:table",
     link: "loadManagement",
   },
+
   {
-    title: "Document Management",
+    title: "Load Add/Modify",
     icon: "heroicons-outline:table",
-    link: "documentManagement",
+    link: "loadAddModify",
   },
+  // {
+  //   title: "Document Management",
+  //   icon: "heroicons-outline:table",
+  //   link: "documentManagement",
+  // },
 ];
 
 export const topMenu = [
