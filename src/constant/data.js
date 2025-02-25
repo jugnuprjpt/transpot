@@ -24,31 +24,31 @@ export const menuItems = [
   //   badge: "1.0.0",
   // },
 
-  {
-    title: "Table",
-    icon: "heroicons-outline:table",
-    link: "#",
-    child: [
-      {
-        childtitle: "Basic Table",
-        childlink: "table-basic",
-      },
-      {
-        childtitle: "React Table",
-        childlink: "react-table",
-      },
-    ],
-  },
+  // {
+  //   title: "Table",
+  //   icon: "heroicons-outline:table",
+  //   link: "#",
+  //   child: [
+  //     {
+  //       childtitle: "Basic Table",
+  //       childlink: "table-basic",
+  //     },
+  //     {
+  //       childtitle: "React Table",
+  //       childlink: "react-table",
+  //     },
+  //   ],
+  // },
 
   {
     title: "Load",
-    icon: "heroicons-outline:table",
+    icon: "heroicons:truck",
     link: "loadTab",
   },
 
   {
-    title: "Document Management",
-    icon: "heroicons-outline:table",
+    title: "Doc-Management",
+    icon: "heroicons:document-arrow-down",
     link: "#",
     child: [
       {
@@ -70,7 +70,7 @@ export const menuItems = [
 
   {
     title: "Load Add/Modify",
-    icon: "heroicons-outline:table",
+    icon: "heroicons:plus-circle",
     link: "loadAddModify",
   },
   // {

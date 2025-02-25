@@ -6,7 +6,7 @@ import useDarkMode from "@/hooks/useDarkMode";
 import { ToastContainer } from "react-toastify";
 
 // image import
-import LogoWhite from "@/assets/images/logo/logo-white.svg";
+import LogoWhite from "@/assets/images/logo/logo.png";
 import Logo from "@/assets/images/logo/logo.png";
 import Illustration from "@/assets/images/auth/ils1.jpg";
 
@@ -18,7 +18,7 @@ const login = () => {
       <div className="loginwrapper">
         <div className="lg-inner-column">
           <div className="left-column relative z-[1]">
-            <div className="max-w-[400px] ltr:pl-20 rtl:pr-20">
+            <div className="ltr:pl-20 rtl:pr-20 mt-24">
               <Link to="/">
                 <img src={isDark ? LogoWhite : Logo} alt="" className="" />
                 <div className="w-fit">

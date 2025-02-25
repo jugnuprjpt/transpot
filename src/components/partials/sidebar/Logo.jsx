@@ -7,8 +7,10 @@ import useSemiDark from "@/hooks/useSemiDark";
 import useSkin from "@/hooks/useSkin";
 
 // import images
-import MobileLogo from "@/assets/images/logo/logo-c.svg";
-import MobileLogoWhite from "@/assets/images/logo/logo-c-white.svg";
+import MobileLogo from "@/assets/images/logo/logo.png";
+import MobileLogoWhite from "@/assets/images/logo/logo-m.png";
+
+// import Logo from "@/assets/images/logo/logo.png";
 
 const SidebarLogo = ({ menuHover }) => {
   const [isDark] = useDarkMode();
@@ -33,17 +35,17 @@ const SidebarLogo = ({ menuHover }) => {
         <div className="flex items-center space-x-4">
           <div className="logo-icon">
             {!isDark && !isSemiDark ? (
-              <img src={MobileLogo} alt="" />
-            ) : (
               <img src={MobileLogoWhite} alt="" />
+            ) : (
+              <img src={MobileLogo} alt="" />
             )}
           </div>
 
           {(!collapsed || menuHover) && (
             <div>
-              <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+              {/* <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
                 DashCode
-              </h1>
+              </h1> */}
             </div>
           )}
         </div>
@@ -52,7 +54,7 @@ const SidebarLogo = ({ menuHover }) => {
       {(!collapsed || menuHover) && (
         <div
           onClick={() => setMenuCollapsed(!collapsed)}
-          className={`h-4 w-4 border-[1.5px] border-slate-900 dark:border-slate-700 rounded-full transition-all duration-150
+          className={`h-4 w-10 border-[1.5px] border-slate-900 dark:border-slate-700 rounded-full transition-all duration-150
           ${
             collapsed
               ? ""

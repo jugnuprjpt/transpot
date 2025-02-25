@@ -122,6 +122,8 @@ const icons = [
   { name: "heroicons:shield-check" },
   { name: "heroicons:share" },
   { name: "heroicons:wrench" },
+  { name: "heroicons:truck" },
+  { name: "heroicons:plus-circle" },
 ];
 const IconPage = () => {
   const [skin] = useSkin();
