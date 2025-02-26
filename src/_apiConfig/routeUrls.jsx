@@ -1,5 +1,6 @@
 export const RouteUrls = {
   login: "api/user/login",
+
   autologin: "api/user/get-auto-login",
   getSearchTender: "api/tender/search",
   getTenderResultSearch: "api/result/search",
@@ -326,8 +327,7 @@ export const RouteUrls = {
   checklistMapingInsert: "api/check_list/document/insert",
   checklistMapingUpdate: "api/check_list/document/update",
   checklistMapingDelete: "api/check_list/document/delete",
-  checklistMapingId:
-    "api/check_list/document/get/check_list_id",
+  checklistMapingId: "api/check_list/document/get/check_list_id",
   checklistMapingDownload: "api/check_list/download_document",
 
   checklistTenderSubmitted: "api/tender/tender_submitted/get/id",
