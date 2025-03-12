@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Icon from "@/components/ui/Icon";
 import DocumentManagmentTable from "./DocumentManagmentTable";
 import DocumentManagementCreate from "./DocumentManagementCreate";
+import { docManagementService } from "../../_services/docManagementService";
+import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
+import axios from "axios";
 
 // import Card from "@/components/ui/Card";
 // import ExampleOne from "./react-tables/ExampleOne";
@@ -11,6 +14,64 @@ import DocumentManagementCreate from "./DocumentManagementCreate";
 const DocumentManagement = () => {
   const [open, setOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const [tableData, setTableData] = useState([]);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isCreateDone, setIsCreateDone] = useState(false);
+  const [isEditDone, setIsEditDone] = useState(false);
+  const [isDeleteDone, setIsDeleteDone] = useState(0);
+
+  const [editId, setEditId] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    setLoading(true);
+    docListing();
+  }, [isCreateDone, isEditDone, isDeleteDone]);
+
+  console.log(tableData);
+
+  const docListing = async () => {
+    try {
+      const url = `https://da04-2409-40c2-2057-ee19-5cfb-7afa-33a-23ac.ngrok-free.app/api/driver_document_management/get`;
+
+      const res = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      if (res.data.Success === true) {
+        setLoading(false);
+        setTableData(res.data.Data);
+      } else {
+        setTableData([]);
+        setLoading(false);
+        ShowErrorToast("Something Went Wrong");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   docManagementService.docManagementListing().then((res) => {
+  //     if (res.Success == true) {
+  //       setLoading(false);
+  //       setTableData(res.Data);
+  //     } else {
+  //       setTableData([]);
+  //       setLoading(false);
+  //       ShowErrorToast("Something Went Wrong");
+  //     }
+  //   });
+  // }, [isCreateDone, isEditDone, isDeleteDone]);
+
   const handleCreate = () => {
     setOpen(true);
   };
@@ -37,12 +98,12 @@ const DocumentManagement = () => {
       </div>
       <div className=" float-left w-full">
         <DocumentManagmentTable
-        //   tableData={tableData}
-        //   setIsDeleteDone={setIsDeleteDone}
-        //   setIsCreateOpen={setIsCreateOpen}
-        //   setEditId={setEditId}
-        //   setIsEditOpen={setIsEditOpen}
-        //   loading={loading}
+          tableData={tableData}
+          //   setIsDeleteDone={setIsDeleteDone}
+          //   setIsCreateOpen={setIsCreateOpen}
+          //   setEditId={setEditId}
+          //   setIsEditOpen={setIsEditOpen}
+          //   loading={loading}
         />
       </div>
       <DocumentManagementCreate

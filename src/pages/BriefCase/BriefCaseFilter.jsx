@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Textinput from "@/components/ui/Textinput";
+import CommonSelectInput from "../components/InputField/CommonSelectInput";
 const BriefCaseFilter = ({ filter, setFilter }) => {
   const [value, setValue] = useState(filter);
   const onChange = (e) => {
@@ -8,13 +9,118 @@ const BriefCaseFilter = ({ filter, setFilter }) => {
   };
   return (
     <div className="flex flex-wrap gap-2">
-    <Textinput value={value || ""} onChange={onChange} placeholder="Search..." className="" />
-    <Textinput value={value || ""} onChange={onChange} placeholder="Select Year" className="" />
-    <Textinput value={value || ""} onChange={onChange} placeholder="Select Month" className="" />
-    <Textinput value={value || ""} onChange={onChange} placeholder="Select Driver" className="" />
-    <Textinput value={value || ""} onChange={onChange} placeholder="Select Subfolder" className="" />
-  </div>
-  
+      <CommonSelectInput
+        isClearable={true}
+        className="react-select"
+        classNamePrefix="select"
+        name="annual_dot_inspection"
+        placeholder="Select Search"
+        // options={annualInspection}
+        // value={annualInspection}
+        // tenderForm={allData}
+        // setTenderForm={setAllData}
+        // SetFormState={SetFormState}
+        // IsValidate={false}
+      />
+      <span className="text-red-500 text-sm">
+        {/* {FormState?.annual_dot_inspection?.errors} */}
+      </span>
+      <CommonSelectInput
+        isClearable={true}
+        className="react-select"
+        classNamePrefix="select"
+        name="annual_dot_inspection"
+        placeholder="Select Year"
+        // options={annualInspection}
+        // value={annualInspection}
+        // tenderForm={allData}
+        // setTenderForm={setAllData}
+        // SetFormState={SetFormState}
+        // IsValidate={false}
+      />
+      <span className="text-red-500 text-sm">
+        {/* {FormState?.annual_dot_inspection?.errors} */}
+      </span>
+
+      <CommonSelectInput
+        isClearable={true}
+        className="react-select"
+        classNamePrefix="select"
+        name="annual_dot_inspection"
+        placeholder="Select Month"
+        // options={annualInspection}
+        // value={annualInspection}
+        // tenderForm={allData}
+        // setTenderForm={setAllData}
+        // SetFormState={SetFormState}
+        // IsValidate={false}
+      />
+      <span className="text-red-500 text-sm">
+        {/* {FormState?.annual_dot_inspection?.errors} */}
+      </span>
+      <CommonSelectInput
+        isClearable={true}
+        className="react-select"
+        classNamePrefix="select"
+        name="annual_dot_inspection"
+        placeholder="Select Driver"
+        // options={annualInspection}
+        // value={annualInspection}
+        // tenderForm={allData}
+        // setTenderForm={setAllData}
+        // SetFormState={SetFormState}
+        // IsValidate={false}
+      />
+      <span className="text-red-500 text-sm">
+        {/* {FormState?.annual_dot_inspection?.errors} */}
+      </span>
+      <CommonSelectInput
+        isClearable={true}
+        className="react-select"
+        classNamePrefix="select"
+        name="annual_dot_inspection"
+        placeholder="Select Subfolder"
+        // options={annualInspection}
+        // value={annualInspection}
+        // tenderForm={allData}
+        // setTenderForm={setAllData}
+        // SetFormState={SetFormState}
+        // IsValidate={false}
+      />
+      <span className="text-red-500 text-sm">
+        {/* {FormState?.annual_dot_inspection?.errors} */}
+      </span>
+      {/* <Textinput
+        value={value || ""}
+        onChange={onChange}
+        placeholder="Search..."
+        className=""
+      />
+      <Textinput
+        value={value || ""}
+        onChange={onChange}
+        placeholder="Select Year"
+        className=""
+      />
+      <Textinput
+        value={value || ""}
+        onChange={onChange}
+        placeholder="Select Month"
+        className=""
+      />
+      <Textinput
+        value={value || ""}
+        onChange={onChange}
+        placeholder="Select Driver"
+        className=""
+      />
+      <Textinput
+        value={value || ""}
+        onChange={onChange}
+        placeholder="Select Subfolder"
+        className=""
+      /> */}
+    </div>
   );
 };
 

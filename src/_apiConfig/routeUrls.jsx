@@ -1,5 +1,9 @@
 export const RouteUrls = {
-  login: "api/user/login",
+  login: "/api/user/login",
+
+  // --------------Doc-management--------------
+
+  docManagementListing: "api/driver_document_management/get",
 
   autologin: "api/user/get-auto-login",
   getSearchTender: "api/tender/search",
