@@ -23,9 +23,11 @@ const Layout = () => {
   const navigate = useNavigate();
   const { isAuth } = useSelector((state) => state.auth);
 
+  console.log(isAuth, "is............");
+
   useEffect(() => {
     if (!isAuth) {
-      navigate("/");
+      navigate("/documentManagement");
     }
   }, [isAuth, navigate]);
   const switchHeaderClass = () => {

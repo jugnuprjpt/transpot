@@ -11,7 +11,7 @@ export const loginService = {
 
 function login(data) {
   return http.get(
-    `${RouteUrls.login}/${data.login_user_id}/${data.password}`,
+    `${RouteUrls.login}?login_user_id=${data.login_user_id}&password=${data.password}`,
     false
   );
 }
