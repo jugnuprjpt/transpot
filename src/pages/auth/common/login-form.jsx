@@ -76,64 +76,21 @@ const LoginForm = () => {
   //   }
   // };
 
-  // const onSubmit = async () => {
-  //   setIsLoading(true);
-
-  //   try {
-  //     const res = await http.get(
-  //       `/api/user/login?login_user_id=${formData.login_user_id}&password=${formData.password}`,
-  //       true,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     console.log(res, "res");
-  //     if (res.Success) {
-  //       ShowSuccessToast("Login Successfully");
-  //       setTimeout(() => {
-  //         navigate("/dashboard");
-  //       }, 1500);
-  //       localStorage.setItem("token", res.data.Data.token);
-
-  //       // fetchModuleMaster(res.Data.role_id);
-  //     } else {
-  //       ShowErrorToast("something went wrong");
-  //     }
-
-  //     // setResponse(res.data);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     // setResponse({ error: "Request failed" });
-  //   }
-  // };
-
   const onSubmit = async () => {
     setIsLoading(true);
-
     try {
-      const url = `https://005e-103-171-127-76.ngrok-free.app/api/user/login`;
+      const res = await loginService.login(formData);
 
-      const res = await axios.get(url, {
-        params: {
-          login_user_id: formData.login_user_id,
-          password: formData.password,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true, // If your API needs authentication cookies
-      });
-
-      console.log(res, "re");
-
-      if (res.status == 200) {
+      if (res.Success === true) {
         ShowSuccessToast("Login Successfully");
         setTimeout(() => {
           navigate("/dashboard");
         }, 1500);
-        localStorage.setItem("token", res.Data.token);
+        localStorage.setItem("token", res?.Data?.token);
+
+        // fetchModuleMaster(res.Data.role_id);
+      } else {
+        ShowErrorToast("something went wrong");
       }
 
       // setResponse(res.data);
@@ -142,6 +99,7 @@ const LoginForm = () => {
       // setResponse({ error: "Request failed" });
     }
   };
+
   // const onSubmit = async () => {
   //   setIsLoading(true);
   //   const loginForm = {

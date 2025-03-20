@@ -48,14 +48,14 @@ const DocView = ({ open, setOpen, setViewId, viewId }) => {
     try {
       // setIsLoading(true);
 
-      const url = `https://c2f5-2409-40c2-129c-f4b3-c4a6-b07-8fee-ab8e.ngrok-free.app/api/driver_document_management/download`;
+      const url = `https://cbf3-103-171-127-76.ngrok-free.app/api/driver_document_management/download`;
 
       const formdata = {
         year: data?.document_year.toString(),
-        month: data?.document_month.toString(),
+        month: data?.document_month.trim(),
         sub_folder_name: data?.sub_folder_name,
         driver_name: data?.driver_name,
-        document_name: data?.document_name,
+        document_name: data?.original_document_name,
       };
 
       const res = await axios.post(url, formdata, {
@@ -72,7 +72,7 @@ const DocView = ({ open, setOpen, setViewId, viewId }) => {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", `${data?.authorization_doc_path}`);
+        link.setAttribute("download", `${data?.original_document_name}`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

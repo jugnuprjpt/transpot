@@ -35,10 +35,7 @@ const DocumentManagement = () => {
 
   const docListing = async () => {
     try {
-      // const url = `${baseURL}/api/driver_document_management/get`;
-
-      const res = await http.get("api/driver_document_management/get", true);
-
+      const res = await docManagementService.docManagementListing();
       if (res.Success === true) {
         setLoading(false);
         setTableData(res?.Data);

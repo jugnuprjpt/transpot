@@ -11,6 +11,8 @@ import {
   ShowSuccessToast,
 } from "../components/ToastMessage/ToastMessage";
 import { http } from "../../_apiConfig/http";
+import CommonTextInput from "../components/InputField/CommonTextInput";
+import { docManagementService } from "../../_services/docManagementService";
 
 const DocumentManagementCreate = ({
   open,
@@ -35,6 +37,7 @@ const DocumentManagementCreate = ({
     ifta_quaterly: { errors: "", valid: false },
     truck_trailer_serivices: { errors: "", valid: false },
     driver_equipment_information: { errors: "", valid: false },
+    load_number: { errors: "", valid: false },
   });
   // driver_id
   const [allData, setAllData] = useState({
@@ -48,6 +51,7 @@ const DocumentManagementCreate = ({
     ifta_quaterly: "",
     truck_trailer_serivices: "",
     driver_equipment_information: "",
+    load_number: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,6 +71,7 @@ const DocumentManagementCreate = ({
       ifta_quaterly: "",
       truck_trailer_serivices: "",
       driver_equipment_information: "",
+      load_number: "",
     });
     // setIsEditOpen(false);
     // setEditId("");
@@ -90,6 +95,7 @@ const DocumentManagementCreate = ({
       const formdata = new FormData();
 
       formdata.append("driver_name", allData.driver_name);
+      formdata.append("load_number", allData.load_number);
       formdata.append("driver_id", allData.driver_id);
       formdata.append("annual_dot_inspection", allData.annual_dot_inspection);
       formdata.append("roc", allData.roc);
@@ -109,17 +115,21 @@ const DocumentManagementCreate = ({
         allData.driver_equipment_information
       );
 
-      const res = await http.post(
-        "/api/driver_document_management/insert",
-        formdata,
-        true,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await docManagementService.documentInsert(formdata);
+
+      console.log(res, "...........");
+
+      // const res = await http.post(
+      //   "/api/driver_document_management/insert",
+      //   formdata,
+      //   true,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
 
       if (res.Success == true) {
         setIsLoading(false);
@@ -177,6 +187,25 @@ ${
                 </div>
               </header>
               <div className="grid xl:grid-cols-2 gap-2 py-2 text-sm">
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm text-gray-600 dark:text-gray-400">
+                    Load Number
+                  </label>
+                  <CommonTextInput
+                    value={allData?.load_number}
+                    id="load_number"
+                    type="text"
+                    placeholder="Load Number"
+                    name="load_number"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
+                  />
+                  <span className="text-red-500 text-sm">
+                    {FormState?.load_number?.errors}
+                  </span>
+                </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Driver Name
