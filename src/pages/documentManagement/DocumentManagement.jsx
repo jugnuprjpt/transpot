@@ -6,6 +6,8 @@ import DocumentManagementCreate from "./DocumentManagementCreate";
 import { docManagementService } from "../../_services/docManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import axios from "axios";
+import baseURL from "../../_apiConfig/baseapi";
+import { http } from "../../_apiConfig/http";
 
 // import Card from "@/components/ui/Card";
 // import ExampleOne from "./react-tables/ExampleOne";
@@ -31,23 +33,12 @@ const DocumentManagement = () => {
     docListing();
   }, [isCreateDone, isEditDone, isDeleteDone]);
 
-  console.log(tableData);
-
   const docListing = async () => {
     try {
-      const url = `https://da04-2409-40c2-2057-ee19-5cfb-7afa-33a-23ac.ngrok-free.app/api/driver_document_management/get`;
-
-      const res = await axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
-
-      if (res.data.Success === true) {
+      const res = await docManagementService.docManagementListing();
+      if (res.Success === true) {
         setLoading(false);
-        setTableData(res.data.Data);
+        setTableData(res?.Data);
       } else {
         setTableData([]);
         setLoading(false);
@@ -119,8 +110,8 @@ const DocumentManagement = () => {
         // setEditId={setEditId}
         // isEditOpen={isEditOpen}
         // setIsEditOpen={setIsEditOpen}
-        // isEditDone={isEditDone}
-        // setIsEditDone={setIsEditDone}
+        isEditDone={isEditDone}
+        setIsEditDone={setIsEditDone}
       />
     </div>
   );

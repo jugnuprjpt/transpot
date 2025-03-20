@@ -20,6 +20,7 @@ function get(routeUrl, isToken, customHeader = "") {
       .then((res) => {
         resolve(res.data);
       })
+
       .catch(function (err) {
         try {
           if (err.response.status === 401) {

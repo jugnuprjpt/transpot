@@ -14,29 +14,23 @@ import GlobalFilter from "../table/react-tables/GlobalFilter";
 import { advancedTable } from "../../constant/table-data";
 import PaginationWithClientSide from "../../components/Pagination/PaginationWithClientSide";
 import DocView from "./DocView";
+import useGetDriverListing from "../../hooks/useDriverListing";
 
 const DocumentManagmentTable = ({
   title = "Document Management System",
   tableData,
 }) => {
-  console.log(tableData, "tableData");
+  const [viewId, setViewId] = useState(0);
+
   const COLUMNS = [
     {
       Header: "#",
       accessor: "sequenceNumber",
       Cell: (row) => {
-        console.log(row, "row");
         return <span>{row?.cell?.value}</span>;
       },
     },
-    {
-      Header: "Driver Id",
-      accessor: "driver_id",
-      Cell: (row) => {
-        console.log(row, "row");
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
+
     {
       Header: "Driver Name",
       accessor: "driver_name",
@@ -84,6 +78,22 @@ const DocumentManagmentTable = ({
       Header: "Sub Folder Name",
       accessor: "sub_folder_name",
       Cell: (row) => {
+        return <span>{row?.cell?.value}</span>;
+      },
+    },
+    {
+      Header: "Document Month",
+      accessor: "document_month",
+      Cell: (row) => {
+        console.log(row, "........");
+        return <span>{row?.cell?.value}</span>;
+      },
+    },
+    {
+      Header: "Document Year",
+      accessor: "document_year",
+      Cell: (row) => {
+        console.log(row, "........");
         return <span>{row?.cell?.value}</span>;
       },
     },
@@ -165,8 +175,8 @@ const DocumentManagmentTable = ({
     },
   ];
   const handleView = (viewData) => {
+    setViewId(viewData?.row?.original?.driver_documents_id);
     setOpen(true);
-    console.log(viewData, ".....");
   };
 
   const columns = useMemo(() => COLUMNS, []);
@@ -287,7 +297,14 @@ const DocumentManagmentTable = ({
         />
         {/*end*/}
       </Card>
-      {open && <DocView open={open} setOpen={setOpen} />}
+      {open && (
+        <DocView
+          open={open}
+          setOpen={setOpen}
+          setViewId={setViewId}
+          viewId={viewId}
+        />
+      )}
     </>
   );
 };

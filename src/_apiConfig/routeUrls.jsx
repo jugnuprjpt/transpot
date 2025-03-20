@@ -4,6 +4,8 @@ export const RouteUrls = {
   // --------------Doc-management--------------
 
   docManagementListing: "api/driver_document_management/get",
+  driverListing: "api/user/get",
+  documentInsert: "api/driver_document_management/insert",
 
   autologin: "api/user/get-auto-login",
   getSearchTender: "api/tender/search",

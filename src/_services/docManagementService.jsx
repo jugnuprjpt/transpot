@@ -3,8 +3,11 @@ import { RouteUrls } from "../_apiConfig/routeUrls";
 
 export const docManagementService = {
   docManagementListing,
+  driverListing,
+  documentInsert,
+
   profileInsert,
-  profileId,
+  // profileId,
   profileDelete,
 
   profileDataInsert,
@@ -15,6 +18,16 @@ export const docManagementService = {
 
 function docManagementListing() {
   return http.get(RouteUrls.docManagementListing, true);
+}
+
+function driverListing() {
+  return http.get(RouteUrls.driverListing, true);
+}
+
+function documentInsert(data) {
+  return http.post(`${RouteUrls.documentInsert}`, data, true, {
+    "Content-Type": "multipart/form-data",
+  });
 }
 
 function profileId(data) {

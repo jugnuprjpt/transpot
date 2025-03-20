@@ -1,10 +1,20 @@
+// import axios from "axios";
+
+// const apiurl =
+//   "https://c2f5-2409-40c2-129c-f4b3-c4a6-b07-8fee-ab8e.ngrok-free.app";
+
+// export default axios.create({
+//   baseURL: apiurl,
+//   environment: "Live",
+//   DonwloadDoc: apiurl,
+// });
+
 import axios from "axios";
 
-const apiurl =
-  "https://da04-2409-40c2-2057-ee19-5cfb-7afa-33a-23ac.ngrok-free.app";
-
-export default axios.create({
-  baseURL: apiurl,
-  environment: "Live",
-  DonwloadDoc: apiurl,
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:your-port",
+  timeout: 30000,
+  withCredentials: true,
 });
+
+export default api;

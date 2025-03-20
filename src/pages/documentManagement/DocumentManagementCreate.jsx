@@ -1,21 +1,34 @@
 import React, { useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
 import Icon from "@/components/ui/Icon";
-import CommonTextInput from "../components/InputField/CommonTextInput";
 import CommonFileInput from "../components/InputField/CommonFileInput";
 import CommonSelectInput from "../components/InputField/CommonSelectInput";
 import { ValidaterHelper } from "../components/validationFunction/ValidationCheck";
+import useGetDriverListing from "../../hooks/useDriverListing";
+import axios from "axios";
+import {
+  ShowErrorToast,
+  ShowSuccessToast,
+} from "../components/ToastMessage/ToastMessage";
+import { http } from "../../_apiConfig/http";
+import CommonTextInput from "../components/InputField/CommonTextInput";
+import { docManagementService } from "../../_services/docManagementService";
 
 const DocumentManagementCreate = ({
   open,
   setOpen,
   isEditOpen,
+  isEditDone,
+  setIsEditDone,
+  // handleCloseDrawer,
   setIsEditOpen,
 }) => {
   const inputRef = useRef(null);
+  const { driverData } = useGetDriverListing();
+  const token = localStorage.getItem("token");
   const [FormState, SetFormState] = useState({
-    driver_name: { errors: "", valid: false },
-    parent_folder_name: { errors: "", valid: false },
+    // driver_name: { errors: "", valid: false },
+    driver_id: { errors: "", valid: false },
     annual_dot_inspection: { errors: "", valid: false },
     roc: { errors: "", valid: false },
     pod: { errors: "", valid: false },
@@ -24,10 +37,12 @@ const DocumentManagementCreate = ({
     ifta_quaterly: { errors: "", valid: false },
     truck_trailer_serivices: { errors: "", valid: false },
     driver_equipment_information: { errors: "", valid: false },
+    load_number: { errors: "", valid: false },
   });
+  // driver_id
   const [allData, setAllData] = useState({
     driver_name: "",
-    parent_folder_name: "",
+    driver_id: 0,
     annual_dot_inspection: "",
     roc: "",
     pod: "",
@@ -36,24 +51,33 @@ const DocumentManagementCreate = ({
     ifta_quaterly: "",
     truck_trailer_serivices: "",
     driver_equipment_information: "",
+    load_number: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const annualInspection = [
-    { value: 1, label: "DISPATCH RECORD" },
-    { value: 2, label: "DRIVER + EQUIPMENT INFORMATION" },
-    { value: 3, label: "FUEL RECEIPT" },
-    { value: 4, label: "IFTA QUARTERLY" },
-    { value: 5, label: "P.O.D + LUMPER RECEIPT + SCALE" },
-    { value: 6, label: "TRUCK AND TRAILER REPAIR" },
-    { value: 7, label: "TRUCK TRAILER SERVICES" },
-  ];
-
   const handleCloseDrawer = () => {
     setOpen(false);
+    // SetFormState({
+    //   designation_name: { errors: "", valid: false },
+    // });
+    setAllData({
+      driver_name: "",
+      driver_id: 0,
+      annual_dot_inspection: "",
+      roc: "",
+      pod: "",
+      fuel_reciept: "",
+      truck_and_trailer_repair: "",
+      ifta_quaterly: "",
+      truck_trailer_serivices: "",
+      driver_equipment_information: "",
+      load_number: "",
+    });
+    // setIsEditOpen(false);
+    // setEditId("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const isFormValid = ValidaterHelper.ValidateFromState(
       FormState,
       SetFormState,
@@ -67,25 +91,57 @@ const DocumentManagementCreate = ({
       return;
     }
     setIsLoading(true);
+    if (isEditOpen == false) {
+      const formdata = new FormData();
 
-    // if (isEditOpen == true) {
-    //   const updatedData = {
-    //     ...data,
-    //     check_list_name: data?.check_list_name,
-    //     old_check_list_name: oldChecklistName,
-    //   };
-    //   checklistService.checklistUpdate(updatedData).then((res) => {
-    //     if (res.Success == true) {
-    //       setIsLoading(false);
-    //       ShowSuccessToast(res?.Message);
-    //       setIsEditDone(isEditDone == true ? false : true);
-    //       handleCloseDrawer();
-    //     } else {
-    //       setIsLoading(false);
-    //       ShowErrorToast("Something Went Wrong");
-    //     }
-    //   });
-    // } else {
+      formdata.append("driver_name", allData.driver_name);
+      formdata.append("load_number", allData.load_number);
+      formdata.append("driver_id", allData.driver_id);
+      formdata.append("annual_dot_inspection", allData.annual_dot_inspection);
+      formdata.append("roc", allData.roc);
+      formdata.append("pod", allData.pod);
+      formdata.append("fuel_reciept", allData.fuel_reciept);
+      formdata.append(
+        "truck_and_trailer_repair",
+        allData.truck_and_trailer_repair
+      );
+      formdata.append("ifta_quaterly", allData.ifta_quaterly);
+      formdata.append(
+        "truck_trailer_serivices",
+        allData.truck_trailer_serivices
+      );
+      formdata.append(
+        "driver_equipment_information",
+        allData.driver_equipment_information
+      );
+
+      const res = await docManagementService.documentInsert(formdata);
+
+      console.log(res, "...........");
+
+      // const res = await http.post(
+      //   "/api/driver_document_management/insert",
+      //   formdata,
+      //   true,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
+
+      if (res.Success == true) {
+        setIsLoading(false);
+        ShowSuccessToast(res?.Message);
+        setIsEditDone(isEditDone == true ? false : true);
+        handleCloseDrawer();
+      } else {
+        setIsLoading(false);
+        ShowErrorToast("Something Went Wrong");
+      }
+    }
+    // else {
     //   checklistService.checklistInsert(data).then((res) => {
     //     if (res.Success == true) {
     //       setIsLoading(false);
@@ -133,62 +189,42 @@ ${
               <div className="grid xl:grid-cols-2 gap-2 py-2 text-sm">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Driver Name*
+                    Load Number
                   </label>
                   <CommonTextInput
-                    value={allData?.driver_name}
-                    id="driver_name"
+                    value={allData?.load_number}
+                    id="load_number"
                     type="text"
-                    placeholder="Driver Name"
-                    name="driver_name"
+                    placeholder="Load Number"
+                    name="load_number"
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     SetFormState={SetFormState}
                     IsValidate={true}
                   />
                   <span className="text-red-500 text-sm">
-                    {FormState?.driver_name?.errors}
+                    {FormState?.load_number?.errors}
                   </span>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Parent folder Name *
-                  </label>
-                  <CommonTextInput
-                    value={allData?.parent_folder_name}
-                    id="parent_folder_name"
-                    type="text"
-                    placeholder="Parent folder Name"
-                    name="parent_folder_name"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.parent_folder_name?.errors}
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Annual Dot Inspection
+                    Driver Name
                   </label>
                   <CommonSelectInput
                     isClearable={true}
                     className="react-select"
                     classNamePrefix="select"
-                    name="annual_dot_inspection"
-                    placeholder="Select Annual Dot Inspection"
-                    options={annualInspection}
-                    value={annualInspection}
+                    name="driver_id"
+                    placeholder="Select Driver Name"
+                    options={driverData}
+                    value={driverData}
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     SetFormState={SetFormState}
                     IsValidate={false}
                   />
                   <span className="text-red-500 text-sm">
-                    {FormState?.annual_dot_inspection?.errors}
+                    {FormState?.driver_id?.errors}
                   </span>
                 </div>
 
@@ -246,6 +282,25 @@ ${
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.fuel_reciept?.errors}
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm text-gray-600 dark:text-gray-400">
+                    Annual Dot inspection
+                  </label>
+                  <CommonFileInput
+                    className="react-select text-[#000]"
+                    classNamePrefix="select"
+                    type="file"
+                    name="annual_dot_inspection"
+                    placeholder="Annual Dot inspection"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    inputRef={inputRef}
+                  />
+                  <span className="text-red-500 text-sm">
+                    {FormState?.annual_dot_inspection?.errors}
                   </span>
                 </div>
 
