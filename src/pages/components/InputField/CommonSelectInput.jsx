@@ -59,17 +59,18 @@ const CommonSelectInput = ({
       };
 
       setTenderForm(updatedtenderForm6);
-    } else if (name == "payment_mode") {
+    } else if (name == "driver_id") {
       if (IsValidate === true) {
         IsValidateCheck(selectedOption, name, selectedOption?.value);
       }
       const updatedValue = selectedOption ? selectedOption.value : 0;
-
+    
       const updatedtenderForm6 = {
         ...tenderForm,
         [name]: updatedValue,
+        driver_name:selectedOption?.label,
       };
-
+     
       setTenderForm(updatedtenderForm6);
     } else if (name == "tender_status_id") {
       if (IsValidate === true) {

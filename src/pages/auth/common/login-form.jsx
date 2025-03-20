@@ -16,6 +16,7 @@ import {
   ShowSuccessToast,
 } from "../../components/ToastMessage/ToastMessage";
 import axios from "axios";
+import { http } from "../../../_apiConfig/http";
 const schema = yup
   .object({
     login_user_id: yup.string().required("User Id is Required"),
@@ -75,11 +76,44 @@ const LoginForm = () => {
   //   }
   // };
 
+  // const onSubmit = async () => {
+  //   setIsLoading(true);
+
+  //   try {
+  //     const res = await http.get(
+  //       `/api/user/login?login_user_id=${formData.login_user_id}&password=${formData.password}`,
+  //       true,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     console.log(res, "res");
+  //     if (res.Success) {
+  //       ShowSuccessToast("Login Successfully");
+  //       setTimeout(() => {
+  //         navigate("/dashboard");
+  //       }, 1500);
+  //       localStorage.setItem("token", res.data.Data.token);
+
+  //       // fetchModuleMaster(res.Data.role_id);
+  //     } else {
+  //       ShowErrorToast("something went wrong");
+  //     }
+
+  //     // setResponse(res.data);
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     // setResponse({ error: "Request failed" });
+  //   }
+  // };
+
   const onSubmit = async () => {
     setIsLoading(true);
 
     try {
-      const url = `https://da04-2409-40c2-2057-ee19-5cfb-7afa-33a-23ac.ngrok-free.app/api/user/login`;
+      const url = `https://005e-103-171-127-76.ngrok-free.app/api/user/login`;
 
       const res = await axios.get(url, {
         params: {
@@ -91,17 +125,15 @@ const LoginForm = () => {
         },
         withCredentials: true, // If your API needs authentication cookies
       });
-      console.log(res, "res");
-      if (res.data.Success) {
+
+      console.log(res, "re");
+
+      if (res.status == 200) {
         ShowSuccessToast("Login Successfully");
         setTimeout(() => {
           navigate("/dashboard");
         }, 1500);
-        localStorage.setItem("token", res.data.Data.token);
-
-        // fetchModuleMaster(res.Data.role_id);
-      } else {
-        ShowErrorToast("something went wrong");
+        localStorage.setItem("token", res.Data.token);
       }
 
       // setResponse(res.data);
@@ -110,7 +142,6 @@ const LoginForm = () => {
       // setResponse({ error: "Request failed" });
     }
   };
-
   // const onSubmit = async () => {
   //   setIsLoading(true);
   //   const loginForm = {
