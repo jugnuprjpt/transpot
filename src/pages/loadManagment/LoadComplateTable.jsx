@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
+
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
-import Button from "@/components/ui/Button";
-import { useNavigate } from "react-router-dom";
+import Tooltip from "@/components/ui/Tooltip";
 import {
   useTable,
   useRowSelect,
@@ -10,100 +10,49 @@ import {
   useGlobalFilter,
   usePagination,
 } from "react-table";
-import GlobalFilter from "../table/react-tables/GlobalFilter";
+
 import { advancedTable } from "../../constant/table-data";
-import BriefCaseFilter from "./BriefCaseFilter";
-import { docManagementService } from "../../_services/docManagementService";
-import useBriefSearch from "../../hooks/useBriefSearch";
+import GlobalFilter from "../table/react-tables/GlobalFilter";
 
-const BriefCase = () => {
-  const [tableData, setTableData] = useState([]);
-
-  const [tenderForm, setTenderForm] = useState({
-    document_month: "",
-    document_year: "",
-    driver_name: "",
-    sub_folder_name: "",
-  });
-
-  useEffect(() => {
-    // setLoading(true);
-    docListing();
-  }, []);
-
-  // isCreateDone, isEditDone, isDeleteDone
-
-  const docListing = async () => {
-    try {
-      const res = await docManagementService.docManagementListing();
-      if (res.Success === true) {
-        // setLoading(false);
-        setTableData(res?.Data);
-      } else {
-        setTableData([]);
-        // setLoading(false);
-        ShowErrorToast("Something Went Wrong");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  // const handleSearch = () => {
-  //   const filteredData = tableData.filter((item) => {
-  //     console.log(item, "item.........");
-  //     return (
-  //       (!tenderForm.document_month ||
-  //         item.document_month.toString().toLowerCase() ===
-  //           tenderForm.document_month.toString().toLowerCase()) &&
-  //       (!tenderForm.document_year ||
-  //         item.document_year.toLowerCase().trim() ===
-  //           tenderForm.document_year.toLowerCase().trim()) &&
-  //       (!tenderForm.driver_name ||
-  //         item.driver_name
-  //           .toLowerCase()
-  //           .includes(tenderForm.driver_name.toLowerCase().trim())) &&
-  //       (!tenderForm.sub_folder_name ||
-  //         item.sub_folder_name
-  //           .toLowerCase()
-  //           .includes(tenderForm.sub_folder_name.toLowerCase().trim()))
-  //     );
-  //   });
-
-  //   setTableData(filteredData);
-  // };
-
-  const handleSearch = () => {
-    const filteredData = tableData.filter((item) => {
-      console.log(item, "item.........");
-      return (
-        (!tenderForm.document_month ||
-          item.document_month.toLowerCase() ===
-            tenderForm.document_month.toLowerCase()) &&
-        (!tenderForm.document_year ||
-          item.document_year === Number(tenderForm.document_year)) && // Compare as a number
-        (!tenderForm.driver_name ||
-          item.driver_name
-            .toLowerCase()
-            .includes(tenderForm.driver_name.toLowerCase().trim())) &&
-        (!tenderForm.sub_folder_name ||
-          item.sub_folder_name
-            .toLowerCase()
-            .includes(tenderForm.sub_folder_name.toLowerCase().trim()))
-      );
-    });
-
-    setTableData(filteredData);
-  };
-
+const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
   const COLUMNS = [
     {
-      Header: "#",
-      accessor: "sequenceNumber",
+      Header: "load Id",
+      accessor: "load_id",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
+    {
+      Header: "Load Number",
+      accessor: "load_number",
+      Cell: (row) => {
+        return <span>#{row?.cell?.value}</span>;
+      },
+    },
+
+    {
+      Header: "Source",
+      accessor: "source",
+      Cell: (row) => {
+        return <span>{row?.cell?.value}</span>;
+      },
+    },
+    {
+      Header: "Destination",
+      accessor: "destination",
+      Cell: (row) => {
+        return <span>{row?.cell?.value}</span>;
+      },
+    },
+    {
+      Header: "Company Name",
+      accessor: "company_name",
+      Cell: (row) => {
+        return <span>{row?.cell?.value}</span>;
+      },
+    },
+
     {
       Header: "Driver Name",
       accessor: "driver_name",
@@ -112,50 +61,116 @@ const BriefCase = () => {
       },
     },
     {
-      Header: "Document Name",
-      accessor: "document_name",
+      Header: "Final Price",
+      accessor: "final_price",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
     {
-      Header: "Original Document Name",
-      accessor: "original_document_name",
+      Header: "Base Price",
+      accessor: "base_price",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
     {
-      Header: "Sub Folder Name",
-      accessor: "sub_folder_name",
+      Header: "Trailer Used",
+      accessor: "trailer_used",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
     {
-      Header: "Document Month",
-      accessor: "document_month",
+      Header: "Delivery Date",
+      accessor: "delivery_date",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
     {
-      Header: "Document Year",
-      accessor: "document_year",
+      Header: "Shipping Date",
+      accessor: "shipping_date",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
+    // {
+    //   Header: "status",
+    //   accessor: "status",
+    //   Cell: (row) => {
+    //     return (
+    //       <span className="block w-full">
+    //         <span
+    //           className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
+    //             row?.cell?.value === "paid"
+    //               ? "text-success-500 bg-success-500"
+    //               : ""
+    //           }
+    //         ${
+    //           row?.cell?.value === "due"
+    //             ? "text-warning-500 bg-warning-500"
+    //             : ""
+    //         }
+    //         ${
+    //           row?.cell?.value === "cancled"
+    //             ? "text-danger-500 bg-danger-500"
+    //             : ""
+    //         }
+
+    //          `}
+    //         >
+    //           {row?.cell?.value}
+    //         </span>
+    //       </span>
+    //     );
+    //   },
+    // },
+    // {
+    //   Header: "action",
+    //   accessor: "action",
+    //   Cell: (row) => {
+    //     return (
+    //       <div className="flex space-x-3 rtl:space-x-reverse">
+    //         <Tooltip
+    //           content="View"
+    //           placement="top"
+    //           arrow
+    //           animation="shift-away"
+    //         >
+    //           <button className="action-btn" type="button">
+    //             <Icon icon="heroicons:eye" />
+    //           </button>
+    //         </Tooltip>
+    //         <Tooltip
+    //           content="Edit"
+    //           placement="top"
+    //           arrow
+    //           animation="shift-away"
+    //         >
+    //           <button className="action-btn" type="button">
+    //             <Icon icon="heroicons:pencil-square" />
+    //           </button>
+    //         </Tooltip>
+    //         <Tooltip
+    //           content="Delete"
+    //           placement="top"
+    //           arrow
+    //           animation="shift-away"
+    //           theme="danger"
+    //         >
+    //           <button className="action-btn" type="button">
+    //             <Icon icon="heroicons:trash" />
+    //           </button>
+    //         </Tooltip>
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 
   const columns = useMemo(() => COLUMNS, []);
-  const modifiedData = useMemo(() => {
-    return tableData.map((item, index) => ({
-      ...item,
-      sequenceNumber: index + 1,
-    }));
-  }, [tableData]);
-  const data = useMemo(() => modifiedData, [modifiedData]);
+  const data = useMemo(() => advancedTable, []);
 
   const tableInstance = useTable(
     {
@@ -188,33 +203,13 @@ const BriefCase = () => {
   } = tableInstance;
 
   const { globalFilter, pageIndex, pageSize } = state;
-
   return (
     <>
-      <Card noborder>
-        <div className="md:flex pb-6 items-center">
-          <h6 className="flex-1 md:mb-0 mb-3">BriefCase</h6>
-          <div className="md:flex md:space-x-4 items-center flex-none rtl:space-x-reverse ">
-            <BriefCaseFilter
-              filter={globalFilter}
-              setFilter={setGlobalFilter}
-              tableData={tableData}
-              tenderForm={tenderForm}
-              setTenderForm={setTenderForm}
-            />
-
-            <Button
-              text="Search"
-              className=" btn-dark font-normal btn-sm "
-              iconClass="text-lg"
-              onClick={() => handleSearch()}
-            />
-            <Button
-              text="Clear"
-              className="bg-emerald-500 hover:bg-emerald-600 text-white font-normal btn-sm"
-              iconClass="text-lg"
-              onClick={() => handleClear()}
-            />
+      <Card>
+        <div className="md:flex justify-between items-center mb-6">
+          <h4 className="card-title">{title}</h4>
+          <div>
+            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           </div>
         </div>
         <div className="overflow-x-auto -mx-6">
@@ -224,7 +219,7 @@ const BriefCase = () => {
                 className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700"
                 {...getTableProps}
               >
-                <thead className=" border-t border-slate-100 dark:border-slate-800">
+                <thead className="bg-slate-200 dark:bg-slate-700">
                   {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column) => (
@@ -273,25 +268,17 @@ const BriefCase = () => {
         </div>
         <div className="md:flex md:space-y-0 space-y-5 justify-between mt-6 items-center">
           <div className=" flex items-center space-x-3 rtl:space-x-reverse">
-            <span className=" flex space-x-2  rtl:space-x-reverse items-center">
-              <span className=" text-sm font-medium text-slate-600 dark:text-slate-300">
-                Go
-              </span>
-              <span>
-                <input
-                  type="number"
-                  className=" form-control py-2"
-                  defaultValue={pageIndex + 1}
-                  onChange={(e) => {
-                    const pageNumber = e.target.value
-                      ? Number(e.target.value) - 1
-                      : 0;
-                    gotoPage(pageNumber);
-                  }}
-                  style={{ width: "50px" }}
-                />
-              </span>
-            </span>
+            <select
+              className="form-control py-2 w-max"
+              value={pageSize}
+              onChange={(e) => setPageSize(Number(e.target.value))}
+            >
+              {[10, 25, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </option>
+              ))}
+            </select>
             <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
               Page{" "}
               <span>
@@ -305,10 +292,21 @@ const BriefCase = () => {
                 className={` ${
                   !canPreviousPage ? "opacity-50 cursor-not-allowed" : ""
                 }`}
+                onClick={() => gotoPage(0)}
+                disabled={!canPreviousPage}
+              >
+                <Icon icon="heroicons:chevron-double-left-solid" />
+              </button>
+            </li>
+            <li className="text-sm leading-4 text-slate-900 dark:text-white rtl:rotate-180">
+              <button
+                className={` ${
+                  !canPreviousPage ? "opacity-50 cursor-not-allowed" : ""
+                }`}
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
               >
-                <Icon icon="heroicons-outline:chevron-left" />
+                Prev
               </button>
             </li>
             {pageOptions.map((page, pageIdx) => (
@@ -327,7 +325,7 @@ const BriefCase = () => {
                 </button>
               </li>
             ))}
-            <li className="text-xl leading-4 text-slate-900 dark:text-white rtl:rotate-180">
+            <li className="text-sm leading-4 text-slate-900 dark:text-white rtl:rotate-180">
               <button
                 className={` ${
                   !canNextPage ? "opacity-50 cursor-not-allowed" : ""
@@ -335,14 +333,26 @@ const BriefCase = () => {
                 onClick={() => nextPage()}
                 disabled={!canNextPage}
               >
-                <Icon icon="heroicons-outline:chevron-right" />
+                Next
+              </button>
+            </li>
+            <li className="text-xl leading-4 text-slate-900 dark:text-white rtl:rotate-180">
+              <button
+                onClick={() => gotoPage(pageCount - 1)}
+                disabled={!canNextPage}
+                className={` ${
+                  !canNextPage ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                <Icon icon="heroicons:chevron-double-right-solid" />
               </button>
             </li>
           </ul>
         </div>
+        {/*end*/}
       </Card>
     </>
   );
 };
 
-export default BriefCase;
+export default LoadComplateTable;

@@ -26,8 +26,6 @@ const DocumentManagement = () => {
   const [editId, setEditId] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token");
-
   useEffect(() => {
     setLoading(true);
     docListing();

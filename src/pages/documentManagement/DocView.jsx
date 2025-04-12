@@ -48,7 +48,7 @@ const DocView = ({ open, setOpen, setViewId, viewId }) => {
     try {
       // setIsLoading(true);
 
-      const url = `https://cbf3-103-171-127-76.ngrok-free.app/api/driver_document_management/download`;
+      const url = `https://0c44-2409-40d1-2025-c245-d57-4d4c-e12c-349e.ngrok-free.app/api/driver_document_management/download`;
 
       const formdata = {
         year: data?.document_year.toString(),
@@ -63,10 +63,13 @@ const DocView = ({ open, setOpen, setViewId, viewId }) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        responseType: "blob", // Ensures response is treated as a file
+
+        responseType: "blob",
         withCredentials: true,
+        mode: "cors",
       });
 
+      console.log(res, "res.......");
       if (res.status === 200) {
         const blob = new Blob([res.data]);
         const url = window.URL.createObjectURL(blob);

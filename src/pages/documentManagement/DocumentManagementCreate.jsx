@@ -117,20 +117,6 @@ const DocumentManagementCreate = ({
 
       const res = await docManagementService.documentInsert(formdata);
 
-      console.log(res, "...........");
-
-      // const res = await http.post(
-      //   "/api/driver_document_management/insert",
-      //   formdata,
-      //   true,
-      //   {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
-
       if (res.Success == true) {
         setIsLoading(false);
         ShowSuccessToast(res?.Message);

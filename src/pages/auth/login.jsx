@@ -8,7 +8,7 @@ import { ToastContainer } from "react-toastify";
 // image import
 import LogoWhite from "@/assets/images/logo/logo.png";
 import Logo from "@/assets/images/logo/logo.png";
-// import Illustration from "@/assets/images/auth/ils1.jpg";
+import Illustration from "@/assets/images/auth/ils1.jpg";
 
 const login = () => {
   const [isDark] = useDarkMode();
@@ -33,7 +33,7 @@ const login = () => {
             </div>
             <div className="absolute left-0 2xl:bottom-[-160px] h-full w-full z-[-1]">
               <img
-                // src={Illustration}
+                src={Illustration}
                 alt=""
                 className="h-full w-full object-contain"
               />
