@@ -1,39 +1,50 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
 import Icon from "@/components/ui/Icon";
 import CommonTextInput from "../components/InputField/CommonTextInput";
+import CommonFileInput from "../components/InputField/CommonFileInput";
 
 const LoadManagementCreate = ({ open, setOpen, isEditOpen, setIsEditOpen }) => {
+  const inputRef = useRef(null);
   const handleCloseDrawer = () => {
     setOpen(false);
   };
 
   const [FormState, SetFormState] = useState({
-    driver_name: { errors: "", valid: false },
-    parent_folder_name: { errors: "", valid: false },
-    annual_dot_inspection: { errors: "", valid: false },
+    loadNumber: { errors: "", valid: false },
+    source: { errors: "", valid: false },
+    destination: { errors: "", valid: false },
+    pick_up_date: { errors: "", valid: false },
+    delievery_date: { errors: "", valid: false },
+    // earliest_time_arrival: { errors: "", valid: false },
+    // driver_name: { errors: "", valid: false },
+    base_price: { errors: "", valid: false },
+    final_price: { errors: "", valid: false },
+    // assign_to: { errors: "", valid: false },
+    trailer_used: { errors: "", valid: false },
+    company_name: { errors: "", valid: false },
     roc: { errors: "", valid: false },
-    pod: { errors: "", valid: false },
-    fuel_reciept: { errors: "", valid: false },
-    truck_and_trailer_repair: { errors: "", valid: false },
-    ifta_quaterly: { errors: "", valid: false },
-    truck_trailer_serivices: { errors: "", valid: false },
-    driver_equipment_information: { errors: "", valid: false },
   });
   const [allData, setAllData] = useState({
-    load_numbers: "",
-    Source: "",
-    Destination: "",
-    Shipping_Date: "",
-    Delivery_Date: "",
-    ETA: "",
-    date: "",
-    ifta_quaterly: "",
-    truck_trailer_serivices: "",
-    driver_equipment_information: "",
+    loadNumber: "",
+    source: "",
+    destination: "",
+    pick_up_date: "",
+    delievery_date: "",
+    // earliest_time_arrival: "",
+    // driver_name: "",
+    base_price: 0,
+    final_price: 0,
+    // assign_to: "",
+    trailer_used: "",
+    company_name: "",
+    roc: "",
+    driver_id: 0,
   });
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    console.log(allData, "ir..........");
+  };
   return (
     <div>
       {" "}
@@ -71,246 +82,252 @@ ${
                     Load numbers *
                   </label>
                   <CommonTextInput
-                  // value={allData?.last_name}
-                  // id="last_name"
-                  // type="text"
-                  // placeholder="Last Name"
-                  // name="last_name"
-                  // tenderForm={allData}
-                  // setTenderForm={setAllData}
-                  // SetFormState={SetFormState}
-                  // IsValidate={true}
+                    value={allData?.loadNumber}
+                    id="loadNumber"
+                    type="text"
+                    placeholder="Load Number"
+                    name="loadNumber"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
                   />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.last_name?.errors}
-                  </span> */}
+                  <span className="text-red-500 text-sm">
+                    {FormState?.loadNumber?.errors}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Source *
                   </label>
                   <CommonTextInput
-                  // value={allData?.email_id}
-                  // id="email_id"
-                  // type="email"
-                  // placeholder="Email Id"
-                  // name="email_id"
-                  // tenderForm={allData}
-                  // setTenderForm={setAllData}
-                  // SetFormState={SetFormState}
-                  // IsValidate={true}
+                    value={allData?.source}
+                    id="source"
+                    type="text"
+                    placeholder="Source"
+                    name="source"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
                   />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.email_id?.errors}
-                  </span> */}
+                  <span className="text-red-500 text-sm">
+                    {FormState?.source?.errors}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Destination *
                   </label>
                   <CommonTextInput
-                  // value={allData?.contact_no}
-                  // id="contact_no"
-                  // type="number"
-                  // placeholder="Contact No"
-                  // name="contact_no"
-                  // tenderForm={allData}
-                  // setTenderForm={setAllData}
-                  // SetFormState={SetFormState}
-                  // IsValidate={true}
+                    value={allData?.destination}
+                    id="destination"
+                    type="text"
+                    placeholder="Destination"
+                    name="destination"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
                   />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.contact_no?.errors}
-                  </span> */}
+                  <span className="text-red-500 text-sm">
+                    {FormState?.destination?.errors}
+                  </span>
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Shipping Date *
+                    Pick Up Date *
                   </label>
                   <CommonTextInput
-                  //   value={allData?.password}
-                  //   id="password"
-                  //   type="password"
-                  //   placeholder="Password"
-                  //   name="password"
-                  //   tenderForm={allData}
-                  //   setTenderForm={setAllData}
-                  //   SetFormState={SetFormState}
-                  //   IsValidate={true}
-                  //   hasIcon={true}
+                    value={allData?.pick_up_date}
+                    id="pick_up_date"
+                    type="date"
+                    placeholder="Pick Up Date"
+                    name="pick_up_date"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
+                    hasIcon={true}
                   />
-                  {/* <span className="text-red-500 text-sm">
-                      {FormState?.password?.errors}
-                    </span> */}
+                  <span className="text-red-500 text-sm">
+                    {FormState?.pick_up_date?.errors}
+                  </span>
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Delivery Date
+                    Delievery Date *
                   </label>
                   <CommonTextInput
-                  // isClearable={true}
-                  // className="react-select"
-                  // classNamePrefix="select"
-                  // name="state_id"
-                  // placeholder="Select State"
-                  // options={stateOption}
-                  // value={stateOption}
-                  // tenderForm={allData}
-                  // setTenderForm={setAllData}
-                  // SetFormState={SetFormState}
-                  // // IsValidate={false}
-                  // setCityModal={setCityModal}
+                    value={allData?.delievery_date}
+                    id="delievery_date"
+                    type="date"
+                    placeholder="Delievery Date"
+                    name="delievery_date"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
+                    hasIcon={true}
                   />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.state_id?.errors}
-                  </span> */}
+                  <span className="text-red-500 text-sm">
+                    {FormState?.delievery_date?.errors}
+                  </span>
                 </div>
+
+                {/* <div className="flex flex-col gap-2">
+                  <label className="text-sm text-gray-600 dark:text-gray-400">
+                    Earliest Time Arrival
+                  </label>
+                  <CommonTextInput
+                    value={allData?.earliest_time_arrival}
+                    id="earliest_time_arrival"
+                    type="text"
+                    placeholder="Earliest Time Arrival"
+                    name="earliest_time_arrival"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
+                  />
+                  <span className="text-red-500 text-sm">
+                    {FormState?.earliest_time_arrival?.errors}
+                  </span>
+                </div> */}
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    ETA
+                    Trailer Used *
                   </label>
                   <CommonTextInput
-                  // isClearable={true}
-                  // className="react-select"
-                  // classNamePrefix="select"
-                  // name="city_id"
-                  // placeholder="Select City"
-                  // options={cityOption}
-                  // value={cityOption}
-                  // tenderForm={allData}
-                  // setTenderForm={setAllData}
-                  // SetFormState={SetFormState}
-                  // // IsValidate={false}
-                  // disabled={!allData?.state_id}
+                    value={allData?.trailer_used}
+                    id="trailer_used"
+                    type="text"
+                    placeholder="Trailer Used"
+                    name="trailer_used"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
                   />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.city_id?.errors}
-                  </span> */}
+                  <span className="text-red-500 text-sm">
+                    {FormState?.trailer_used?.errors}
+                  </span>
                 </div>
-                <div className="flex flex-col gap-2">
+                {/* <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    date *
+                    Assign To *
                   </label>
                   <CommonTextInput
-                  // isClearable={true}
-                  // className="react-select"
-                  // classNamePrefix="select"
-                  // name="designation_id"
-                  // placeholder="Select Designation"
-                  // options={designationData}
-                  // value={designationData}
-                  // tenderForm={allData}
-                  // setTenderForm={setAllData}
-                  // SetFormState={SetFormState}
-                  // IsValidate={true}
+                    value={allData?.assign_to}
+                    id="assign_to"
+                    type="text"
+                    placeholder="Assign To"
+                    name="assign_to"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
                   />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.designation_id?.errors}
-                  </span> */}
-                </div>
-                <div className="flex flex-col gap-2">
+                  <span className="text-red-500 text-sm">
+                    {FormState?.assign_to?.errors}
+                  </span>
+                </div> */}
+                {/* <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Driver*
+                    Driver Name*
                   </label>
                   <CommonTextInput
-                  // isClearable={true}
-                  // className="react-select"
-                  // classNamePrefix="select"
-                  // name="department_id"
-                  // placeholder="Select Department"
-                  // options={departmentData}
-                  // value={departmentData}
-                  // tenderForm={allData}
-                  // setTenderForm={setAllData}
-                  // SetFormState={SetFormState}
-                  // IsValidate={true}
+                    value={allData?.driver_name}
+                    id="driver_name"
+                    type="text"
+                    placeholder="Driver Name"
+                    name="driver_name"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
                   />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.department_id?.errors}
-                  </span> */}
-                </div>
+                  <span className="text-red-500 text-sm">
+                    {FormState?.driver_name?.errors}
+                  </span>
+                </div> */}
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Base price *
                   </label>
                   <CommonTextInput
-                    // isClearable={true}
-                    // className="react-select"
-                    // classNamePrefix="select"
-                    // name="role_id"
-                    // placeholder="Select Role"
-                    // options={roleData}
-                    // value={roleData}
-                    // tenderForm={allData}
-                    // setTenderForm={setAllData}
-                    // SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.role_id?.errors}
-                  </span> */}
-                </div>
-                {/* <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    User Type*
-                  </label>
-                  <CommonSelectInput
-                    isClearable={true}
-                    className="react-select"
-                    classNamePrefix="select"
-                    name="user_type_id"
-                    placeholder="Select User Type"
-                    options={userTypeId}
-                    value={userTypeId}
+                    value={allData?.driver_name}
+                    id="base_price"
+                    type="text"
+                    placeholder=" Base price"
+                    name="base_price"
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     SetFormState={SetFormState}
                     IsValidate={true}
                   />
                   <span className="text-red-500 text-sm">
-                    {FormState?.user_type_id?.errors}
+                    {FormState?.base_price?.errors}
                   </span>
-                </div> */}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm text-gray-600 dark:text-gray-400">
+                    Company Name*
+                  </label>
+                  <CommonTextInput
+                    value={allData?.company_name}
+                    id="company_name"
+                    type="text"
+                    placeholder="Company Name"
+                    name="company_name"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    SetFormState={SetFormState}
+                    IsValidate={true}
+                  />
+                  <span className="text-red-500 text-sm">
+                    {FormState?.company_name?.errors}
+                  </span>
+                </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Final price*
                   </label>
                   <CommonTextInput
-                  // value={allData?.login_user_id}
-                  // id="login_user_id"
-                  // type="text"
-                  // placeholder="Login User Id"
-                  // name="login_user_id"
-                  // tenderForm={allData}
-                  // setTenderForm={setAllData}
-                  // SetFormState={SetFormState}
-                  // IsValidate={true}
-                  />
-                  {/* <span className="text-red-500 text-sm">
-                    {FormState?.login_user_id?.errors}
-                  </span> */}
-                </div>
-                {/* <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Address *
-                  </label>
-                  <CommonTextArea
-                    value={allData?.address}
-                    id="address"
-                    type="texy"
-                    placeholder="Address"
-                    name="address"
+                    value={allData?.final_price}
+                    id="final_price"
+                    type="text"
+                    placeholder="Final price"
+                    name="final_price"
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     SetFormState={SetFormState}
                     IsValidate={true}
                   />
                   <span className="text-red-500 text-sm">
-                    {FormState?.address?.errors}
+                    {FormState?.final_price?.errors}
                   </span>
-                </div> */}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm text-gray-600 dark:text-gray-400">
+                    Roc*
+                  </label>
+                  <CommonFileInput
+                    className="react-select text-[#000]"
+                    classNamePrefix="select"
+                    type="file"
+                    name="roc"
+                    placeholder="Roc"
+                    tenderForm={allData}
+                    setTenderForm={setAllData}
+                    inputRef={inputRef}
+                  />
+                  {/* <span className="text-red-500 text-sm"> */}
+                  {/* {FormState?.driver_equipment_information?.errors} */}
+                  {/* </span> */}
+                </div>
               </div>
 
               <div className="flex gap-4">

@@ -7,6 +7,8 @@ export const RouteUrls = {
   driverListing: "api/user/get",
   documentInsert: "api/driver_document_management/insert",
 
+  loadManagementListing: "api/load/get",
+
   autologin: "api/user/get-auto-login",
   getSearchTender: "api/tender/search",
   getTenderResultSearch: "api/result/search",

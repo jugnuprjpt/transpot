@@ -1,8 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-// home pages  & dashboard
-//import Dashboard from "./pages/dashboard";
 const Dashboard = lazy(() => import("./pages/dashboard"));
 
 const ProjectPage = lazy(() => import("./pages/dashboard/project"));
@@ -57,14 +55,6 @@ const FormWizard = lazy(() => import("./pages/forms/form-wizard"));
 const SelectPage = lazy(() => import("./pages/forms/select"));
 const Flatpicker = lazy(() => import("./pages/forms/date-time-picker"));
 
-// chart page
-const AppexChartPage = lazy(() => import("./pages/chart/appex-chart"));
-const ChartJs = lazy(() => import("./pages/chart/chartjs"));
-const Recharts = lazy(() => import("./pages/chart/recharts"));
-
-// map page
-const MapPage = lazy(() => import("./pages/map"));
-
 // table pages
 const BasicTablePage = lazy(() => import("./pages/table/table-basic"));
 const TanstackTable = lazy(() => import("./pages/table/react-table"));
@@ -82,8 +72,7 @@ const ComingSoonPage = lazy(() => import("./pages/utility/coming-soon"));
 const UnderConstructionPage = lazy(() =>
   import("./pages/utility/under-construction")
 );
-const BlogPage = lazy(() => import("./pages/utility/blog"));
-const BlogDetailsPage = lazy(() => import("./pages/utility/blog/blog-details"));
+
 const FaqPage = lazy(() => import("./pages/utility/faq"));
 const Settings = lazy(() => import("./pages/utility/settings"));
 const Profile = lazy(() => import("./pages/utility/profile"));
@@ -91,12 +80,8 @@ const IconPage = lazy(() => import("./pages/icons"));
 // const NotificationPage = lazy(() => import("./pages/utility/notifications"));
 const ChangelogPage = lazy(() => import("./pages/changelog"));
 
-// widget pages
-const BasicWidget = lazy(() => import("./pages/widget/basic-widget"));
-const StatisticWidget = lazy(() => import("./pages/widget/statistic-widget"));
-
 // app page
-const TodoPage = lazy(() => import("./pages/app/todo"));
+
 const EmailPage = lazy(() => import("./pages/app/email"));
 const ChatPage = lazy(() => import("./pages/app/chat"));
 const ProjectPostPage = lazy(() => import("./pages/app/projects"));
@@ -219,12 +204,11 @@ function App() {
           <Route path="loadAddModify" element={<LoadAddModifyForm />} />
           <Route path="briefCase" element={<BriefCase />} />
           <Route path="loadTab" element={<LoadTab />} />
-          {/* <Route path="ecommerce" element={<Ecommerce />} /> */}
-          {/* <Route path="crm" element={<CrmPage />} /> */}
+
           <Route path="project" element={<ProjectPage />} />
-          {/* <Route path="banking" element={<BankingPage />} /> */}
+
           {/* App pages */}
-          <Route path="todo" element={<TodoPage />} />
+
           <Route path="email" element={<EmailPage />} />
           <Route path="chat" element={<ChatPage />} />
           <Route path="projects" element={<ProjectPostPage />} />
@@ -263,10 +247,7 @@ function App() {
           <Route path="form-wizard" element={<FormWizard />} />
           <Route path="select" element={<SelectPage />} />
           <Route path="date-time-picker" element={<Flatpicker />} />
-          <Route path="appex-chart" element={<AppexChartPage />} />
-          <Route path="chartjs" element={<ChartJs />} />
-          <Route path="recharts" element={<Recharts />} />
-          <Route path="map" element={<MapPage />} />
+
           <Route path="table-basic" element={<BasicTablePage />} />
           <Route path="react-table" element={<TanstackTable />} />
           <Route path="invoice" element={<InvoicePage />} />
@@ -275,13 +256,11 @@ function App() {
           <Route path="invoice-edit" element={<InvoiceEditPage />} />
           <Route path="pricing" element={<PricingPage />} />
           <Route path="blank-page" element={<BlankPage />} />
-          <Route path="blog" element={<BlogPage />} />
-          <Route path="blog-details" element={<BlogDetailsPage />} />
+
           <Route path="faq" element={<FaqPage />} />
           <Route path="settings" element={<Settings />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="basic" element={<BasicWidget />} />
-          <Route path="statistic" element={<StatisticWidget />} />
+
           <Route path="icons" element={<IconPage />} />
           {/* <Route path="notifications" element={<NotificationPage />} /> */}
           <Route path="changelog" element={<ChangelogPage />} />
