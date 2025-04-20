@@ -87,6 +87,7 @@ const LoginForm = () => {
           navigate("/dashboard");
         }, 1500);
         localStorage.setItem("token", res?.Data?.token);
+        localStorage.setItem("isAuth", "true");
 
         // fetchModuleMaster(res.Data.role_id);
       } else {
