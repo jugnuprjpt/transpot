@@ -170,8 +170,8 @@ const LoadInprogressTable = ({ title = "Load In Progress", tableData }) => {
     // },
   ];
 
-  const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => advancedTable, []);
+  const columns = useMemo(() => COLUMNS, [tableData]);
+  const data = useMemo(() => tableData, [tableData]);
 
   const tableInstance = useTable(
     {

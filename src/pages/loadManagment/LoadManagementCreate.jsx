@@ -3,47 +3,112 @@ import SimpleBar from "simplebar-react";
 import Icon from "@/components/ui/Icon";
 import CommonTextInput from "../components/InputField/CommonTextInput";
 import CommonFileInput from "../components/InputField/CommonFileInput";
+import CommonSelectInput from "../components/InputField/CommonSelectInput";
+import useGetDriverListing from "../../hooks/useDriverListing";
+import useCompany from "../../hooks/useCompany";
+import { ValidaterHelper } from "../components/validationFunction/ValidationCheck";
+import {
+  ShowErrorToast,
+  ShowSuccessToast,
+} from "../components/ToastMessage/ToastMessage";
+import { loadManagementService } from "../../_services/loadManagementService";
 
 const LoadManagementCreate = ({ open, setOpen, isEditOpen, setIsEditOpen }) => {
   const inputRef = useRef(null);
+  const { driverData } = useGetDriverListing();
+  const { companyData } = useCompany();
   const handleCloseDrawer = () => {
     setOpen(false);
   };
 
   const [FormState, SetFormState] = useState({
+    delievery_date_string: { errors: "", valid: false },
+    final_price: { errors: "", valid: false },
+    driver_name: { errors: "", valid: false },
+    roc: { errors: "", valid: false },
+    trailer_used: { errors: "", valid: false },
+    // assign_to: { errors: "", valid: false },
+    company_name: { errors: "", valid: false },
+    destination: { errors: "", valid: false },
     loadNumber: { errors: "", valid: false },
     source: { errors: "", valid: false },
-    destination: { errors: "", valid: false },
-    pick_up_date: { errors: "", valid: false },
-    delievery_date: { errors: "", valid: false },
-    // earliest_time_arrival: { errors: "", valid: false },
-    // driver_name: { errors: "", valid: false },
     base_price: { errors: "", valid: false },
-    final_price: { errors: "", valid: false },
-    // assign_to: { errors: "", valid: false },
-    trailer_used: { errors: "", valid: false },
-    company_name: { errors: "", valid: false },
-    roc: { errors: "", valid: false },
+    pick_up_date_string: { errors: "", valid: false },
   });
   const [allData, setAllData] = useState({
-    loadNumber: "",
-    source: "",
-    destination: "",
-    pick_up_date: "",
-    delievery_date: "",
-    // earliest_time_arrival: "",
-    // driver_name: "",
-    base_price: 0,
+    delievery_date_string: "",
     final_price: 0,
-    // assign_to: "",
-    trailer_used: "",
-    company_name: "",
+    driver_name: "",
     roc: "",
+    trailer_used: 0,
+    assign_to: 0,
+    company_name: "",
+    destination: "",
+    loadNumber: 0,
     driver_id: 0,
+    source: "",
+    base_price: 0,
+    pick_up_date_string: "",
+    company_id: 0,
   });
 
-  const handleSubmit = () => {
-    console.log(allData, "ir..........");
+  const handleSubmit = async () => {
+    const isFormValid = ValidaterHelper.ValidateFromState(
+      FormState,
+      SetFormState,
+      {
+        ...allData,
+      }
+    );
+
+    if (!isFormValid) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    // setIsLoading(true);
+    if (isEditOpen == false) {
+      const formdata = new FormData();
+
+      formdata.append("driver_name", allData.driver_name);
+      formdata.append("loadNumber", allData.loadNumber);
+      formdata.append("driver_id", allData.driver_id);
+      formdata.append("delievery_date_string", allData.delievery_date_string);
+      formdata.append("pick_up_date_string", allData.pick_up_date_string);
+      formdata.append("roc", allData.roc);
+      formdata.append("final_price", allData.final_price);
+      formdata.append("trailer_used", allData.trailer_used);
+      formdata.append("company_name", allData.company_name);
+      formdata.append("company_id", allData.company_id);
+      formdata.append("destination", allData.destination);
+      formdata.append("source", allData.source);
+      formdata.append("base_price", allData.base_price);
+      formdata.append("assign_to", 0);
+
+      const res = await loadManagementService.loadInsert(formdata);
+
+      if (res.Success == true) {
+        // setIsLoading(false);
+        ShowSuccessToast(res?.Message);
+        setIsEditDone(isEditDone == true ? false : true);
+        handleCloseDrawer();
+      } else {
+        // setIsLoading(false);
+        ShowErrorToast("Something Went Wrong");
+      }
+    }
+    // else {
+    //   checklistService.checklistInsert(data).then((res) => {
+    //     if (res.Success == true) {
+    //       setIsLoading(false);
+    //       ShowSuccessToast(res?.Message);
+    //       setIsCreateDone(isCreateDone == true ? false : true);
+    //       handleCloseDrawer();
+    //     } else {
+    //       setIsLoading(false);
+    //       ShowErrorToast(res.Message);
+    //     }
+    //   });
+    // }
   };
   return (
     <div>
@@ -140,11 +205,11 @@ ${
                     Pick Up Date *
                   </label>
                   <CommonTextInput
-                    value={allData?.pick_up_date}
-                    id="pick_up_date"
+                    value={allData?.pick_up_date_string}
+                    id="pick_up_date_string"
                     type="date"
                     placeholder="Pick Up Date"
-                    name="pick_up_date"
+                    name="pick_up_date_string"
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     SetFormState={SetFormState}
@@ -152,7 +217,7 @@ ${
                     hasIcon={true}
                   />
                   <span className="text-red-500 text-sm">
-                    {FormState?.pick_up_date?.errors}
+                    {FormState?.pick_up_date_string?.errors}
                   </span>
                 </div>
 
@@ -161,11 +226,11 @@ ${
                     Delievery Date *
                   </label>
                   <CommonTextInput
-                    value={allData?.delievery_date}
-                    id="delievery_date"
+                    value={allData?.delievery_date_string}
+                    id="delievery_date_string"
                     type="date"
                     placeholder="Delievery Date"
-                    name="delievery_date"
+                    name="delievery_date_string"
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     SetFormState={SetFormState}
@@ -173,7 +238,7 @@ ${
                     hasIcon={true}
                   />
                   <span className="text-red-500 text-sm">
-                    {FormState?.delievery_date?.errors}
+                    {FormState?.delievery_date_string?.errors}
                   </span>
                 </div>
 
@@ -234,31 +299,33 @@ ${
                     {FormState?.assign_to?.errors}
                   </span>
                 </div> */}
-                {/* <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Driver Name*
                   </label>
-                  <CommonTextInput
-                    value={allData?.driver_name}
-                    id="driver_name"
-                    type="text"
-                    placeholder="Driver Name"
-                    name="driver_name"
+                  <CommonSelectInput
+                    isClearable={true}
+                    className="react-select"
+                    classNamePrefix="select"
+                    name="driver_id"
+                    placeholder="Select Driver Name"
+                    options={driverData}
+                    value={driverData}
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     SetFormState={SetFormState}
                     IsValidate={true}
                   />
                   <span className="text-red-500 text-sm">
-                    {FormState?.driver_name?.errors}
+                    {FormState?.driver_id?.errors}
                   </span>
-                </div> */}
+                </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Base price *
                   </label>
                   <CommonTextInput
-                    value={allData?.driver_name}
+                    value={allData?.base_price}
                     id="base_price"
                     type="text"
                     placeholder=" Base price"
@@ -276,19 +343,21 @@ ${
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Company Name*
                   </label>
-                  <CommonTextInput
-                    value={allData?.company_name}
-                    id="company_name"
-                    type="text"
-                    placeholder="Company Name"
-                    name="company_name"
+                  <CommonSelectInput
+                    isClearable={true}
+                    className="react-select"
+                    classNamePrefix="select"
+                    name="company_id"
+                    placeholder="Select Company Name"
+                    options={companyData}
+                    value={companyData}
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     SetFormState={SetFormState}
-                    IsValidate={true}
+                    IsValidate={false}
                   />
                   <span className="text-red-500 text-sm">
-                    {FormState?.company_name?.errors}
+                    {FormState?.company_id?.errors}
                   </span>
                 </div>
                 <div className="flex flex-col gap-2">

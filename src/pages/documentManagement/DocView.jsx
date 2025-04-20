@@ -5,7 +5,7 @@ import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import axios from "axios";
 import { http } from "../../_apiConfig/http";
 
-const DocView = ({ open, setOpen, setViewId, viewId }) => {
+const DocView = ({ open, setOpen, viewId }) => {
   const token = localStorage.getItem("token");
 
   const [dovViewData, setDovViewData] = useState([]);
@@ -44,10 +44,8 @@ const DocView = ({ open, setOpen, setViewId, viewId }) => {
   };
 
   const docDownload = async (data) => {
-    console.log(data, "d.........");
     try {
       // setIsLoading(true);
-
       const url = `https://0c44-2409-40d1-2025-c245-d57-4d4c-e12c-349e.ngrok-free.app/api/driver_document_management/download`;
 
       const formdata = {
@@ -69,7 +67,6 @@ const DocView = ({ open, setOpen, setViewId, viewId }) => {
         mode: "cors",
       });
 
-      console.log(res, "res.......");
       if (res.status === 200) {
         const blob = new Blob([res.data]);
         const url = window.URL.createObjectURL(blob);

@@ -21,6 +21,7 @@ const LoadPendingTable = ({ title = "Load Pending", tableData }) => {
       Header: "load Id",
       accessor: "load_id",
       Cell: (row) => {
+        console.log(row, "row.......");
         return <span>{row?.cell?.value}</span>;
       },
     },
@@ -170,8 +171,8 @@ const LoadPendingTable = ({ title = "Load Pending", tableData }) => {
     // },
   ];
 
-  const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => advancedTable, []);
+  const columns = useMemo(() => COLUMNS, [tableData]);
+  const data = useMemo(() => tableData, [tableData]);
 
   const tableInstance = useTable(
     {

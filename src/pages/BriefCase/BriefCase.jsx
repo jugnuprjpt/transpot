@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
 import Button from "@/components/ui/Button";
-import { useNavigate } from "react-router-dom";
+
 import {
   useTable,
   useRowSelect,
@@ -10,15 +10,12 @@ import {
   useGlobalFilter,
   usePagination,
 } from "react-table";
-import GlobalFilter from "../table/react-tables/GlobalFilter";
-import { advancedTable } from "../../constant/table-data";
+
 import BriefCaseFilter from "./BriefCaseFilter";
 import { docManagementService } from "../../_services/docManagementService";
-import useBriefSearch from "../../hooks/useBriefSearch";
 
 const BriefCase = () => {
   const [tableData, setTableData] = useState([]);
-
   const [tenderForm, setTenderForm] = useState({
     document_month: "",
     document_year: "",
@@ -49,33 +46,8 @@ const BriefCase = () => {
     }
   };
 
-  // const handleSearch = () => {
-  //   const filteredData = tableData.filter((item) => {
-  //     console.log(item, "item.........");
-  //     return (
-  //       (!tenderForm.document_month ||
-  //         item.document_month.toString().toLowerCase() ===
-  //           tenderForm.document_month.toString().toLowerCase()) &&
-  //       (!tenderForm.document_year ||
-  //         item.document_year.toLowerCase().trim() ===
-  //           tenderForm.document_year.toLowerCase().trim()) &&
-  //       (!tenderForm.driver_name ||
-  //         item.driver_name
-  //           .toLowerCase()
-  //           .includes(tenderForm.driver_name.toLowerCase().trim())) &&
-  //       (!tenderForm.sub_folder_name ||
-  //         item.sub_folder_name
-  //           .toLowerCase()
-  //           .includes(tenderForm.sub_folder_name.toLowerCase().trim()))
-  //     );
-  //   });
-
-  //   setTableData(filteredData);
-  // };
-
   const handleSearch = () => {
     const filteredData = tableData.filter((item) => {
-      console.log(item, "item.........");
       return (
         (!tenderForm.document_month ||
           item.document_month.toLowerCase() ===
