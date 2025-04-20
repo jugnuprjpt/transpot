@@ -1,5 +1,5 @@
 import React from "react";
-import CheckImage from "@/assets/images/icon/ck-white.svg";
+// import CheckImage from "@/assets/images/icon/ck-white.svg";
 const Checkbox = ({
   id,
   disabled,
@@ -37,7 +37,7 @@ const Checkbox = ({
       >
         {value && (
           <img
-            src={CheckImage}
+            // src={CheckImage}
             alt=""
             className="h-[10px] w-[10px] block m-auto"
           />

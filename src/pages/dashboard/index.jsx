@@ -5,7 +5,7 @@ import GroupChart1 from "@/components/partials/widget/chart/group-chart-1";
 import RevenueBarChart from "@/components/partials/widget/chart/revenue-bar-chart";
 import RadialsChart from "@/components/partials/widget/chart/radials";
 import SelectMonth from "@/components/partials/SelectMonth";
-import CompanyTable from "@/components/partials/Table/company-table";
+// import CompanyTable from "@/components/partials/Table/company-table";
 import RecentActivity from "@/components/partials/widget/recent-activity";
 import MostSales from "../../components/partials/widget/most-sales";
 import RadarChart from "../../components/partials/widget/chart/radar-chart";
@@ -41,11 +41,11 @@ const Dashboard = () => {
             <RadialsChart />
           </Card>
         </div>
-        <div className="lg:col-span-8 col-span-12">
+        {/* <div className="lg:col-span-8 col-span-12">
           <Card title="All Company" headerslot={<SelectMonth />} noborder>
             <CompanyTable />
           </Card>
-        </div>
+        </div> */}
         <div className="lg:col-span-4 col-span-12">
           <Card title="Recent Activity" headerslot={<SelectMonth />}>
             <RecentActivity />

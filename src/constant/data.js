@@ -296,67 +296,67 @@ export const bottomFilterLists = [
   },
 ];
 
-import meetsImage1 from "@/assets/images/svg/sk.svg";
-import meetsImage2 from "@/assets/images/svg/path.svg";
-import meetsImage3 from "@/assets/images/svg/dc.svg";
-import meetsImage4 from "@/assets/images/svg/sk.svg";
+// import meetsImage1 from "@/assets/images/svg/sk.svg";
+// import meetsImage2 from "@/assets/images/svg/path.svg";
+// import meetsImage3 from "@/assets/images/svg/dc.svg";
+// import meetsImage4 from "@/assets/images/svg/sk.svg";
 
-export const meets = [
-  {
-    img: meetsImage1,
-    title: "Meeting with client",
-    date: "01 Nov 2021",
-    meet: "Zoom meeting",
-  },
-  {
-    img: meetsImage2,
-    title: "Design meeting (team)",
-    date: "01 Nov 2021",
-    meet: "Skyp meeting",
-  },
-  {
-    img: meetsImage3,
-    title: "Background research",
-    date: "01 Nov 2021",
-    meet: "Google meeting",
-  },
-  {
-    img: meetsImage4,
-    title: "Meeting with client",
-    date: "01 Nov 2021",
-    meet: "Zoom meeting",
-  },
-];
-import file1Img from "@/assets/images/icon/file-1.svg";
-import file2Img from "@/assets/images/icon/pdf-1.svg";
-import file3Img from "@/assets/images/icon/zip-1.svg";
-import file4Img from "@/assets/images/icon/pdf-2.svg";
-import file5Img from "@/assets/images/icon/scr-1.svg";
+// export const meets = [
+//   {
+//     img: meetsImage1,
+//     title: "Meeting with client",
+//     date: "01 Nov 2021",
+//     meet: "Zoom meeting",
+//   },
+//   {
+//     img: meetsImage2,
+//     title: "Design meeting (team)",
+//     date: "01 Nov 2021",
+//     meet: "Skyp meeting",
+//   },
+//   {
+//     img: meetsImage3,
+//     title: "Background research",
+//     date: "01 Nov 2021",
+//     meet: "Google meeting",
+//   },
+//   {
+//     img: meetsImage4,
+//     title: "Meeting with client",
+//     date: "01 Nov 2021",
+//     meet: "Zoom meeting",
+//   },
+// ];
+// import file1Img from "@/assets/images/icon/file-1.svg";
+// import file2Img from "@/assets/images/icon/pdf-1.svg";
+// import file3Img from "@/assets/images/icon/zip-1.svg";
+// import file4Img from "@/assets/images/icon/pdf-2.svg";
+// import file5Img from "@/assets/images/icon/scr-1.svg";
 
-export const files = [
-  {
-    img: file1Img,
-    title: "Dashboard.fig",
-    date: "06 June 2021 / 155MB",
-  },
-  {
-    img: file2Img,
-    title: "Ecommerce.pdf",
-    date: "06 June 2021 / 155MB",
-  },
-  {
-    img: file3Img,
-    title: "Job portal_app.zip",
-    date: "06 June 2021 / 155MB",
-  },
-  {
-    img: file4Img,
-    title: "Ecommerce.pdf",
-    date: "06 June 2021 / 155MB",
-  },
-  {
-    img: file5Img,
-    title: "Screenshot.jpg",
-    date: "06 June 2021 / 155MB",
-  },
-];
+// export const files = [
+//   {
+//     img: file1Img,
+//     title: "Dashboard.fig",
+//     date: "06 June 2021 / 155MB",
+//   },
+//   {
+//     img: file2Img,
+//     title: "Ecommerce.pdf",
+//     date: "06 June 2021 / 155MB",
+//   },
+//   {
+//     img: file3Img,
+//     title: "Job portal_app.zip",
+//     date: "06 June 2021 / 155MB",
+//   },
+//   {
+//     img: file4Img,
+//     title: "Ecommerce.pdf",
+//     date: "06 June 2021 / 155MB",
+//   },
+//   {
+//     img: file5Img,
+//     title: "Screenshot.jpg",
+//     date: "06 June 2021 / 155MB",
+//   },
+// ];
