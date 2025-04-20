@@ -5,24 +5,15 @@ import DocumentManagmentTable from "./DocumentManagmentTable";
 import DocumentManagementCreate from "./DocumentManagementCreate";
 import { docManagementService } from "../../_services/docManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
-import axios from "axios";
-import baseURL from "../../_apiConfig/baseapi";
-import { http } from "../../_apiConfig/http";
-
-// import Card from "@/components/ui/Card";
-// import ExampleOne from "./react-tables/ExampleOne";
-// import ExampleTwo from "./react-tables/ExampleTwo";
 
 const DocumentManagement = () => {
   const [open, setOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-
   const [tableData, setTableData] = useState([]);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isCreateDone, setIsCreateDone] = useState(false);
   const [isEditDone, setIsEditDone] = useState(false);
   const [isDeleteDone, setIsDeleteDone] = useState(0);
-
   const [editId, setEditId] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -47,29 +38,10 @@ const DocumentManagement = () => {
     }
   };
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   docManagementService.docManagementListing().then((res) => {
-  //     if (res.Success == true) {
-  //       setLoading(false);
-  //       setTableData(res.Data);
-  //     } else {
-  //       setTableData([]);
-  //       setLoading(false);
-  //       ShowErrorToast("Something Went Wrong");
-  //     }
-  //   });
-  // }, [isCreateDone, isEditDone, isDeleteDone]);
-
   const handleCreate = () => {
     setOpen(true);
   };
   return (
-    // <div className=" space-y-5">
-    //   sdadsa
-    //   <LoadManagmentTable />
-    // </div>
-
     <div className="float-left w-full">
       <div className="text-[20px] font-bold text-[#000] mb-[20px] w-full float-right">
         <div className="float-right">

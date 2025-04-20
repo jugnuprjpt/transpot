@@ -2,23 +2,10 @@ import React, { useState } from "react";
 import CommonSelectInput from "../components/InputField/CommonSelectInput";
 import useBriefSearch from "../../hooks/useBriefSearch";
 
-const BriefCaseFilter = ({
-  filter,
-  setFilter,
-  tableData,
-  tenderForm,
-  setTenderForm,
-}) => {
-  const [value, setValue] = useState(filter);
-  const onChange = (e) => {
-    setValue(e.target.value);
-    setFilter(e.target.value || undefined);
-  };
-
+const BriefCaseFilter = ({ filter, tenderForm, setTenderForm }) => {
   const { briefMonthData, briefYearData, briefDriverData, briefSubfolderData } =
     useBriefSearch();
 
-  console.log(tableData, "table.........");
   return (
     <div className="flex flex-wrap gap-2">
       <CommonSelectInput

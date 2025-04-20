@@ -8,28 +8,36 @@ import LoadAssigntTable from "./LoadAssigntTable";
 import LoadInprogressTable from "./LoadInprogressTable";
 import LoadPendingTable from "./LoadPendingTable";
 import LoadComplateTable from "./LoadComplateTable";
+import { loadManagementService } from "../../_services/loadManagementService";
+import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 
 const buttons = [
   {
+    title: "Pending",
+    icon: "heroicons-outline:chat-alt-2",
+    status: 1,
+  },
+  {
     title: "Assigned",
     icon: "heroicons-outline:home",
+    status: 2,
   },
   {
     title: "In Progress",
     icon: "heroicons-outline:user",
+    status: 3,
   },
-  {
-    title: "Pending",
-    icon: "heroicons-outline:chat-alt-2",
-  },
+
   {
     title: "Complete",
     icon: "heroicons-outline:cog",
+    status: 4,
   },
 ];
 
-const LoadTabbar = ({ tableData }) => {
+const LoadTabbar = () => {
   //   const { id } = useParams();
+  const [tableData, setTableData] = useState([]);
   const [tabId, setTabId] = useState(0);
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -50,8 +58,6 @@ const LoadTabbar = ({ tableData }) => {
   const [tenderData, setTenderData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [isFilter, setIsFilter] = useState(0);
-  //   const { tenderStatus } = useGetTenderStatus();
-  //   const { userData } = useGetAllUsers();
 
   const toggleAccordion = () => {
     setOpen(!open);
@@ -77,9 +83,35 @@ const LoadTabbar = ({ tableData }) => {
     //     setCityText("");
   };
 
-  const handleButtonClick = (title) => {
-    setPage(1);
-    setHasMore(true);
+  // const handleButtonClick = (title) => {
+  //   setPage(1);
+  //   setHasMore(true);
+  // };
+
+  useEffect(() => {
+    handleButtonClick("Pending", 0);
+  }, []);
+  // Keep this after
+  const handleButtonClick = async (title, index) => {
+    setTabId(index);
+    const statusId = buttons[index]?.status;
+
+    console.log(index, "statusId from button");
+
+    try {
+      const res = await loadManagementService.loadManagementListingByStatus(
+        statusId
+      );
+      if (res.Success) {
+        setTableData(res.Data);
+      } else {
+        setTableData([]);
+        ShowErrorToast("Something went wrong");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      ShowErrorToast("API Error");
+    }
   };
 
   const handleSubmit = () => {
@@ -111,15 +143,15 @@ const LoadTabbar = ({ tableData }) => {
                   : "text-[#000] before:w-0 dark:text-slate-300"
               }
               `}
-                    onClick={() => handleButtonClick(item.title)}
+                    onClick={() => handleButtonClick(item.title, i)}
                   >
                     {item.title}
 
                     {selected && (
                       <span className="ml-2">
+                        {item.title === "Pending"}
                         {item.title === "Assigned"}
                         {item.title === "In Progress"}
-                        {item.title === "Pending"}
                         {item.title === "Complete"}
                       </span>
                     )}
@@ -131,14 +163,16 @@ const LoadTabbar = ({ tableData }) => {
 
           <Tab.Panels>
             <Tab.Panel>
+              <LoadPendingTable tableData={tableData} />
+            </Tab.Panel>
+
+            <Tab.Panel>
               <LoadAssigntTable tableData={tableData} />
             </Tab.Panel>
             <Tab.Panel>
               <LoadInprogressTable tableData={tableData} />
             </Tab.Panel>
-            <Tab.Panel>
-              <LoadPendingTable tableData={tableData} />
-            </Tab.Panel>
+
             <Tab.Panel>
               <LoadComplateTable tableData={tableData} />
             </Tab.Panel>

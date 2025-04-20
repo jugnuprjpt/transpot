@@ -5,12 +5,11 @@ import CommonFileInput from "../components/InputField/CommonFileInput";
 import CommonSelectInput from "../components/InputField/CommonSelectInput";
 import { ValidaterHelper } from "../components/validationFunction/ValidationCheck";
 import useGetDriverListing from "../../hooks/useDriverListing";
-import axios from "axios";
+
 import {
   ShowErrorToast,
   ShowSuccessToast,
 } from "../components/ToastMessage/ToastMessage";
-import { http } from "../../_apiConfig/http";
 import CommonTextInput from "../components/InputField/CommonTextInput";
 import { docManagementService } from "../../_services/docManagementService";
 
@@ -25,9 +24,7 @@ const DocumentManagementCreate = ({
 }) => {
   const inputRef = useRef(null);
   const { driverData } = useGetDriverListing();
-  const token = localStorage.getItem("token");
   const [FormState, SetFormState] = useState({
-    // driver_name: { errors: "", valid: false },
     driver_id: { errors: "", valid: false },
     annual_dot_inspection: { errors: "", valid: false },
     roc: { errors: "", valid: false },
@@ -57,9 +54,6 @@ const DocumentManagementCreate = ({
 
   const handleCloseDrawer = () => {
     setOpen(false);
-    // SetFormState({
-    //   designation_name: { errors: "", valid: false },
-    // });
     setAllData({
       driver_name: "",
       driver_id: 0,

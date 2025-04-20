@@ -11,7 +11,6 @@ import {
   usePagination,
 } from "react-table";
 
-import { advancedTable } from "../../constant/table-data";
 import GlobalFilter from "../table/react-tables/GlobalFilter";
 
 const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
@@ -21,6 +20,7 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
       Header: "load Id",
       accessor: "load_id",
       Cell: (row) => {
+        console.log(row, "row.");
         return <span>{row?.cell?.value}</span>;
       },
     },
@@ -127,51 +127,51 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
     //     );
     //   },
     // },
-    // {
-    //   Header: "action",
-    //   accessor: "action",
-    //   Cell: (row) => {
-    //     return (
-    //       <div className="flex space-x-3 rtl:space-x-reverse">
-    //         <Tooltip
-    //           content="View"
-    //           placement="top"
-    //           arrow
-    //           animation="shift-away"
-    //         >
-    //           <button className="action-btn" type="button">
-    //             <Icon icon="heroicons:eye" />
-    //           </button>
-    //         </Tooltip>
-    //         <Tooltip
-    //           content="Edit"
-    //           placement="top"
-    //           arrow
-    //           animation="shift-away"
-    //         >
-    //           <button className="action-btn" type="button">
-    //             <Icon icon="heroicons:pencil-square" />
-    //           </button>
-    //         </Tooltip>
-    //         <Tooltip
-    //           content="Delete"
-    //           placement="top"
-    //           arrow
-    //           animation="shift-away"
-    //           theme="danger"
-    //         >
-    //           <button className="action-btn" type="button">
-    //             <Icon icon="heroicons:trash" />
-    //           </button>
-    //         </Tooltip>
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      Header: "action",
+      accessor: "action",
+      Cell: (row) => {
+        return (
+          <div className="flex space-x-3 rtl:space-x-reverse">
+            <Tooltip
+              content="View"
+              placement="top"
+              arrow
+              animation="shift-away"
+            >
+              <button className="action-btn" type="button">
+                <Icon icon="heroicons:eye" />
+              </button>
+            </Tooltip>
+            <Tooltip
+              content="Edit"
+              placement="top"
+              arrow
+              animation="shift-away"
+            >
+              <button className="action-btn" type="button">
+                <Icon icon="heroicons:pencil-square" />
+              </button>
+            </Tooltip>
+            <Tooltip
+              content="Delete"
+              placement="top"
+              arrow
+              animation="shift-away"
+              theme="danger"
+            >
+              <button className="action-btn" type="button">
+                <Icon icon="heroicons:trash" />
+              </button>
+            </Tooltip>
+          </div>
+        );
+      },
+    },
   ];
 
-  const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => advancedTable, []);
+  const columns = useMemo(() => COLUMNS, [tableData]);
+  const data = useMemo(() => tableData, [tableData]);
 
   const tableInstance = useTable(
     {

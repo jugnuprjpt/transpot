@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/Icon";
 import Card from "@/components/ui/Card";
-import BasicArea from "../chart/appex-chart/BasicArea";
 
 // import images
 import ProfileImage from "@/assets/images/users/user-1.jpg";
@@ -122,11 +121,6 @@ const profile = () => {
                   </div>
                 </li>
               </ul>
-            </Card>
-          </div>
-          <div className="lg:col-span-8 col-span-12">
-            <Card title="User Overview">
-              <BasicArea height={190} />
             </Card>
           </div>
         </div>

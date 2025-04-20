@@ -4,6 +4,7 @@ import { RouteUrls } from "../_apiConfig/routeUrls";
 export const docManagementService = {
   docManagementListing,
   driverListing,
+  companyListing,
   documentInsert,
 
   profileInsert,
@@ -18,6 +19,9 @@ export const docManagementService = {
 
 function docManagementListing() {
   return http.get(RouteUrls.docManagementListing, true);
+}
+function companyListing() {
+  return http.get(RouteUrls.companyListing, true);
 }
 
 function driverListing() {

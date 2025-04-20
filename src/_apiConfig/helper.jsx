@@ -37,34 +37,6 @@ export function valueConvert(value) {
   }
   return result;
 }
-// export function get_date_diff_with_current_date(
-//   inputdate,
-//   separator = "/",
-//   format = "dd"
-// ) {
-//   var today = new Date();
-//   var dd = today.getDate();
-//   var mm = today.getMonth() + 1; //January is 0!
-//   var yyyy = today.getFullYear();
-//   if (dd < 10) {
-//     dd = "0" + dd;
-//   }
-//   if (mm < 10) {
-//     mm = "0" + mm;
-//   }
-//   today = yyyy + "/" + mm + "/" + dd;
-//   var date1 = new Date(today);
-//   var date2 = new Date(inputdate);
-//   var timeDiff = date2.getTime() - date1.getTime();
-//   var dayDifference = Math.ceil(timeDiff / (1000 * 3600 * 24));
-//   if (dayDifference === 0) {
-//     return "Ending Today";
-//   } else if (dayDifference > 0) {
-//     return dayDifference + " Days Left ";
-//   } else {
-//     return "Before " + Math.abs(dayDifference) + " Days";
-//   }
-// }
 
 export function get_date_diff_with_current_date(inputdate) {
   var today = new Date();
