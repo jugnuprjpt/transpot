@@ -92,7 +92,7 @@ const DocumentManagmentTable = ({
                 <Icon icon="heroicons:eye" />
               </button>
             </Tooltip>
-            <Tooltip
+            {/* <Tooltip
               content="Edit"
               placement="top"
               arrow
@@ -101,7 +101,7 @@ const DocumentManagmentTable = ({
               <button className="action-btn" type="button">
                 <Icon icon="heroicons:pencil-square" />
               </button>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip
               content="Delete"
               placement="top"
