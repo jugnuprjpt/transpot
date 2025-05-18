@@ -40,11 +40,11 @@ export const menuItems = [
   //   ],
   // },
 
-  {
-    title: "Load",
-    icon: "heroicons:truck",
-    link: "loadTab",
-  },
+  // {
+  //   title: "Load",
+  //   icon: "heroicons:truck",
+  //   link: "loadTab",
+  // },
 
   {
     title: "Doc-Management",
@@ -64,15 +64,25 @@ export const menuItems = [
 
   {
     title: "Load Management",
-    icon: "heroicons-outline:table",
+    icon: "heroicons-outline:truck",
     link: "loadManagement",
   },
-
   {
-    title: "Load Add/Modify",
-    icon: "heroicons:plus-circle",
-    link: "loadAddModify",
+    title: "Invoice",
+    icon: "heroicons-outline:clipboard",
+    link: "invoiceManagement",
   },
+  {
+    title: "Driver Dispatch",
+    icon: "heroicons-outline:wrench-screwdriver",
+    link: "driverDispatch",
+  },
+
+  // {
+  //   title: "Load Add/Modify",
+  //   icon: "heroicons:plus-circle",
+  //   link: "loadAddModify",
+  // },
   // {
   //   title: "Document Management",
   //   icon: "heroicons-outline:table",

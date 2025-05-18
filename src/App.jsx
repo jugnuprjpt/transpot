@@ -3,6 +3,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./layout/Layout";
 import Loading from "@/components/Loading";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import InvoiceManagement from "./pages/InvoiceManagement/InvoiceManagement";
+import DriverDipatch from "./pages/DriverDispatch/DriverDipatch";
 
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Login = lazy(() => import("./pages/auth/login"));
@@ -39,6 +41,8 @@ function App() {
             <Route path="documentManagement" element={<DocumentManagement />} />
             <Route path="loadAddModify" element={<LoadAddModifyForm />} />
             <Route path="briefCase" element={<BriefCase />} />
+            <Route path="invoiceManagement" element={<InvoiceManagement />} />
+            <Route path="driverDispatch" element={<DriverDipatch />} />
             {/* <Route path="loadTab" element={<LoadTab />} /> */}
             <Route path="*" element={<Navigate to="/404" />} />
           </Route>

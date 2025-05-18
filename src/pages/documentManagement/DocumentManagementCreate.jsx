@@ -52,6 +52,20 @@ const DocumentManagementCreate = ({
   });
   const [isLoading, setIsLoading] = useState(false);
 
+  const isAnyFileSelected = Object.entries(allData).some(
+    ([key, value]) =>
+      [
+        "roc",
+        "pod",
+        "fuel_reciept",
+        "annual_dot_inspection",
+        "truck_and_trailer_repair",
+        "ifta_quaterly",
+        "truck_trailer_serivices",
+        "driver_equipment_information",
+      ].includes(key) && value !== ""
+  );
+
   const handleCloseDrawer = () => {
     setOpen(false);
     setAllData({
@@ -221,6 +235,7 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
+                    disabled={isAnyFileSelected && allData.roc === ""}
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.roc?.errors}
@@ -240,6 +255,7 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
+                    disabled={isAnyFileSelected && allData.pod === ""}
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.pod?.errors}
@@ -259,6 +275,7 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
+                    disabled={isAnyFileSelected && allData.fuel_reciept === ""}
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.fuel_reciept?.errors}
@@ -278,6 +295,9 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
+                    disabled={
+                      isAnyFileSelected && allData.annual_dot_inspection === ""
+                    }
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.annual_dot_inspection?.errors}
@@ -297,6 +317,10 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
+                    disabled={
+                      isAnyFileSelected &&
+                      allData.truck_and_trailer_repair === ""
+                    }
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.truck_and_trailer_repair?.errors}
@@ -315,6 +339,7 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
+                    disabled={isAnyFileSelected && allData.ifta_quaterly === ""}
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.ifta_quaterly?.errors}
@@ -333,6 +358,10 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
+                    disabled={
+                      isAnyFileSelected &&
+                      allData.truck_trailer_serivices === ""
+                    }
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.truck_trailer_serivices?.errors}
@@ -352,6 +381,10 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
+                    disabled={
+                      isAnyFileSelected &&
+                      allData.driver_equipment_information === ""
+                    }
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.driver_equipment_information?.errors}
