@@ -27,7 +27,7 @@ const Layout = () => {
 
   useEffect(() => {
     if (!isAuth) {
-      navigate("/dashboard");
+      navigate("/loadManagement");
     }
   }, [isAuth, navigate]);
   const switchHeaderClass = () => {

@@ -13,8 +13,15 @@ import {
 
 import { advancedTable } from "../../constant/table-data";
 import GlobalFilter from "../table/react-tables/GlobalFilter";
+import LoadView from "./LoadView";
 
 const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
+  const [open, setOpen] = useState(false);
+  const [dovViewData, setDocViewData] = useState([]);
+  const handleView = (data) => {
+    setOpen(true);
+    setDocViewData(data.row.original);
+  };
   const COLUMNS = [
     {
       Header: "load Id",
@@ -27,7 +34,7 @@ const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
       Header: "Load Number",
       accessor: "load_number",
       Cell: (row) => {
-        return <span>#{row?.cell?.value}</span>;
+        return <span>{row?.cell?.value}</span>;
       },
     },
 
@@ -95,78 +102,31 @@ const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
-    // {
-    //   Header: "status",
-    //   accessor: "status",
-    //   Cell: (row) => {
-    //     return (
-    //       <span className="block w-full">
-    //         <span
-    //           className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-    //             row?.cell?.value === "paid"
-    //               ? "text-success-500 bg-success-500"
-    //               : ""
-    //           }
-    //         ${
-    //           row?.cell?.value === "due"
-    //             ? "text-warning-500 bg-warning-500"
-    //             : ""
-    //         }
-    //         ${
-    //           row?.cell?.value === "cancled"
-    //             ? "text-danger-500 bg-danger-500"
-    //             : ""
-    //         }
 
-    //          `}
-    //         >
-    //           {row?.cell?.value}
-    //         </span>
-    //       </span>
-    //     );
-    //   },
-    // },
-    // {
-    //   Header: "action",
-    //   accessor: "action",
-    //   Cell: (row) => {
-    //     return (
-    //       <div className="flex space-x-3 rtl:space-x-reverse">
-    //         <Tooltip
-    //           content="View"
-    //           placement="top"
-    //           arrow
-    //           animation="shift-away"
-    //         >
-    //           <button className="action-btn" type="button">
-    //             <Icon icon="heroicons:eye" />
-    //           </button>
-    //         </Tooltip>
-    //         <Tooltip
-    //           content="Edit"
-    //           placement="top"
-    //           arrow
-    //           animation="shift-away"
-    //         >
-    //           <button className="action-btn" type="button">
-    //             <Icon icon="heroicons:pencil-square" />
-    //           </button>
-    //         </Tooltip>
-    //         <Tooltip
-    //           content="Delete"
-    //           placement="top"
-    //           arrow
-    //           animation="shift-away"
-    //           theme="danger"
-    //         >
-    //           <button className="action-btn" type="button">
-    //             <Icon icon="heroicons:trash" />
-    //           </button>
-    //         </Tooltip>
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      Header: "action",
+      accessor: "action",
+      Cell: (row) => {
+        return (
+          <div className="flex space-x-3 rtl:space-x-reverse">
+            <Tooltip
+              content="View"
+              placement="top"
+              arrow
+              animation="shift-away"
+            >
+              <button
+                className="action-btn"
+                type="button"
+                onClick={() => handleView(row)}
+              >
+                <Icon icon="heroicons:eye" />
+              </button>
+            </Tooltip>
+          </div>
+        );
+      },
+    },
   ];
 
   const columns = useMemo(() => COLUMNS, [tableData]);
@@ -351,6 +311,7 @@ const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
         </div>
         {/*end*/}
       </Card>
+      <LoadView open={open} setOpen={setOpen} dovViewData={dovViewData} />
     </>
   );
 };

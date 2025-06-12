@@ -26,14 +26,14 @@ const DocumentManagementCreate = ({
   const { driverData } = useGetDriverListing();
   const [FormState, SetFormState] = useState({
     driver_id: { errors: "", valid: false },
-    annual_dot_inspection: { errors: "", valid: false },
-    roc: { errors: "", valid: false },
-    pod: { errors: "", valid: false },
-    fuel_reciept: { errors: "", valid: false },
-    truck_and_trailer_repair: { errors: "", valid: false },
-    ifta_quaterly: { errors: "", valid: false },
-    truck_trailer_serivices: { errors: "", valid: false },
-    driver_equipment_information: { errors: "", valid: false },
+    // annual_dot_inspection: { errors: "", valid: false },
+    // roc: { errors: "", valid: false },
+    // pod: { errors: "", valid: false },
+    // fuel_reciept: { errors: "", valid: false },
+    // truck_and_trailer_repair: { errors: "", valid: false },
+    // ifta_quaterly: { errors: "", valid: false },
+    // truck_trailer_serivices: { errors: "", valid: false },
+    // driver_equipment_information: { errors: "", valid: false },
     load_number: { errors: "", valid: false },
   });
   // driver_id
@@ -52,19 +52,29 @@ const DocumentManagementCreate = ({
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const isAnyFileSelected = Object.entries(allData).some(
-    ([key, value]) =>
-      [
-        "roc",
-        "pod",
-        "fuel_reciept",
-        "annual_dot_inspection",
-        "truck_and_trailer_repair",
-        "ifta_quaterly",
-        "truck_trailer_serivices",
-        "driver_equipment_information",
-      ].includes(key) && value !== ""
-  );
+  // const isAnyFileSelected = Object.entries(allData).some(
+  //   ([key, value]) =>
+  //     [
+  //       "roc",
+  //       "pod",
+  //       "fuel_reciept",
+  //       "annual_dot_inspection",
+  //       "truck_and_trailer_repair",
+  //       "ifta_quaterly",
+  //       "truck_trailer_serivices",
+  //       "driver_equipment_information",
+  //     ].includes(key) && value !== ""
+  // );
+
+  const isFileUploaded =
+    allData.pod ||
+    allData.roc ||
+    allData.fuel_reciept ||
+    allData.annual_dot_inspection ||
+    allData.truck_and_trailer_repair ||
+    allData.ifta_quaterly ||
+    allData.truck_trailer_serivices ||
+    allData.driver_equipment_information;
 
   const handleCloseDrawer = () => {
     setOpen(false);
@@ -235,11 +245,11 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
-                    disabled={isAnyFileSelected && allData.roc === ""}
+                    // disabled={isAnyFileSelected && allData.roc === ""}
                   />
-                  <span className="text-red-500 text-sm">
+                  {/* <span className="text-red-500 text-sm">
                     {FormState?.roc?.errors}
-                  </span>
+                  </span> */}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -255,11 +265,11 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
-                    disabled={isAnyFileSelected && allData.pod === ""}
+                    // disabled={isAnyFileSelected && allData.pod === ""}
                   />
-                  <span className="text-red-500 text-sm">
+                  {/* <span className="text-red-500 text-sm">
                     {FormState?.pod?.errors}
-                  </span>
+                  </span> */}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -275,11 +285,11 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
-                    disabled={isAnyFileSelected && allData.fuel_reciept === ""}
+                    // disabled={isAnyFileSelected && allData.fuel_reciept === ""}
                   />
-                  <span className="text-red-500 text-sm">
+                  {/* <span className="text-red-500 text-sm">
                     {FormState?.fuel_reciept?.errors}
-                  </span>
+                  </span> */}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -295,13 +305,13 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
-                    disabled={
-                      isAnyFileSelected && allData.annual_dot_inspection === ""
-                    }
+                    // disabled={
+                    //   isAnyFileSelected && allData.annual_dot_inspection === ""
+                    // }
                   />
-                  <span className="text-red-500 text-sm">
+                  {/* <span className="text-red-500 text-sm">
                     {FormState?.annual_dot_inspection?.errors}
-                  </span>
+                  </span> */}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -317,14 +327,14 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
-                    disabled={
-                      isAnyFileSelected &&
-                      allData.truck_and_trailer_repair === ""
-                    }
+                    // disabled={
+                    //   isAnyFileSelected &&
+                    //   allData.truck_and_trailer_repair === ""
+                    // }
                   />
-                  <span className="text-red-500 text-sm">
+                  {/* <span className="text-red-500 text-sm">
                     {FormState?.truck_and_trailer_repair?.errors}
-                  </span>
+                  </span> */}
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
@@ -339,11 +349,11 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
-                    disabled={isAnyFileSelected && allData.ifta_quaterly === ""}
+                    // disabled={isAnyFileSelected && allData.ifta_quaterly === ""}
                   />
-                  <span className="text-red-500 text-sm">
+                  {/* <span className="text-red-500 text-sm">
                     {FormState?.ifta_quaterly?.errors}
-                  </span>
+                  </span> */}
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
@@ -358,14 +368,14 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
-                    disabled={
-                      isAnyFileSelected &&
-                      allData.truck_trailer_serivices === ""
-                    }
+                    // disabled={
+                    //   isAnyFileSelected &&
+                    //   allData.truck_trailer_serivices === ""
+                    // }
                   />
-                  <span className="text-red-500 text-sm">
+                  {/* <span className="text-red-500 text-sm">
                     {FormState?.truck_trailer_serivices?.errors}
-                  </span>
+                  </span> */}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -381,20 +391,24 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     inputRef={inputRef}
-                    disabled={
-                      isAnyFileSelected &&
-                      allData.driver_equipment_information === ""
-                    }
+                    // disabled={
+                    //   isAnyFileSelected &&
+                    //   allData.driver_equipment_information === ""
+                    // }
                   />
-                  <span className="text-red-500 text-sm">
+                  {/* <span className="text-red-500 text-sm">
                     {FormState?.driver_equipment_information?.errors}
-                  </span>
+                  </span> */}
                 </div>
               </div>
 
               <div className="flex gap-4">
                 <button
-                  className="mt-2  text-white px-4 py-2 rounded hover:bg-success-500  bg-success-500"
+                  className={`mt-2 text-white px-4 py-2 rounded ${
+                    isFileUploaded
+                      ? "bg-success-500 hover:bg-success-600"
+                      : "bg-gray-400 cursor-not-allowed opacity-70"
+                  }`}
                   onClick={handleSubmit}
                 >
                   <div className="flex items-center">

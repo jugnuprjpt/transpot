@@ -12,8 +12,8 @@ const BriefCaseFilter = ({ filter, tenderForm, setTenderForm }) => {
         isClearable={true}
         className="react-select"
         classNamePrefix="select"
-        name="document_month"
-        placeholder="Select Month"
+        name="document_year"
+        placeholder="Select Year"
         options={briefYearData}
         value={briefYearData}
         tenderForm={tenderForm}
@@ -29,8 +29,8 @@ const BriefCaseFilter = ({ filter, tenderForm, setTenderForm }) => {
         isClearable={true}
         className="react-select"
         classNamePrefix="select"
-        name="document_year"
-        placeholder="Select Year"
+        name="document_month"
+        placeholder="Select Month"
         options={briefMonthData}
         value={briefMonthData}
         tenderForm={tenderForm}

@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
 import Icon from "@/components/ui/Icon";
 import CommonTextInput from "../components/InputField/CommonTextInput";
+import SelectAllDateswithTime from "../components/InputField/SelectAllDateswithTime";
 import CommonFileInput from "../components/InputField/CommonFileInput";
 import CommonSelectInput from "../components/InputField/CommonSelectInput";
 import useGetDriverListing from "../../hooks/useDriverListing";
@@ -12,13 +13,43 @@ import {
   ShowSuccessToast,
 } from "../components/ToastMessage/ToastMessage";
 import { loadManagementService } from "../../_services/loadManagementService";
+import { convertDate } from "../../components/DateConvertor/DateConvertToFormate";
 
-const LoadManagementCreate = ({ open, setOpen, isEditOpen, setIsEditOpen }) => {
+const LoadManagementCreate = ({
+  open,
+  setOpen,
+  isEditOpen,
+  setIsEditOpen,
+  setIsEditDone,
+  isEditDone,
+  loadListing,
+  setIsCreateDone,
+  isCreateDone,
+  handleButtonClick,
+}) => {
   const inputRef = useRef(null);
   const { driverData } = useGetDriverListing();
   const { companyData } = useCompany();
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleCloseDrawer = () => {
     setOpen(false);
+    setAllData({
+      delievery_date_string: "",
+      final_price: 0,
+      driver_name: "",
+      roc: "",
+      trailer_used: 0,
+      assign_to: 0,
+      company_name: "",
+      destination: "",
+      loadNumber: 0,
+      driver_id: 0,
+      source: "",
+      base_price: 0,
+      pick_up_date_string: "",
+      company_id: 0,
+    });
   };
 
   const [FormState, SetFormState] = useState({
@@ -65,15 +96,20 @@ const LoadManagementCreate = ({ open, setOpen, isEditOpen, setIsEditOpen }) => {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    // setIsLoading(true);
+    setIsLoading(true);
     if (isEditOpen == false) {
       const formdata = new FormData();
-
       formdata.append("driver_name", allData.driver_name);
       formdata.append("loadNumber", allData.loadNumber);
       formdata.append("driver_id", allData.driver_id);
-      formdata.append("delievery_date_string", allData.delievery_date_string);
-      formdata.append("pick_up_date_string", allData.pick_up_date_string);
+      formdata.append(
+        "delievery_date_string",
+        convertDate(allData.delievery_date_string)
+      );
+      formdata.append(
+        "pick_up_date_string",
+        convertDate(allData.pick_up_date_string)
+      );
       formdata.append("roc", allData.roc);
       formdata.append("final_price", allData.final_price);
       formdata.append("trailer_used", allData.trailer_used);
@@ -87,12 +123,13 @@ const LoadManagementCreate = ({ open, setOpen, isEditOpen, setIsEditOpen }) => {
       const res = await loadManagementService.loadInsert(formdata);
 
       if (res.Success == true) {
-        // setIsLoading(false);
-        ShowSuccessToast(res?.Message);
-        setIsEditDone(isEditDone == true ? false : true);
+        setIsLoading(false);
+        // handleButtonClick();
         handleCloseDrawer();
+        ShowSuccessToast(res?.Message);
+        setIsCreateDone(isCreateDone == true ? false : true);
       } else {
-        // setIsLoading(false);
+        setIsLoading(false);
         ShowErrorToast("Something Went Wrong");
       }
     }
@@ -204,17 +241,15 @@ ${
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Pick Up Date *
                   </label>
-                  <CommonTextInput
-                    value={allData?.pick_up_date_string}
-                    id="pick_up_date_string"
-                    type="date"
-                    placeholder="Pick Up Date"
+                  <SelectAllDateswithTime
+                    data={allData}
+                    setData={setAllData}
                     name="pick_up_date_string"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
+                    value={allData?.pick_up_date_string}
+                    className="form-control py-[7px] !bg-transparent"
+                    placeholder="Pick Up Date"
                     SetFormState={SetFormState}
                     IsValidate={true}
-                    hasIcon={true}
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.pick_up_date_string?.errors}
@@ -225,17 +260,15 @@ ${
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Delievery Date *
                   </label>
-                  <CommonTextInput
-                    value={allData?.delievery_date_string}
-                    id="delievery_date_string"
-                    type="date"
-                    placeholder="Delievery Date"
+                  <SelectAllDateswithTime
+                    data={allData}
+                    setData={setAllData}
                     name="delievery_date_string"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
+                    value={allData?.delievery_date_string}
+                    className="form-control py-[7px] !bg-transparent"
+                    placeholder="Pick Up Date"
                     SetFormState={SetFormState}
                     IsValidate={true}
-                    hasIcon={true}
                   />
                   <span className="text-red-500 text-sm">
                     {FormState?.delievery_date_string?.errors}

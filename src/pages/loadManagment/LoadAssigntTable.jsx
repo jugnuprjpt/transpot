@@ -12,9 +12,78 @@ import {
 } from "react-table";
 
 import GlobalFilter from "../table/react-tables/GlobalFilter";
+import LoadAssign from "./LoadAssign";
+import LoadView from "./LoadView";
+import Modal from "../../components/ui/Modal";
+import { loadManagementService } from "../../_services/loadManagementService";
 
 const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
-  console.log(tableData, "tab....");
+  const [loadAssignOpen, setLoadAssignOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [dovViewData, setDocViewData] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [deleteData, setDeleteData] = useState(null);
+  const [assigmentData, setAssigmentData] = useState([]);
+  const closeModalHandler = () => {
+    setModalOpen(false);
+  };
+  const handleDeleteClick = (row) => {
+    setModalOpen(true);
+    setDeleteData(row);
+  };
+
+  const handleProgressClick = (row) => {
+    setModalOpen(true);
+    setDeleteData(row);
+  };
+
+  const handleProgress = async () => {
+    if (deleteData) {
+      const formData = {
+        load_id: deleteData?.row?.original?.load_id,
+        load_number: deleteData?.row?.original?.load_number,
+      };
+      const res = await loadManagementService.loadInProgress(formData);
+      console.log(res, "res......");
+    }
+    setModalOpen(false);
+  };
+
+  const handleDelete = () => {
+    if (deleteData) {
+      settingServices
+        .DeparmentDelete(deleteData.row.original.department_id)
+        .then((res) => {
+          if (res.Success == true) {
+            const successMessage = deleteData?.row?.original?.is_active
+              ? "Department is Inactivated"
+              : "Department is Activated";
+
+            ShowSuccessToast(successMessage);
+            // ShowSuccessToast(res?.Data);
+            setIsDeleteDone((prev) => prev + 1);
+          } else {
+            ShowErrorToast(res.Message);
+          }
+        });
+    }
+    setModalOpen(false);
+  };
+  const handleView = (data) => {
+    setOpen(true);
+    setDocViewData(data.row.original);
+  };
+
+  const handleAssign = async (data) => {
+    setLoadAssignOpen(true);
+    const formData = {
+      load_id: data?.row?.original?.load_id,
+      load_number: data?.row?.original?.load_number,
+    };
+    const res = await loadManagementService.loadAssigment(formData);
+    setAssigmentData(res.Data);
+  };
+
   const COLUMNS = [
     {
       Header: "load Id",
@@ -28,7 +97,7 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
       Header: "Load Number",
       accessor: "load_number",
       Cell: (row) => {
-        return <span>#{row?.cell?.value}</span>;
+        return <span>{row?.cell?.value}</span>;
       },
     },
 
@@ -96,37 +165,7 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
-    // {
-    //   Header: "status",
-    //   accessor: "status",
-    //   Cell: (row) => {
-    //     return (
-    //       <span className="block w-full">
-    //         <span
-    //           className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-    //             row?.cell?.value === "paid"
-    //               ? "text-success-500 bg-success-500"
-    //               : ""
-    //           }
-    //         ${
-    //           row?.cell?.value === "due"
-    //             ? "text-warning-500 bg-warning-500"
-    //             : ""
-    //         }
-    //         ${
-    //           row?.cell?.value === "cancled"
-    //             ? "text-danger-500 bg-danger-500"
-    //             : ""
-    //         }
 
-    //          `}
-    //         >
-    //           {row?.cell?.value}
-    //         </span>
-    //       </span>
-    //     );
-    //   },
-    // },
     {
       Header: "action",
       accessor: "action",
@@ -139,11 +178,15 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
               arrow
               animation="shift-away"
             >
-              <button className="action-btn" type="button">
+              <button
+                className="action-btn"
+                type="button"
+                onClick={() => handleView(row)}
+              >
                 <Icon icon="heroicons:eye" />
               </button>
             </Tooltip>
-            <Tooltip
+            {/* <Tooltip
               content="Edit"
               placement="top"
               arrow
@@ -151,6 +194,34 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
             >
               <button className="action-btn" type="button">
                 <Icon icon="heroicons:pencil-square" />
+              </button>
+            </Tooltip> */}
+            <Tooltip
+              content="Assign"
+              placement="top"
+              arrow
+              animation="shift-away"
+            >
+              <button
+                className="action-btn"
+                type="button"
+                onClick={() => handleAssign(row)}
+              >
+                <Icon icon="heroicons:user" />
+              </button>
+            </Tooltip>
+            <Tooltip
+              content="In process"
+              placement="top"
+              arrow
+              animation="shift-away"
+            >
+              <button
+                className="action-btn"
+                type="button"
+                onClick={() => handleProgressClick(row)}
+              >
+                <Icon icon="heroicons:ellipsis-horizontal-circle" />
               </button>
             </Tooltip>
             <Tooltip
@@ -160,7 +231,11 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
               animation="shift-away"
               theme="danger"
             >
-              <button className="action-btn" type="button">
+              <button
+                className="action-btn"
+                type="button"
+                onClick={() => handleDeleteClick(row)}
+              >
                 <Icon icon="heroicons:trash" />
               </button>
             </Tooltip>
@@ -352,6 +427,70 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
         </div>
         {/*end*/}
       </Card>
+      <LoadAssign
+        loadAssignOpen={loadAssignOpen}
+        setLoadAssignOpen={setLoadAssignOpen}
+        assigmentData={assigmentData}
+        // isEditOpen={isEditOpen}
+      />
+
+      <LoadView open={open} setOpen={setOpen} dovViewData={dovViewData} />
+
+      {/* ------------------------------ Modal ---------------------------------------- */}
+      <Modal
+        title="Delete Confirmation"
+        activeModal={modalOpen}
+        onClose={closeModalHandler}
+        uncontrol={false}
+        centered
+        // className="max-w-xl relative"
+      >
+        <div className="text-base text-slate-600 dark:text-slate-300 mt-4">
+          Are you sure want to Delete?
+        </div>
+        <div className="flex justify-end space-x-2 mt-4">
+          <button
+            className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600"
+            onClick={closeModalHandler}
+          >
+            Cancel
+          </button>
+          <button
+            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
+        </div>
+      </Modal>
+
+      {/* ------------------------------ Modal ---------------------------------------- */}
+      <Modal
+        title="Progress Confirmation"
+        activeModal={modalOpen}
+        onClose={closeModalHandler}
+        uncontrol={false}
+        centered
+        // className="max-w-xl relative"
+      >
+        <div className="text-base text-slate-600 dark:text-slate-300 mt-4">
+          Are you sure want to Progress?
+        </div>
+        <div className="flex justify-end space-x-2 mt-4">
+          <button
+            className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600"
+            onClick={closeModalHandler}
+          >
+            Cancel
+          </button>
+          <button
+            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+            onClick={handleProgress}
+          >
+            Submit
+          </button>
+        </div>
+      </Modal>
     </>
   );
 };

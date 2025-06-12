@@ -5,43 +5,14 @@ import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import axios from "axios";
 import { http } from "../../_apiConfig/http";
 
-const DocView = ({ open, setOpen, viewId }) => {
+const InvoiceView = ({ open, setOpen, pendingData }) => {
   const token = localStorage.getItem("token");
 
-  const [dovViewData, setDovViewData] = useState([]);
   const handleCloseDrawer = () => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    open === true && docViewListing();
-  }, [open]);
-
-  const docViewListing = async () => {
-    try {
-      const res = await http.get(
-        `api/driver_document_management/get/id/${viewId}`,
-        true,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(res, "res");
-
-      if (res.Success === true) {
-        console.log(res.Data);
-        setDovViewData(res.Data);
-      } else {
-        setDovViewData([]);
-        ShowErrorToast("Something Went Wrong");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  console.log(pendingData, "pendingData...........");
 
   const docDownload = async (data) => {
     try {
@@ -108,7 +79,7 @@ ${
               <header className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 -mx-6 px-6 py-2 mb-4">
                 <div>
                   <span className="text-[14px] xl:text-[16px] 2xl:text-[16px] font-bold text-gray-800 dark:text-gray-200 mb-[20px]">
-                    View Document Detail
+                    View Invoice Detail
                   </span>
                 </div>
                 <div className="cursor-pointer text-2xl text-gray-800 dark:text-gray-200">
@@ -120,62 +91,56 @@ ${
               <div className="">
                 <ul className="float-left w-full mb-[20px]">
                   <li className="w-[45%] font-bold mx-[10px] float-left">
+                    Load Number
+                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
+                      {pendingData?.loadNumber}
+                    </span>
+                  </li>
+                  <li className="w-[45%] font-bold  mx-[10px] float-left">
+                    Company Name
+                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
+                      {pendingData?.companyName}
+                    </span>
+                  </li>
+                </ul>
+                <ul className="float-left w-full  mb-[20px]">
+                  <li className="w-[45%] font-bold mx-[10px] float-left">
                     Driver Name
                     <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
-                      {dovViewData?.driver_name}
+                      {pendingData?.driverName}
                     </span>
                   </li>
                   <li className="w-[45%] font-bold  mx-[10px] float-left">
-                    Sub folder Name
-                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
-                      {dovViewData?.sub_folder_name}
+                    Invoice Number
+                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full ">
+                      {pendingData?.invoiceNumber}
                     </span>
                   </li>
                 </ul>
                 <ul className="float-left w-full  mb-[20px]">
                   <li className="w-[45%] font-bold mx-[10px] float-left">
-                    Document Name
+                    Invoice Date
                     <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
-                      {dovViewData?.document_name}
+                      {pendingData?.invoiceDate}
                     </span>
                   </li>
                   <li className="w-[45%] font-bold  mx-[10px] float-left">
-                    Original Document Name
+                    Payment Status
                     <span className="font-normal mt-[2px] mr-[10px] float-left w-full ">
-                      {dovViewData?.original_document_name}
-                    </span>
-                  </li>
-                </ul>
-                <ul className="float-left w-full  mb-[20px]">
-                  <li className="w-[45%] font-bold mx-[10px] float-left">
-                    Document Month
-                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
-                      {dovViewData?.document_month}
-                    </span>
-                  </li>
-                  <li className="w-[45%] font-bold  mx-[10px] float-left">
-                    Document year
-                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full ">
-                      {dovViewData?.document_year}
+                      {pendingData?.paymentStatus}
                     </span>
                   </li>
                 </ul>
 
                 <ul className="float-left w-full  mb-[20px]">
-                  <li className="w-[45%] font-bold mx-[10px] float-left">
-                    Document Name
-                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
-                      {dovViewData?.document_name}
-                    </span>
-                  </li>
                   <li className="w-[45%] font-bold  mx-[10px] float-left">
-                    Download
+                    Document
                     <span
                       onClick={() => docDownload(dovViewData)}
                       className="font-normal mt-[2px] mr-[10px] float-left w-full cursor-pointer text-blue-600 dark:text-blue-600"
                     >
                       {/* {dovViewData.document_path} */}
-                      Document
+                      Download
                     </span>
                   </li>
                 </ul>
@@ -188,4 +153,4 @@ ${
   );
 };
 
-export default DocView;
+export default InvoiceView;

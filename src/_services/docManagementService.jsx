@@ -6,6 +6,7 @@ export const docManagementService = {
   driverListing,
   companyListing,
   documentInsert,
+  documentInsertMonthbulkWise,
 
   profileInsert,
   // profileId,
@@ -30,6 +31,12 @@ function driverListing() {
 
 function documentInsert(data) {
   return http.post(`${RouteUrls.documentInsert}`, data, true, {
+    "Content-Type": "multipart/form-data",
+  });
+}
+
+function documentInsertMonthbulkWise(data) {
+  return http.post(`${RouteUrls.documentInsertMonthbulkWise}`, data, true, {
     "Content-Type": "multipart/form-data",
   });
 }
