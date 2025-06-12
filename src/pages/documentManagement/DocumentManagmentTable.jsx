@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from "react";
-
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
@@ -14,11 +13,9 @@ import GlobalFilter from "../table/react-tables/GlobalFilter";
 import PaginationWithClientSide from "../../components/Pagination/PaginationWithClientSide";
 import DocView from "./DocView";
 
-const DocumentManagmentTable = ({
-  title = "Document Management System",
-  tableData,
-}) => {
+const DocumentManagmentTable = ({ title = "Driver Dispatch", tableData }) => {
   const [viewId, setViewId] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const COLUMNS = [
     {
@@ -90,27 +87,6 @@ const DocumentManagmentTable = ({
                 onClick={() => handleView(row)}
               >
                 <Icon icon="heroicons:eye" />
-              </button>
-            </Tooltip>
-            {/* <Tooltip
-              content="Edit"
-              placement="top"
-              arrow
-              animation="shift-away"
-            >
-              <button className="action-btn" type="button">
-                <Icon icon="heroicons:pencil-square" />
-              </button>
-            </Tooltip> */}
-            <Tooltip
-              content="Delete"
-              placement="top"
-              arrow
-              animation="shift-away"
-              theme="danger"
-            >
-              <button className="action-btn" type="button">
-                <Icon icon="heroicons:trash" />
               </button>
             </Tooltip>
           </div>

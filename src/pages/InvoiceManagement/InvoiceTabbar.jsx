@@ -3,31 +3,46 @@ import Icon from "@/components/ui/Icon";
 import Button from "@/components/ui/Button";
 import { Tab } from "@headlessui/react";
 import Card from "@/components/ui/Card";
-import LoadManagmentTable from "./LoadAssigntTable";
-import LoadAssigntTable from "./LoadAssigntTable";
-import LoadInprogressTable from "./LoadInprogressTable";
-import LoadPendingTable from "./LoadPendingTable";
-import LoadComplateTable from "./LoadComplateTable";
+
 import { loadManagementService } from "../../_services/loadManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
+import InvoicePending from "./InvoicePending";
+import InvoiceComplete from "./InvoiceComplete";
+import InvoiceInvoiced from "./InvoiceInvoiced";
 
-const LoadTabbar = ({
-  buttons,
-  handleButtonClick,
-  tabId,
-  setTabId,
-  tableData,
-}) => {
+const buttons = [
+  {
+    title: "Pending",
+    icon: "heroicons-outline:chat-alt-2",
+    status: false,
+  },
+
+  {
+    title: "Invoiced",
+    icon: "heroicons-outline:cog",
+    status: true,
+  },
+
+  {
+    title: "Complete",
+    icon: "heroicons-outline:cog",
+    // status: null,
+  },
+];
+
+const InvoiceTabbar = () => {
   //   const { id } = useParams();
+  const [tableData, setTableData] = useState([]);
+  const [tabId, setTabId] = useState(0);
 
-  const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [tenderCount, setTenderCount] = useState({
     Fresh: 0,
     Live: 0,
-    Archive: 0,
-    Interested: 0,
   });
+
+  const [open, setOpen] = useState(false);
+  const [pendingData, setPendingData] = useState([]);
   const [tenderForm, setTenderForm] = useState({
     //   ...defaultTenderData,
     tender_id: "",
@@ -36,32 +51,9 @@ const LoadTabbar = ({
 
   const [isSearch, setIsSearch] = useState(0);
 
-  const [tenderData, setTenderData] = useState([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [isFilter, setIsFilter] = useState(0);
-
-  const toggleAccordion = () => {
-    setOpen(!open);
-  };
-
-  const handleClear = () => {
-    //     setPage(1);
-    //     setApidata(defaultTenderData2);
-    //     setStateTag([]);
-    //     setHasMore(true);
-    //     setTenderForm({
-    //       ...defaultTenderData,
-    //       tender_id: "",
-    //       page_no: 1,
-    //       record_per_page: 20,
-    //     });
-    //     setcityTag([]);
-    //     setKeywordTag([]);
-    //     setInputValue("");
-    //     setOrganizationTag([]);
-    //     setIsSearch(0);
-    //     setText("");
-    //     setCityText("");
+  const handleView = (data) => {
+    setPendingData(data.row.original);
+    setOpen(true);
   };
 
   // const handleButtonClick = (title) => {
@@ -69,31 +61,37 @@ const LoadTabbar = ({
   //   setHasMore(true);
   // };
 
-  // useEffect(() => {
-  //   handleButtonClick("Pending", 0);
-  // }, []);
-  // // Keep this after
-  // const handleButtonClick = async (title, index) => {
-  //   setTabId(index);
-  //   const statusId = buttons[index]?.status;
+  useEffect(() => {
+    handleButtonClick("Pending", 0);
+  }, []);
+  // Keep this after
+  const handleButtonClick = async (title, index) => {
+    setTabId(index);
+    const statusId = buttons[index]?.status;
 
-  //   console.log(index, "statusId from button");
+    console.log(statusId, "st..........");
 
-  //   try {
-  //     const res = await loadManagementService.loadManagementListingByStatus(
-  //       statusId
-  //     );
-  //     if (res.Success) {
-  //       setTableData(res.Data);
-  //     } else {
-  //       setTableData([]);
-  //       ShowErrorToast("Something went wrong");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     ShowErrorToast("API Error");
-  //   }
-  // };
+    console.log(index, "statusId from button");
+
+    try {
+      let res;
+      if (statusId !== undefined) {
+        res = await loadManagementService.invoicePendingInvoiced(statusId);
+      } else {
+        res = await loadManagementService.invoiceComplete(); // no statusId for "Complete"
+      }
+
+      if (res.Success) {
+        setTableData(res.Data);
+      } else {
+        setTableData([]);
+        ShowErrorToast("Something went wrong");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      ShowErrorToast("API Error");
+    }
+  };
 
   const handleSubmit = () => {
     setApidata(tenderForm);
@@ -131,8 +129,7 @@ const LoadTabbar = ({
                     {selected && (
                       <span className="ml-2">
                         {item.title === "Pending"}
-                        {item.title === "Assigned"}
-                        {item.title === "In Progress"}
+                        {item.title === "Invoiced"}
                         {item.title === "Complete"}
                       </span>
                     )}
@@ -144,18 +141,32 @@ const LoadTabbar = ({
 
           <Tab.Panels>
             <Tab.Panel>
-              <LoadPendingTable tableData={tableData} />
+              <InvoicePending
+                tableData={tableData}
+                handleView={handleView}
+                open={open}
+                setOpen={setOpen}
+                pendingData={pendingData}
+              />
+            </Tab.Panel>
+            <Tab.Panel>
+              <InvoiceInvoiced
+                tableData={tableData}
+                handleView={handleView}
+                open={open}
+                setOpen={setOpen}
+                pendingData={pendingData}
+              />
             </Tab.Panel>
 
             <Tab.Panel>
-              <LoadAssigntTable tableData={tableData} />
-            </Tab.Panel>
-            <Tab.Panel>
-              <LoadInprogressTable tableData={tableData} />
-            </Tab.Panel>
-
-            <Tab.Panel>
-              <LoadComplateTable tableData={tableData} />
+              <InvoiceComplete
+                tableData={tableData}
+                handleView={handleView}
+                open={open}
+                setOpen={setOpen}
+                pendingData={pendingData}
+              />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
@@ -164,4 +175,4 @@ const LoadTabbar = ({
   );
 };
 
-export default LoadTabbar;
+export default InvoiceTabbar;

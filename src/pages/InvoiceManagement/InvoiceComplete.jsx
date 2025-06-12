@@ -12,134 +12,93 @@ import {
 } from "react-table";
 
 import GlobalFilter from "../table/react-tables/GlobalFilter";
-import LoadView from "./LoadView";
-import Modal from "../../components/ui/Modal";
-import LoadComplatedDrawer from "./LoadComplatedDrawer";
+import InvoiceView from "./InvoiceView";
 
-const LoadInprogressTable = ({ title = "Load In Progress", tableData }) => {
-  const [open, setOpen] = useState(false);
-  const [dovViewData, setDocViewData] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [deleteData, setDeleteData] = useState(null);
-
-  const [openComplate, setOpenComplate] = useState(false);
-  const [getProgressData, setGetProgressData] = useState([]);
-
-  const handleComplated = (data) => {
-    setGetProgressData(data?.row?.original);
-    setOpenComplate(true);
-  };
-
-  const closeModalHandler = () => {
-    setModalOpen(false);
-  };
-  const handleDeleteClick = (row) => {
-    setModalOpen(true);
-    setDeleteData(row);
-  };
-
-  const handleDelete = () => {
-    if (deleteData) {
-      settingServices
-        .DeparmentDelete(deleteData.row.original.department_id)
-        .then((res) => {
-          if (res.Success == true) {
-            const successMessage = deleteData?.row?.original?.is_active
-              ? "Department is Inactivated"
-              : "Department is Activated";
-
-            ShowSuccessToast(successMessage);
-            // ShowSuccessToast(res?.Data);
-            setIsDeleteDone((prev) => prev + 1);
-          } else {
-            ShowErrorToast(res.Message);
-          }
-        });
-    }
-    setModalOpen(false);
-  };
-  const handleView = (data) => {
-    setOpen(true);
-    setDocViewData(data.row.original);
-  };
+const InvoiceComplete = ({
+  title = "Invoice Complete",
+  tableData,
+  handleView,
+  open,
+  setOpen,
+  pendingData,
+}) => {
+  console.log(tableData, "tab....");
   const COLUMNS = [
     {
-      Header: "load Id",
-      accessor: "load_id",
+      Header: "load Number",
+      accessor: "loadNumber",
       Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
-    {
-      Header: "Load Number",
-      accessor: "load_number",
-      Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
-
-    {
-      Header: "Source",
-      accessor: "source",
-      Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
-    {
-      Header: "Destination",
-      accessor: "destination",
-      Cell: (row) => {
+        console.log(row, "row.");
         return <span>{row?.cell?.value}</span>;
       },
     },
     {
       Header: "Company Name",
-      accessor: "company_name",
+      accessor: "companyName",
+      Cell: (row) => {
+        return <span>#{row?.cell?.value}</span>;
+      },
+    },
+
+    {
+      Header: "Driver Name",
+      accessor: "driverName",
+      Cell: (row) => {
+        return <span>{row?.cell?.value}</span>;
+      },
+    },
+    {
+      Header: "Invoice Number",
+      accessor: "invoiceNumber",
+      Cell: (row) => {
+        return <span>{row?.cell?.value}</span>;
+      },
+    },
+    {
+      Header: "Invoice Date",
+      accessor: "invoiceDate",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
 
     {
-      Header: "Driver Name",
-      accessor: "driver_name",
+      Header: "Payment Received Date",
+      accessor: "paymentReceivedDate",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
+
     {
-      Header: "Final Price",
-      accessor: "final_price",
+      Header: "status",
+      accessor: "paymentStatus",
       Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
-    {
-      Header: "Base Price",
-      accessor: "base_price",
-      Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
-    {
-      Header: "Trailer Used",
-      accessor: "trailer_used",
-      Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
-    {
-      Header: "Delivery Date",
-      accessor: "delivery_date",
-      Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
-    {
-      Header: "Shipping Date",
-      accessor: "shipping_date",
-      Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
+        return (
+          <span className="block w-full">
+            <span
+              className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
+                row?.cell?.value === "Pending"
+                  ? "text-warning-500 bg-warning-500"
+                  : ""
+              }
+             ${
+               row?.cell?.value === "complete"
+                 ? "text-success-500 bg-success-500"
+                 : ""
+             }
+             ${
+               row?.cell?.value === "cancled"
+                 ? "text-danger-500 bg-danger-500"
+                 : ""
+             }
+ 
+              `}
+            >
+              {row?.cell?.value}
+            </span>
+          </span>
+        );
       },
     },
     {
@@ -162,37 +121,47 @@ const LoadInprogressTable = ({ title = "Load In Progress", tableData }) => {
                 <Icon icon="heroicons:eye" />
               </button>
             </Tooltip>
-
-            <Tooltip
-              content="Complated"
-              placement="top"
-              arrow
-              animation="shift-away"
-            >
-              <button
-                className="action-btn"
-                type="button"
-                onClick={() => handleComplated(row)}
-              >
-                <Icon icon="heroicons:check-circle" />
-              </button>
-            </Tooltip>
-
-            <Tooltip
-              content="Delete"
-              placement="top"
-              arrow
-              animation="shift-away"
-              theme="danger"
-            >
-              <button
-                className="action-btn"
-                type="button"
-                onClick={() => handleDeleteClick(row)}
-              >
-                <Icon icon="heroicons:trash" />
-              </button>
-            </Tooltip>
+            {/* <Tooltip
+               content="Edit"
+               placement="top"
+               arrow
+               animation="shift-away"
+             >
+               <button className="action-btn" type="button">
+                 <Icon icon="heroicons:pencil-square" />
+               </button>
+             </Tooltip>
+             <Tooltip
+               content="Assign"
+               placement="top"
+               arrow
+               animation="shift-away"
+             >
+               <button className="action-btn" type="button">
+                 <Icon icon="heroicons:user" />
+               </button>
+             </Tooltip>
+             <Tooltip
+               content="In process"
+               placement="top"
+               arrow
+               animation="shift-away"
+             >
+               <button className="action-btn" type="button">
+                 <Icon icon="heroicons:ellipsis-horizontal-circle" />
+               </button>
+             </Tooltip>
+             <Tooltip
+               content="Delete"
+               placement="top"
+               arrow
+               animation="shift-away"
+               theme="danger"
+             >
+               <button className="action-btn" type="button">
+                 <Icon icon="heroicons:trash" />
+               </button>
+             </Tooltip> */}
           </div>
         );
       },
@@ -381,42 +350,9 @@ const LoadInprogressTable = ({ title = "Load In Progress", tableData }) => {
         </div>
         {/*end*/}
       </Card>
-      <LoadView open={open} setOpen={setOpen} dovViewData={dovViewData} />
-      <LoadComplatedDrawer
-        openComplate={openComplate}
-        setOpenComplate={setOpenComplate}
-        getProgressData={getProgressData}
-      />
-
-      {/* ------------------------------ Modal ---------------------------------------- */}
-      <Modal
-        title="Delete Confirmation"
-        activeModal={modalOpen}
-        onClose={closeModalHandler}
-        uncontrol={false}
-        centered
-        // className="max-w-xl relative"
-      >
-        <div className="text-base text-slate-600 dark:text-slate-300 mt-4">
-          Are you sure want to Delete?
-        </div>
-        <div className="flex justify-end space-x-2 mt-4">
-          <button
-            className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600"
-            onClick={closeModalHandler}
-          >
-            Cancel
-          </button>
-          <button
-            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-            onClick={handleDelete}
-          >
-            Delete
-          </button>
-        </div>
-      </Modal>
+      <InvoiceView pendingData={pendingData} open={open} setOpen={setOpen} />
     </>
   );
 };
 
-export default LoadInprogressTable;
+export default InvoiceComplete;

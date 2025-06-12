@@ -1,7 +1,12 @@
 import React from "react";
+import InvoiceTabbar from "./InvoiceTabbar";
 
 function InvoiceManagement() {
-  return <div>Invoice</div>;
+  return (
+    <div>
+      <InvoiceTabbar />
+    </div>
+  );
 }
 
 export default InvoiceManagement;

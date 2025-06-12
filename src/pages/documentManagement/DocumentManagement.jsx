@@ -5,6 +5,7 @@ import DocumentManagmentTable from "./DocumentManagmentTable";
 import DocumentManagementCreate from "./DocumentManagementCreate";
 import { docManagementService } from "../../_services/docManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
+import CreateRocPoc from "./CreateROcPoc";
 
 const DocumentManagement = () => {
   const [open, setOpen] = useState(false);
@@ -16,6 +17,8 @@ const DocumentManagement = () => {
   const [isDeleteDone, setIsDeleteDone] = useState(0);
   const [editId, setEditId] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  const [openRocPoc, setOpenRocPoc] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -41,10 +44,14 @@ const DocumentManagement = () => {
   const handleCreate = () => {
     setOpen(true);
   };
+  const handleRocPoc = () => {
+    setOpenRocPoc(true);
+  };
+
   return (
     <div className="float-left w-full">
       <div className="text-[20px] font-bold text-[#000] mb-[20px] w-full float-right">
-        <div className="float-right">
+        <div className="float-right ">
           <span
             className="float-left inline-block min-w-[90px] text-center mx-auto rounded-[999px]  bg-success-500  text-[16px] font-semibold px-[30px] py-[7px] text-[#fff] cursor-pointer"
             onClick={handleCreate}
@@ -54,6 +61,18 @@ const DocumentManagement = () => {
               className="w-5 h-5 float-left mr-[5px] mt-[2px]"
             />
             Add Document
+          </span>
+        </div>
+        <div className="float-right mr-4">
+          <span
+            className="float-left inline-block min-w-[90px] text-center mx-auto rounded-[999px]  bg-success-500  text-[16px] font-semibold px-[30px] py-[7px] text-[#fff] cursor-pointer"
+            onClick={handleRocPoc}
+          >
+            <Icon
+              icon="heroicons:plus"
+              className="w-5 h-5 float-left mr-[5px] mt-[2px]"
+            />
+            Add Roc And Pod
           </span>
         </div>
       </div>
@@ -82,6 +101,14 @@ const DocumentManagement = () => {
         // setIsEditOpen={setIsEditOpen}
         isEditDone={isEditDone}
         setIsEditDone={setIsEditDone}
+      />
+      <CreateRocPoc
+        openRocPoc={openRocPoc}
+        setOpenRocPoc={setOpenRocPoc}
+        isEditOpen={isEditOpen}
+        setIsEditOpen={setIsEditOpen}
+        setIsEditDone={setIsEditDone}
+        isEditDone={isEditDone}
       />
     </div>
   );

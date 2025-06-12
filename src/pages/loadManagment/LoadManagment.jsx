@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import LoadManagmentTable from "./LoadAssigntTable";
 import Icon from "@/components/ui/Icon";
 import LoadManagementCreate from "./LoadManagementCreate";
 import { loadManagementService } from "../../_services/loadManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import LoadTabbar from "./LoadTabbar";
-// import Card from "@/components/ui/Card";
-// import ExampleOne from "./react-tables/ExampleOne";
-// import ExampleTwo from "./react-tables/ExampleTwo";
 
 const LoadManagment = () => {
   const [open, setOpen] = useState(false);
@@ -18,32 +14,82 @@ const LoadManagment = () => {
   const [isCreateDone, setIsCreateDone] = useState(false);
   const [isEditDone, setIsEditDone] = useState(false);
   const [isDeleteDone, setIsDeleteDone] = useState(0);
+  const [tabId, setTabId] = useState(0);
 
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setLoading(true);
-    loadListing();
-  }, [isCreateDone, isEditDone, isDeleteDone]);
+  const buttons = [
+    {
+      title: "Pending",
+      icon: "heroicons-outline:chat-alt-2",
+      status: 1,
+    },
+    {
+      title: "Assigned",
+      icon: "heroicons-outline:home",
+      status: 2,
+    },
+    {
+      title: "In Progress",
+      icon: "heroicons-outline:user",
+      status: 3,
+    },
 
-  const loadListing = async () => {
-    try {
-      const res = await loadManagementService.loadManagementListing();
-      if (res.Success === true) {
-        setLoading(false);
-        setTableData(res?.Data);
-      } else {
-        setTableData([]);
-        setLoading(false);
-        ShowErrorToast("Something Went Wrong");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+    {
+      title: "Complete",
+      icon: "heroicons-outline:cog",
+      status: 4,
+    },
+  ];
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   // loadListing();
+  // }, [isCreateDone, isEditDone, isDeleteDone]);
+
+  // const loadListing = async () => {
+  //   try {
+  //     const res = await loadManagementService.loadManagementListing();
+  //     if (res.Success === true) {
+  //       setLoading(false);
+  //       setTableData(res?.Data);
+  //     } else {
+  //       setTableData([]);
+  //       setLoading(false);
+  //       ShowErrorToast("Something Went Wrong");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
   const handleCreate = () => {
     setOpen(true);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    handleButtonClick("Pending", 0);
+  }, [isEditDone, isCreateDone]);
+  // Keep this after
+  const handleButtonClick = async (title, index) => {
+    setTabId(index);
+    const statusId = buttons[index]?.status;
+
+    try {
+      const res = await loadManagementService.loadManagementListingByStatus(
+        statusId
+      );
+      if (res.Success) {
+        setTableData(res.Data);
+      } else {
+        setTableData([]);
+        ShowErrorToast("Something went wrong");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      ShowErrorToast("API Error");
+    }
   };
   return (
     <div className="float-left w-full">
@@ -62,25 +108,24 @@ const LoadManagment = () => {
         </div>
       </div>
       <div className=" float-left w-full">
-        {/* <LoadManagmentTable
-          tableData={tableData} */}
-        {/* // setIsDeleteDone={setIsDeleteDone}
-          // setIsCreateOpen={setIsCreateOpen}
-          // setEditId={setEditId}
-          // setIsEditOpen={setIsEditOpen}
-          // loading={loading} */}
-        {/* /> */}
-        <LoadTabbar tableData={tableData} />
+        <LoadTabbar
+          tableData={tableData}
+          handleButtonClick={handleButtonClick}
+          tabId={tabId}
+          buttons={buttons}
+        />
       </div>
       <LoadManagementCreate
         open={open}
         setOpen={setOpen}
         isEditOpen={isEditOpen}
         setIsEditOpen={setIsEditOpen}
+        handleButtonClick={handleButtonClick}
+        // loadListing={loadListing}
         // isCreateOpen={isCreateOpen}
         // setIsCreateOpen={setIsCreateOpen}
-        // isCreateDone={isCreateDone}
-        // setIsCreateDone={setIsCreateDone}
+        isCreateDone={isCreateDone}
+        setIsCreateDone={setIsCreateDone}
         // editId={editId}
         // setEditId={setEditId}
         // isEditOpen={isEditOpen}

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
 import Button from "@/components/ui/Button";
+import Tooltip from "@/components/ui/Tooltip";
 
 import {
   useTable,
@@ -13,6 +14,7 @@ import {
 
 import BriefCaseFilter from "./BriefCaseFilter";
 import { docManagementService } from "../../_services/docManagementService";
+import DocView from "../documentManagement/DocView";
 
 const BriefCase = () => {
   const [tableData, setTableData] = useState([]);
@@ -22,6 +24,12 @@ const BriefCase = () => {
     driver_name: "",
     sub_folder_name: "",
   });
+  const [viewId, setViewId] = useState(0);
+  const [open, setOpen] = useState(false);
+  const handleView = (viewData) => {
+    setViewId(viewData?.row?.original?.driver_documents_id);
+    setOpen(true);
+  };
 
   useEffect(() => {
     // setLoading(true);
@@ -66,6 +74,16 @@ const BriefCase = () => {
     });
 
     setTableData(filteredData);
+  };
+
+  const handleClear = () => {
+    setTenderForm({
+      document_month: "",
+      document_year: "",
+      driver_name: "",
+      sub_folder_name: "",
+    });
+    docListing(); // Re-fetch the full data list
   };
 
   const COLUMNS = [
@@ -116,6 +134,30 @@ const BriefCase = () => {
       accessor: "document_year",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
+      },
+    },
+    {
+      Header: "action",
+      accessor: "action",
+      Cell: (row) => {
+        return (
+          <div className="flex space-x-3 rtl:space-x-reverse">
+            <Tooltip
+              content="View"
+              placement="top"
+              arrow
+              animation="shift-away"
+            >
+              <button
+                className="action-btn"
+                type="button"
+                onClick={() => handleView(row)}
+              >
+                <Icon icon="heroicons:eye" />
+              </button>
+            </Tooltip>
+          </div>
+        );
       },
     },
   ];
@@ -313,6 +355,14 @@ const BriefCase = () => {
           </ul>
         </div>
       </Card>
+      {open && (
+        <DocView
+          open={open}
+          setOpen={setOpen}
+          setViewId={setViewId}
+          viewId={viewId}
+        />
+      )}
     </>
   );
 };

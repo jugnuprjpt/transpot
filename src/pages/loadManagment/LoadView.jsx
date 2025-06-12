@@ -5,55 +5,26 @@ import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import axios from "axios";
 import { http } from "../../_apiConfig/http";
 
-const DocView = ({ open, setOpen, viewId }) => {
+const LoadView = ({ open, setOpen, viewId, dovViewData }) => {
   const token = localStorage.getItem("token");
 
-  const [dovViewData, setDovViewData] = useState([]);
+  console.log(dovViewData, "........");
+
   const handleCloseDrawer = () => {
     setOpen(false);
-  };
-
-  useEffect(() => {
-    open === true && docViewListing();
-  }, [open]);
-
-  const docViewListing = async () => {
-    try {
-      const res = await http.get(
-        `api/driver_document_management/get/id/${viewId}`,
-        true,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(res, "res");
-
-      if (res.Success === true) {
-        console.log(res.Data);
-        setDovViewData(res.Data);
-      } else {
-        setDovViewData([]);
-        ShowErrorToast("Something Went Wrong");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
   };
 
   const docDownload = async (data) => {
     try {
       // setIsLoading(true);
-      const url = `https://c6ab-2401-4900-8fc9-4ae3-69fa-d56b-7b25-be62.ngrok-free.app/api/driver_document_management/download`;
+      const url = `https://431a-2401-4900-8fc9-4ae3-69fa-d56b-7b25-be62.ngrok-free.app/api/driver_document_management/download`;
 
       const formdata = {
-        year: data?.document_year.toString(),
-        month: data?.document_month.trim(),
-        sub_folder_name: data?.sub_folder_name,
-        driver_name: data?.driver_name,
-        document_name: data?.original_document_name,
+        year: dovViewData?.document_year,
+        month: dovViewData?.document_month,
+        sub_folder_name: dovViewData?.sub_folder_name,
+        driver_name: dovViewData?.driver_name,
+        document_name: dovViewData?.original_document_name,
       };
 
       const res = await axios.post(url, formdata, {
@@ -108,7 +79,7 @@ ${
               <header className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 -mx-6 px-6 py-2 mb-4">
                 <div>
                   <span className="text-[14px] xl:text-[16px] 2xl:text-[16px] font-bold text-gray-800 dark:text-gray-200 mb-[20px]">
-                    View Document Detail
+                    View Load Detail
                   </span>
                 </div>
                 <div className="cursor-pointer text-2xl text-gray-800 dark:text-gray-200">
@@ -119,56 +90,76 @@ ${
               </header>
               <div className="">
                 <ul className="float-left w-full mb-[20px]">
+                  <li className="w-[45%] font-bold  mx-[10px] float-left">
+                    Load Number
+                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full ">
+                      {dovViewData?.load_number}
+                    </span>
+                  </li>
                   <li className="w-[45%] font-bold mx-[10px] float-left">
                     Driver Name
                     <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
                       {dovViewData?.driver_name}
                     </span>
                   </li>
+                </ul>
+                <ul className="float-left w-full  mb-[20px]">
                   <li className="w-[45%] font-bold  mx-[10px] float-left">
-                    Sub folder Name
+                    Company Name
                     <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
-                      {dovViewData?.sub_folder_name}
+                      {dovViewData?.company_name}
+                    </span>
+                  </li>
+                  <li className="w-[45%] font-bold mx-[10px] float-left">
+                    Trailer Used
+                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
+                      {dovViewData?.trailer_used}
                     </span>
                   </li>
                 </ul>
                 <ul className="float-left w-full  mb-[20px]">
-                  <li className="w-[45%] font-bold mx-[10px] float-left">
-                    Document Name
-                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
-                      {dovViewData?.document_name}
-                    </span>
-                  </li>
                   <li className="w-[45%] font-bold  mx-[10px] float-left">
-                    Original Document Name
+                    Source
                     <span className="font-normal mt-[2px] mr-[10px] float-left w-full ">
-                      {dovViewData?.original_document_name}
+                      {dovViewData?.source}
                     </span>
                   </li>
-                </ul>
-                <ul className="float-left w-full  mb-[20px]">
                   <li className="w-[45%] font-bold mx-[10px] float-left">
-                    Document Month
+                    Destination
                     <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
-                      {dovViewData?.document_month}
-                    </span>
-                  </li>
-                  <li className="w-[45%] font-bold  mx-[10px] float-left">
-                    Document year
-                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full ">
-                      {dovViewData?.document_year}
+                      {dovViewData?.destination}
                     </span>
                   </li>
                 </ul>
 
                 <ul className="float-left w-full  mb-[20px]">
                   <li className="w-[45%] font-bold mx-[10px] float-left">
-                    Document Name
+                    Base Price
                     <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
-                      {dovViewData?.document_name}
+                      {dovViewData?.base_price}
                     </span>
                   </li>
-                  <li className="w-[45%] font-bold  mx-[10px] float-left">
+                  <li className="w-[45%] font-bold mx-[10px] float-left">
+                    Final Price
+                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
+                      {dovViewData?.final_price}
+                    </span>
+                  </li>
+                </ul>
+                <ul className="float-left w-full  mb-[20px]">
+                  <li className="w-[45%] font-bold mx-[10px] float-left">
+                    Shipping Date
+                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
+                      {dovViewData?.shipping_date}
+                    </span>
+                  </li>
+                  <li className="w-[45%] font-bold mx-[10px] float-left">
+                    Delivery Date
+                    <span className="font-normal mt-[2px] mr-[10px] float-left w-full">
+                      {dovViewData?.delivery_date}
+                    </span>
+                  </li>
+                  <li className="w-[45%] font-bold  mx-[10px] float-left mt-4">
                     Download
                     <span
                       onClick={() => docDownload(dovViewData)}
@@ -188,4 +179,4 @@ ${
   );
 };
 
-export default DocView;
+export default LoadView;
