@@ -55,7 +55,7 @@ const LoadManagementCreate = ({
   const [FormState, SetFormState] = useState({
     delievery_date_string: { errors: "", valid: false },
     final_price: { errors: "", valid: false },
-    driver_name: { errors: "", valid: false },
+    // driver_name: { errors: "", valid: false },
     roc: { errors: "", valid: false },
     trailer_used: { errors: "", valid: false },
     // assign_to: { errors: "", valid: false },
@@ -118,7 +118,7 @@ const LoadManagementCreate = ({
       formdata.append("destination", allData.destination);
       formdata.append("source", allData.source);
       formdata.append("base_price", allData.base_price);
-      formdata.append("assign_to", 0);
+      formdata.append("assign_to", allData?.driver_id);
 
       const res = await loadManagementService.loadInsert(formdata);
 
@@ -347,11 +347,11 @@ ${
                     tenderForm={allData}
                     setTenderForm={setAllData}
                     SetFormState={SetFormState}
-                    IsValidate={true}
+                    // IsValidate={true}
                   />
-                  <span className="text-red-500 text-sm">
+                  {/* <span className="text-red-500 text-sm">
                     {FormState?.driver_id?.errors}
-                  </span>
+                  </span> */}
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">

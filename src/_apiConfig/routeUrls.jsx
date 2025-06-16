@@ -24,9 +24,9 @@ export const RouteUrls = {
   // --------------Invoice--------------
   invoicePendingInvoiced: "api/invoice_summary/by-invoiced-status",
   invoiceComplete: "api/invoice_summary/get_paid_invoices",
-  requestToInvoice: "api/invoice_summary/get_pending_charges",
+  requestToInvoiceId: "api/invoice_summary/get_pending_charges",
   invoiceComplated: "api/invoice_summary/get_paid_invoices",
-
+  requestToInvoice: "api/load/request_to_invoice",
   // --------------Driver dipatch--------------
   driverDispatchListing: "api/driver_summary/get",
 };

@@ -13,6 +13,14 @@ import {
 
 import GlobalFilter from "../table/react-tables/GlobalFilter";
 import InvoiceView from "./InvoiceView";
+import Modal from "../../components/ui/Modal";
+import {
+  ShowErrorToast,
+  ShowSuccessToast,
+} from "../components/ToastMessage/ToastMessage";
+import { loadManagementService } from "../../_services/loadManagementService";
+import RequestToInvoice from "./RequestToInvoice";
+// import RequestToInvoice from "./RequestToInvoice";
 
 const InvoicePending = ({
   title = "Invoice Pending",
@@ -22,6 +30,79 @@ const InvoicePending = ({
   setOpen,
   pendingData,
 }) => {
+  // const [openRequest, setOpenRequest] = useState(false);
+  const [allData, setAllData] = useState({
+    driver_name: "",
+    driver_id: "",
+    load_id: 0,
+    load_number: "",
+    lumper_value: 0,
+    lumper_paid_by: "",
+    detention_value: 0,
+    scale_value: 0,
+    extra_stop_charge: 0,
+    trailer_wash: 0,
+    detention_at: "",
+    company_id: "",
+    amount: 0,
+    layover: "",
+    roc: "",
+  });
+
+  const [openRequest, setOpenRequest] = useState(false);
+
+  const [requestToInvoiceData, setRequestToInvoiceData] = useState(null);
+
+  const handleRequest = async (data) => {
+    setOpenRequest(true);
+    setRequestToInvoiceData(data.row.original);
+    // handleRequestToInvoice();
+
+    const res = await loadManagementService.requestToInvoiceId(
+      data.row.original.load_id
+    );
+
+    if (res.Success === true) {
+      setAllData({
+        // ...res?.Data,
+        lumper_value: res?.Data?.lumperValue,
+        layover: res?.Data?.layover,
+        detention_value: res?.Data?.detentionValue,
+        trailer_wash: res?.Data?.trailerWashValue,
+        scale_value: res?.Data?.scaleValue,
+        extraStopCharge: res?.Data?.extraStopCharge,
+      });
+      console.log(res.Data, "res........");
+      console.log(allData, "........");
+      // setRequestToInvoiceData(res.Data);
+    } else {
+      ShowErrorToast(res.Message);
+    }
+  };
+
+  const handleRequestToInvoice = () => {
+    console.log(requestToInvoiceData, "deleteData.......");
+    if (requestToInvoiceData) {
+      loadManagementService
+        .requestToInvoiceId(requestToInvoiceData.row.original.load_id)
+        .then((res) => {
+          if (res.Success == true) {
+            ShowSuccessToast(successMessage);
+            // ShowSuccessToast(res?.Data);
+            setIsDeleteDone((prev) => prev + 1);
+            setOpenRequest(false);
+          } else {
+            ShowErrorToast(res.Message);
+            setOpenRequest(false);
+          }
+        });
+    }
+    setOpenRequest(false);
+  };
+
+  const closeModalHandler = () => {
+    setModalOpen(false);
+  };
   const COLUMNS = [
     {
       Header: "load Number",
@@ -35,7 +116,7 @@ const InvoicePending = ({
       Header: "Company Name",
       accessor: "companyName",
       Cell: (row) => {
-        return <span>#{row?.cell?.value}</span>;
+        return <span>{row?.cell?.value}</span>;
       },
     },
 
@@ -56,14 +137,6 @@ const InvoicePending = ({
     {
       Header: "Invoice Date",
       accessor: "invoiceDate",
-      Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
-
-    {
-      Header: "Payment Received Date",
-      accessor: "paymentReceivedDate",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
@@ -127,7 +200,11 @@ const InvoicePending = ({
               arrow
               animation="shift-away"
             >
-              <button className="action-btn" type="button">
+              <button
+                className="action-btn"
+                type="button"
+                onClick={() => handleRequest(row)}
+              >
                 <Icon icon="heroicons:banknotes" />
               </button>
             </Tooltip>
@@ -320,6 +397,40 @@ const InvoicePending = ({
         {/*end*/}
       </Card>
       <InvoiceView pendingData={pendingData} open={open} setOpen={setOpen} />
+      <RequestToInvoice
+        openRequest={openRequest}
+        setOpenRequest={setOpenRequest}
+        requestToInvoiceData={requestToInvoiceData}
+        allData={allData}
+        setAllData={setAllData}
+      />
+      {/* ------------------------------ Modal ---------------------------------------- */}
+      {/* <Modal
+        title="Request To Invoice Confirmation"
+        activeModal={modalOpen}
+        onClose={closeModalHandler}
+        uncontrol={false}
+        centered
+        // className="max-w-xl relative"
+      >
+        <div className="text-base text-slate-600 dark:text-slate-300 mt-4">
+          Are you sure want to Request To Invoice?
+        </div>
+        <div className="flex justify-end space-x-2 mt-4">
+          <button
+            className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600"
+            onClick={closeModalHandler}
+          >
+            Cancel
+          </button>
+          <button
+            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+            onClick={handleRequestToInvoice}
+          >
+            Request To invoice
+          </button>
+        </div>
+      </Modal> */}
     </>
   );
 };

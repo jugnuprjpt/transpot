@@ -15,6 +15,9 @@ export const loadManagementService = {
   driverDispatchListing,
   invoicePendingInvoiced,
   invoiceComplete,
+  requestToInvoiceId,
+  requestToInvoice,
+  // loadCancel,
 };
 
 function loadAssigment(data) {
@@ -56,12 +59,8 @@ function loadAssign(data) {
 }
 
 function loadInProgress(data) {
-  return http.post(RouteUrls.loadInProgress, data, true);
-}
-
-function loadCancel(data) {
-  return http.remove(
-    `${RouteUrls.loadCancel}/${data.tender_pre_post_doc_id}/${data.tender_id}/${data.document_type_id}`,
+  return http.post(
+    `${RouteUrls.loadInProgress}/${data.load_id}/${data.load_number}`,
     data,
     true
   );
@@ -79,4 +78,19 @@ function invoicePendingInvoiced(data) {
 
 function invoiceComplete(data) {
   return http.get(`${RouteUrls.invoiceComplete}`, true);
+}
+
+function requestToInvoiceId(data) {
+  return http.get(`${RouteUrls.requestToInvoiceId}/${data}`, true);
+}
+
+function loadCancel(data) {
+  return http.post(`${RouteUrls.loadCancel}`, data, true, {
+    "Content-Type": "multipart/form-data",
+  });
+}
+function requestToInvoice(data) {
+  return http.post(`${RouteUrls.requestToInvoice}`, data, true, {
+    "Content-Type": "multipart/form-data",
+  });
 }

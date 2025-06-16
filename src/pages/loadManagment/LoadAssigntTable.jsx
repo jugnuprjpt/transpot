@@ -16,20 +16,30 @@ import LoadAssign from "./LoadAssign";
 import LoadView from "./LoadView";
 import Modal from "../../components/ui/Modal";
 import { loadManagementService } from "../../_services/loadManagementService";
+import { ShowSuccessToast } from "../components/ToastMessage/ToastMessage";
+import LoadCancel from "./LoadCancel";
 
-const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
+const LoadAssigntTable = ({
+  title = "Load Assigned",
+  tableData,
+  openLoadCancel,
+  setOpenLoadCancel,
+  loadCancelData,
+  setLoadCancelData,
+}) => {
   const [loadAssignOpen, setLoadAssignOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [dovViewData, setDocViewData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteData, setDeleteData] = useState(null);
   const [assigmentData, setAssigmentData] = useState([]);
+
   const closeModalHandler = () => {
     setModalOpen(false);
   };
-  const handleDeleteClick = (row) => {
-    setModalOpen(true);
-    setDeleteData(row);
+  const handleDeleteClick = (data) => {
+    setLoadCancelData(data?.row?.original);
+    setOpenLoadCancel(true);
   };
 
   const handleProgressClick = (row) => {
@@ -44,31 +54,12 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
         load_number: deleteData?.row?.original?.load_number,
       };
       const res = await loadManagementService.loadInProgress(formData);
-      console.log(res, "res......");
+      ShowSuccessToast(res.Message);
+      setModalOpen(false);
     }
     setModalOpen(false);
   };
 
-  const handleDelete = () => {
-    if (deleteData) {
-      settingServices
-        .DeparmentDelete(deleteData.row.original.department_id)
-        .then((res) => {
-          if (res.Success == true) {
-            const successMessage = deleteData?.row?.original?.is_active
-              ? "Department is Inactivated"
-              : "Department is Activated";
-
-            ShowSuccessToast(successMessage);
-            // ShowSuccessToast(res?.Data);
-            setIsDeleteDone((prev) => prev + 1);
-          } else {
-            ShowErrorToast(res.Message);
-          }
-        });
-    }
-    setModalOpen(false);
-  };
   const handleView = (data) => {
     setOpen(true);
     setDocViewData(data.row.original);
@@ -221,11 +212,11 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
                 type="button"
                 onClick={() => handleProgressClick(row)}
               >
-                <Icon icon="heroicons:ellipsis-horizontal-circle" />
+                <Icon icon="heroicons:play-circle" />
               </button>
             </Tooltip>
             <Tooltip
-              content="Delete"
+              content="Cancel"
               placement="top"
               arrow
               animation="shift-away"
@@ -236,7 +227,7 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
                 type="button"
                 onClick={() => handleDeleteClick(row)}
               >
-                <Icon icon="heroicons:trash" />
+                <Icon icon="heroicons:x-mark" />
               </button>
             </Tooltip>
           </div>
@@ -436,33 +427,11 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
 
       <LoadView open={open} setOpen={setOpen} dovViewData={dovViewData} />
 
-      {/* ------------------------------ Modal ---------------------------------------- */}
-      <Modal
-        title="Delete Confirmation"
-        activeModal={modalOpen}
-        onClose={closeModalHandler}
-        uncontrol={false}
-        centered
-        // className="max-w-xl relative"
-      >
-        <div className="text-base text-slate-600 dark:text-slate-300 mt-4">
-          Are you sure want to Delete?
-        </div>
-        <div className="flex justify-end space-x-2 mt-4">
-          <button
-            className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600"
-            onClick={closeModalHandler}
-          >
-            Cancel
-          </button>
-          <button
-            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-            onClick={handleDelete}
-          >
-            Delete
-          </button>
-        </div>
-      </Modal>
+      <LoadCancel
+        openLoadCancel={openLoadCancel}
+        setOpenLoadCancel={setOpenLoadCancel}
+        loadCancelData={loadCancelData}
+      />
 
       {/* ------------------------------ Modal ---------------------------------------- */}
       <Modal
@@ -474,7 +443,7 @@ const LoadAssigntTable = ({ title = "Load Assigned", tableData }) => {
         // className="max-w-xl relative"
       >
         <div className="text-base text-slate-600 dark:text-slate-300 mt-4">
-          Are you sure want to Progress?
+          Mark load in a Progress?
         </div>
         <div className="flex justify-end space-x-2 mt-4">
           <button

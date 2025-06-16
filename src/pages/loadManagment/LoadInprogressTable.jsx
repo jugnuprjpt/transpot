@@ -15,8 +15,16 @@ import GlobalFilter from "../table/react-tables/GlobalFilter";
 import LoadView from "./LoadView";
 import Modal from "../../components/ui/Modal";
 import LoadComplatedDrawer from "./LoadComplatedDrawer";
+import LoadCancel from "./LoadCancel";
 
-const LoadInprogressTable = ({ title = "Load In Progress", tableData }) => {
+const LoadInprogressTable = ({
+  title = "Load In Progress",
+  tableData,
+  openLoadCancel,
+  setOpenLoadCancel,
+  loadCancelData,
+  setLoadCancelData,
+}) => {
   const [open, setOpen] = useState(false);
   const [dovViewData, setDocViewData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -33,31 +41,11 @@ const LoadInprogressTable = ({ title = "Load In Progress", tableData }) => {
   const closeModalHandler = () => {
     setModalOpen(false);
   };
-  const handleDeleteClick = (row) => {
-    setModalOpen(true);
-    setDeleteData(row);
+  const handleDeleteClick = (data) => {
+    setLoadCancelData(data?.row?.original);
+    setOpenLoadCancel(true);
   };
 
-  const handleDelete = () => {
-    if (deleteData) {
-      settingServices
-        .DeparmentDelete(deleteData.row.original.department_id)
-        .then((res) => {
-          if (res.Success == true) {
-            const successMessage = deleteData?.row?.original?.is_active
-              ? "Department is Inactivated"
-              : "Department is Activated";
-
-            ShowSuccessToast(successMessage);
-            // ShowSuccessToast(res?.Data);
-            setIsDeleteDone((prev) => prev + 1);
-          } else {
-            ShowErrorToast(res.Message);
-          }
-        });
-    }
-    setModalOpen(false);
-  };
   const handleView = (data) => {
     setOpen(true);
     setDocViewData(data.row.original);
@@ -164,7 +152,7 @@ const LoadInprogressTable = ({ title = "Load In Progress", tableData }) => {
             </Tooltip>
 
             <Tooltip
-              content="Complated"
+              content="Complate"
               placement="top"
               arrow
               animation="shift-away"
@@ -179,7 +167,7 @@ const LoadInprogressTable = ({ title = "Load In Progress", tableData }) => {
             </Tooltip>
 
             <Tooltip
-              content="Delete"
+              content="Cancel"
               placement="top"
               arrow
               animation="shift-away"
@@ -190,7 +178,7 @@ const LoadInprogressTable = ({ title = "Load In Progress", tableData }) => {
                 type="button"
                 onClick={() => handleDeleteClick(row)}
               >
-                <Icon icon="heroicons:trash" />
+                <Icon icon="heroicons:x-mark" />
               </button>
             </Tooltip>
           </div>
@@ -387,34 +375,11 @@ const LoadInprogressTable = ({ title = "Load In Progress", tableData }) => {
         setOpenComplate={setOpenComplate}
         getProgressData={getProgressData}
       />
-
-      {/* ------------------------------ Modal ---------------------------------------- */}
-      <Modal
-        title="Delete Confirmation"
-        activeModal={modalOpen}
-        onClose={closeModalHandler}
-        uncontrol={false}
-        centered
-        // className="max-w-xl relative"
-      >
-        <div className="text-base text-slate-600 dark:text-slate-300 mt-4">
-          Are you sure want to Delete?
-        </div>
-        <div className="flex justify-end space-x-2 mt-4">
-          <button
-            className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600"
-            onClick={closeModalHandler}
-          >
-            Cancel
-          </button>
-          <button
-            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-            onClick={handleDelete}
-          >
-            Delete
-          </button>
-        </div>
-      </Modal>
+      <LoadCancel
+        openLoadCancel={openLoadCancel}
+        setOpenLoadCancel={setOpenLoadCancel}
+        loadCancelData={loadCancelData}
+      />
     </>
   );
 };

@@ -36,7 +36,7 @@ const InvoiceInvoiced = ({
       Header: "Company Name",
       accessor: "companyName",
       Cell: (row) => {
-        return <span>#{row?.cell?.value}</span>;
+        return <span>{row?.cell?.value}</span>;
       },
     },
 
@@ -57,14 +57,6 @@ const InvoiceInvoiced = ({
     {
       Header: "Invoice Date",
       accessor: "invoiceDate",
-      Cell: (row) => {
-        return <span>{row?.cell?.value}</span>;
-      },
-    },
-
-    {
-      Header: "Payment Received Date",
-      accessor: "paymentReceivedDate",
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
@@ -130,18 +122,18 @@ const InvoiceInvoiced = ({
               <button className="action-btn" type="button">
                 <Icon icon="heroicons:pencil-square" />
               </button>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip
-              content="Assign"
+              content="Request to Complete"
               placement="top"
               arrow
               animation="shift-away"
             >
               <button className="action-btn" type="button">
-                <Icon icon="heroicons:user" />
+                <Icon icon="heroicons:check-circle" />
               </button>
             </Tooltip>
-            <Tooltip
+            {/* <Tooltip
               content="In process"
               placement="top"
               arrow
@@ -150,8 +142,8 @@ const InvoiceInvoiced = ({
               <button className="action-btn" type="button">
                 <Icon icon="heroicons:ellipsis-horizontal-circle" />
               </button>
-            </Tooltip>
-            <Tooltip
+            </Tooltip> */}
+            {/* <Tooltip
               content="Delete"
               placement="top"
               arrow
@@ -161,7 +153,7 @@ const InvoiceInvoiced = ({
               <button className="action-btn" type="button">
                 <Icon icon="heroicons:trash" />
               </button>
-            </Tooltip> */}
+            </Tooltip>  */}
           </div>
         );
       },
