@@ -46,7 +46,7 @@ const DocView = ({ open, setOpen, viewId }) => {
   const docDownload = async (data) => {
     try {
       // setIsLoading(true);
-      const url = `https://c6ab-2401-4900-8fc9-4ae3-69fa-d56b-7b25-be62.ngrok-free.app/api/driver_document_management/download`;
+      const url = `https://3bb0-2401-4900-8fcb-75fd-7d14-b266-7b60-6a31.ngrok-free.app/api/driver_document_management/download`;
 
       const formdata = {
         year: data?.document_year.toString(),
