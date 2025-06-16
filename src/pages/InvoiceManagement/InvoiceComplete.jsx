@@ -36,7 +36,7 @@ const InvoiceComplete = ({
       Header: "Company Name",
       accessor: "companyName",
       Cell: (row) => {
-        return <span>#{row?.cell?.value}</span>;
+        return <span>{row?.cell?.value}</span>;
       },
     },
 

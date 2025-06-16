@@ -10,6 +10,7 @@ import LoadPendingTable from "./LoadPendingTable";
 import LoadComplateTable from "./LoadComplateTable";
 import { loadManagementService } from "../../_services/loadManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
+import LoadCancel from "./LoadCancel";
 
 const LoadTabbar = ({
   buttons,
@@ -39,6 +40,10 @@ const LoadTabbar = ({
   const [tenderData, setTenderData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [isFilter, setIsFilter] = useState(0);
+
+  const [openLoadCancel, setOpenLoadCancel] = useState([]);
+
+  const [loadCancelData, setLoadCancelData] = useState([]);
 
   const toggleAccordion = () => {
     setOpen(!open);
@@ -144,14 +149,32 @@ const LoadTabbar = ({
 
           <Tab.Panels>
             <Tab.Panel>
-              <LoadPendingTable tableData={tableData} />
+              <LoadPendingTable
+                tableData={tableData}
+                openLoadCancel={openLoadCancel}
+                setOpenLoadCancel={setOpenLoadCancel}
+                loadCancelData={loadCancelData}
+                setLoadCancelData={setLoadCancelData}
+              />
             </Tab.Panel>
 
             <Tab.Panel>
-              <LoadAssigntTable tableData={tableData} />
+              <LoadAssigntTable
+                tableData={tableData}
+                openLoadCancel={openLoadCancel}
+                setOpenLoadCancel={setOpenLoadCancel}
+                loadCancelData={loadCancelData}
+                setLoadCancelData={setLoadCancelData}
+              />
             </Tab.Panel>
             <Tab.Panel>
-              <LoadInprogressTable tableData={tableData} />
+              <LoadInprogressTable
+                tableData={tableData}
+                openLoadCancel={openLoadCancel}
+                setOpenLoadCancel={setOpenLoadCancel}
+                loadCancelData={loadCancelData}
+                setLoadCancelData={setLoadCancelData}
+              />
             </Tab.Panel>
 
             <Tab.Panel>
