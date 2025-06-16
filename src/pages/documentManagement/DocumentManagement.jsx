@@ -5,7 +5,7 @@ import DocumentManagmentTable from "./DocumentManagmentTable";
 import DocumentManagementCreate from "./DocumentManagementCreate";
 import { docManagementService } from "../../_services/docManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
-import CreateRocPoc from "./CreateROcPoc";
+import CreateRocPoc from "./CreateRocPoc";
 
 const DocumentManagement = () => {
   const [open, setOpen] = useState(false);
