@@ -17,6 +17,8 @@ export const loadManagementService = {
   invoiceComplete,
   requestToInvoiceId,
   requestToInvoice,
+  requestToComplete,
+  // driverDispatchListing,
   // loadCancel,
 };
 
@@ -31,9 +33,9 @@ function loadManagementListing() {
   return http.get(RouteUrls.loadManagementListing, true);
 }
 
-function driverDispatchListing() {
-  return http.get(RouteUrls.driverDispatchListing, true);
-}
+// function driverDispatchListing() {
+//   return http.get(RouteUrls.driverDispatchListing, true);
+// }
 
 function loadManagementListingByStatus(data) {
   return http.get(`${RouteUrls.loadManagementListingByStatus}/${data}`, true);
@@ -93,4 +95,15 @@ function requestToInvoice(data) {
   return http.post(`${RouteUrls.requestToInvoice}`, data, true, {
     "Content-Type": "multipart/form-data",
   });
+}
+
+function requestToComplete(data) {
+  return http.update(`${RouteUrls.requestToComplete}`, data, true);
+}
+
+function driverDispatchListing(data) {
+  return http.get(
+    `${RouteUrls.driverDispatchListing}/${data?.driver_id}/${data?.year_month}`,
+    true
+  );
 }

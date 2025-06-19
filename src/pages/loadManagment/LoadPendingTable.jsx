@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, Fragment } from "react";
 
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
@@ -11,12 +11,11 @@ import {
   usePagination,
 } from "react-table";
 
+import { Tab } from "@headlessui/react";
 import GlobalFilter from "../table/react-tables/GlobalFilter";
 import LoadAssign from "./LoadAssign";
 import LoadView from "./LoadView";
-
 import { loadManagementService } from "../../_services/loadManagementService";
-
 import LoadCancel from "./LoadCancel";
 
 const LoadPendingTable = ({
@@ -28,6 +27,34 @@ const LoadPendingTable = ({
   loadCancelData,
   setLoadCancelData,
 }) => {
+  // {item.title === "All"}
+  //                     {item.title === "Today"}
+  //                     {item.title === "Tomorrow"}
+  //                     {item.title === "Saturday"}
+  const Pendingbuttons = [
+    {
+      title: "All",
+      icon: "heroicons-outline:chat-alt-2",
+      status: 1,
+    },
+    {
+      title: "Today",
+      icon: "heroicons-outline:home",
+      status: 2,
+    },
+    {
+      title: "Tomorrow",
+      icon: "heroicons-outline:user",
+      status: 3,
+    },
+
+    {
+      title: "Saturday",
+      icon: "heroicons-outline:cog",
+      status: 4,
+    },
+  ];
+  const [tabId, setTabId] = useState(0);
   const [loadAssignOpen, setLoadAssignOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [dovViewData, setDocViewData] = useState([]);
@@ -244,7 +271,52 @@ const LoadPendingTable = ({
     <>
       <Card>
         <div className="md:flex justify-between items-center mb-6">
-          <h4 className="card-title">{title}</h4>
+          {/* <h4 className="card-title">{title}</h4> */}
+          <Tab.Group defaultIndex={tabId == undefined ? 1 : tabId - 1}>
+            <Tab.List className="lg:space-x-8 md:space-x-4 space-x-0 rtl:space-x-reverse border-b border-[#d7d7d7] mb-[10px]">
+              {Pendingbuttons.map((item, i) => (
+                <Tab as={Fragment} key={i}>
+                  {({ selected }) => (
+                    <button
+                      className={`sm:text-[15px] md:text-[15px] lg:text-[15px] xl:text-[15px] 2xl:text-lg font-medium mb-2 capitalize 
+             dark:bg-slate-800 ring-0 foucs:ring-0 focus:outline-none px-2
+              transition duration-150 before:transition-all  before:duration-150 relative 
+              before:absolute before:left-1/2 before:bottom-[-9px] before:h-[2px] before:bg-[#46ab27]
+              before:-translate-x-1/2
+              
+              ${
+                selected
+                  ? "text-[#46ab27] before:w-full"
+                  : "text-[#000] before:w-0 dark:text-slate-300"
+              }
+              `}
+                      onClick={() => handleButtonClick(item.title, i)}
+                    >
+                      {item.title}
+
+                      {selected && (
+                        <span className="ml-2">
+                          {item.title === "All"}
+                          {item.title === "Today"}
+                          {item.title === "Tomorrow"}
+                          {item.title === "Saturday"}
+                        </span>
+                      )}
+                    </button>
+                  )}
+                </Tab>
+              ))}
+            </Tab.List>
+
+            <Tab.Panels>
+              <Tab.Panel>ghdhgf</Tab.Panel>
+
+              <Tab.Panel>bgdgdffgd</Tab.Panel>
+              <Tab.Panel>gfhfhf</Tab.Panel>
+
+              <Tab.Panel>bhbj</Tab.Panel>
+            </Tab.Panels>
+          </Tab.Group>
           <div>
             <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           </div>

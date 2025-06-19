@@ -13,6 +13,7 @@ import {
 
 import GlobalFilter from "../table/react-tables/GlobalFilter";
 import InvoiceView from "./InvoiceView";
+import RequestToComplate from "./RequestToComplate";
 
 const InvoiceInvoiced = ({
   title = "Invoiced",
@@ -23,6 +24,14 @@ const InvoiceInvoiced = ({
   pendingData,
 }) => {
   console.log(tableData, "tab....");
+  const [openRequest, setOpenRequest] = useState(false);
+  const [requestToInvoiceData, setRequestToInvoiceData] = useState(null);
+
+  const handleRequest = async (data) => {
+    setOpenRequest(true);
+    setRequestToInvoiceData(data.row.original);
+    // handleRequestToInvoice();
+  };
   const COLUMNS = [
     {
       Header: "load Number",
@@ -129,7 +138,11 @@ const InvoiceInvoiced = ({
               arrow
               animation="shift-away"
             >
-              <button className="action-btn" type="button">
+              <button
+                className="action-btn"
+                type="button"
+                onClick={() => handleRequest(row)}
+              >
                 <Icon icon="heroicons:check-circle" />
               </button>
             </Tooltip>
@@ -343,6 +356,13 @@ const InvoiceInvoiced = ({
         {/*end*/}
       </Card>
       <InvoiceView pendingData={pendingData} open={open} setOpen={setOpen} />
+      <RequestToComplate
+        openRequest={openRequest}
+        setOpenRequest={setOpenRequest}
+        requestToInvoiceData={requestToInvoiceData}
+        // allData={allData}
+        // setAllData={setAllData}
+      />
     </>
   );
 };

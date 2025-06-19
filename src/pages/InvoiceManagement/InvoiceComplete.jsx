@@ -77,22 +77,8 @@ const InvoiceComplete = ({
         return (
           <span className="block w-full">
             <span
-              className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-                row?.cell?.value === "Pending"
-                  ? "text-warning-500 bg-warning-500"
-                  : ""
-              }
-             ${
-               row?.cell?.value === "complete"
-                 ? "text-success-500 bg-success-500"
-                 : ""
-             }
-             ${
-               row?.cell?.value === "cancled"
-                 ? "text-danger-500 bg-danger-500"
-                 : ""
-             }
- 
+              className={`inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 
+                 text-success-500 bg-success-500
               `}
             >
               {row?.cell?.value}
