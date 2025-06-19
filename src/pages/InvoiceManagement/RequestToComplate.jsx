@@ -2,24 +2,23 @@ import React, { useEffect, useRef, useState } from "react";
 import SimpleBar from "simplebar-react";
 import Icon from "@/components/ui/Icon";
 
+import CommonDatePickerwithoutTime from "../components/InputField/CommonDatePickerwithoutTime";
 import { ValidaterHelper } from "../components/validationFunction/ValidationCheck";
-import {
-  ShowErrorToast,
-  ShowSuccessToast,
-} from "../components/ToastMessage/ToastMessage";
+import { ShowSuccessToast } from "../components/ToastMessage/ToastMessage";
 import CommonTextInput from "../components/InputField/CommonTextInput";
-import CommonFileInput from "../components/InputField/CommonFileInput";
 import { loadManagementService } from "../../_services/loadManagementService";
+import {
+  convertDate,
+  convertDate2,
+} from "../../components/DateConvertor/DateConvertToFormate";
 
 function RequestToComplate({
   requestToInvoiceData,
   openRequest,
   setOpenRequest,
-  allData,
-  setAllData,
+  // allData,
+  // setAllData,
 }) {
-  console.log(requestToInvoiceData, "requestToInvoiceData......");
-
   const [FormState, SetFormState] = useState({
     payment_recieved_date: { errors: "", valid: false },
     check_number: { errors: "", valid: false },
@@ -30,8 +29,11 @@ function RequestToComplate({
     check_number: 0,
   });
 
+  console.log(requestToInvoiceData, "......");
+
   const handleCloseDrawer = () => {
     setOpenRequest(false);
+    setAllData({ load_number: "", payment_recieved_date: "", check_number: 0 });
   };
 
   const handleSubmit = async () => {
@@ -49,18 +51,24 @@ function RequestToComplate({
     }
     // setIsLoading(true);
     // if (isEditOpen == false) {
-    const formdata = new FormData();
+    // const formdata = new FormData();
 
-    formdata.append("load_id", requestToInvoiceData?.load_id);
-    formdata.append("load_number", requestToInvoiceData?.loadNumber);
-    formdata.append("lumper_value", allData?.lumper_value);
+    // formdata.append("load_id", requestToInvoiceData?.load_id);
+    // formdata.append("payment_recieved_date", allData?.payment_recieved_date);
+    // formdata.append("check_number", allData?.check_number);
 
-    const res = await loadManagementService.requestToInvoice(formdata);
+    const formdata = {
+      load_number: requestToInvoiceData?.loadNumber,
+      payment_recieved_date: convertDate2(allData?.payment_recieved_date),
+      check_number: allData?.check_number,
+    };
+
+    const res = await loadManagementService.requestToComplete(formdata);
 
     if (res.Success == true) {
       // setIsLoading(false);
 
-      setOpenComplate(false);
+      setOpenRequest(false);
       handleCloseDrawer();
       ShowSuccessToast(res?.Message);
     } else {
@@ -78,7 +86,7 @@ function RequestToComplate({
           {openRequest === true && (
             <div
               className={`
-setting-wrapper fixed overflow-y-scroll ltr:right-0 rtl:left-0 top-0 md:w-[850px] w-[200px]
+setting-wrapper fixed overflow-y-scroll ltr:right-0 rtl:left-0 top-0 md:w-[400px] w-[200px]
 bg-white dark:bg-slate-800 h-screen z-[99999]  md:pb-6 pb-[100px] shadow-base2
 dark:shadow-base3 border border-slate-200 dark:border-slate-700 transition-all duration-150 
 ${
@@ -93,7 +101,7 @@ ${
                 <header className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 -mx-6 px-6 py-2 mb-4">
                   <div>
                     <span className="text-[14px] xl:text-[16px] 2xl:text-[16px] font-bold text-gray-600 dark:text-gray-400 mb-[20px]">
-                      Request To Invoice
+                      Request To Complete
                     </span>
                   </div>
                   <div className="cursor-pointer text-2xl text-gray-800 dark:text-gray-200">
@@ -102,94 +110,55 @@ ${
                     </button>
                   </div>
                 </header>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-3">
-                  {/* Load Number */}
-                  <div className="flex items-center gap-3 bg-blue-50 border border-blue-100 rounded-xl p-3">
-                    <div className="bg-blue-100 text-blue-500 rounded-full p-1.5">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 17v-6h13v6m-4-3h-5m-6 8H5a2 2 0 01-2-2V7a2 2 0 012-2h4l2-2h6a2 2 0 012 2v4"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="text-gray-400 text-xs">Load Number</div>
-                      <div className="text-blue-700 font-semibold text-base">
-                        {requestToInvoiceData.loadNumber}
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Driver Name */}
-                  <div className="flex items-center gap-3 bg-green-50 border border-green-100 rounded-xl p-3">
-                    <div className="bg-green-100 text-green-500 rounded-full p-1.5">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M5.121 17.804A13.937 13.937 0 0112 15c2.25 0 4.374.525 6.256 1.453M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="text-gray-400 text-xs">Driver Name</div>
-                      <div className="text-green-700 font-semibold text-base">
-                        {requestToInvoiceData.driverName}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="grid xl:grid-cols-2 gap-4 py-2 text-sm">
+                <div className="grid xl:grid-cols-1 gap-4 py-2 text-sm">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
-                      Trailer Wash
+                      Payment Recieved Date
                     </label>
-                    <CommonTextInput
-                      value={allData?.trailer_wash}
-                      id="trailer_wash"
-                      type="text"
-                      placeholder="Trailer Wash"
-                      name="trailer_wash"
-                      tenderForm={allData}
-                      setTenderForm={setAllData}
+
+                    {/* <SelectAllDateswithTime
+                      data={allData}
+                      setData={setAllData}
+                      name="payment_recieved_date"
+                      value={allData?.payment_recieved_date}
+                      className="form-control py-[7px] !bg-transparent"
+                      placeholder="Pick Up Date"
                       SetFormState={SetFormState}
                       IsValidate={true}
+                    /> */}
+                    <CommonDatePickerwithoutTime
+                      data={allData}
+                      setData={setAllData}
+                      name="payment_recieved_date"
+                      value={allData?.payment_recieved_date}
+                      className="form-control py-[7px] !bg-transparent"
+                      placeholder="Pick Up Date"
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                      page={"newtender"}
                     />
                     <span className="text-red-500 text-sm">
-                      {FormState?.trailer_wash?.errors}
+                      {FormState?.payment_recieved_date?.errors}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
-                      Lumper Value
+                      Check Number
                     </label>
                     <CommonTextInput
-                      value={allData?.lumper_value}
-                      id="lumper_value"
+                      value={allData?.check_number}
+                      id="check_number"
                       type="text"
-                      placeholder="Lumper Value"
-                      name="lumper_value"
+                      placeholder="Check Number"
+                      name="check_number"
                       tenderForm={allData}
                       setTenderForm={setAllData}
                       SetFormState={SetFormState}
                       IsValidate={true}
                     />
                     <span className="text-red-500 text-sm">
-                      {FormState?.lumper_value?.errors}
+                      {FormState?.check_number?.errors}
                     </span>
                   </div>
                 </div>
