@@ -24,7 +24,7 @@ const CommonDateYearMonth = ({
       .padStart(2, "0");
     const day = selectedDates[0]?.getDate().toString().padStart(2, "0");
 
-    const formattedDate = `-${year}-${month}`;
+    const formattedDate = `${year}-${month}`;
     const updatedFollowUpdateTime = {
       ...data,
       [name]: formattedDate,

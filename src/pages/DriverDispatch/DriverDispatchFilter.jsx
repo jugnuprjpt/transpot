@@ -3,16 +3,14 @@ import CommonSelectInput from "../components/InputField/CommonSelectInput";
 import useBriefSearch from "../../hooks/useBriefSearch";
 import CommonDateYearMonth from "../components/InputField/CommonDateYearMonth";
 
-const DriverDispatchFilter = ({ tenderForm, setTenderForm }) => {
-  const { briefDriverData } = useBriefSearch();
-
+const DriverDispatchFilter = ({ tenderForm, setTenderForm, driverData }) => {
   return (
     <div className="grid xl:grid-cols-2 gap-4 py-2 text-sm">
       <div className="flex-wrap gap-2">
         <CommonDateYearMonth
           data={tenderForm}
           setData={setTenderForm}
-          name="year_month "
+          name="year_month"
           value={tenderForm?.year_month}
           className="form-control py-[7px] !bg-transparent"
           placeholder="Dispatch Month and Year"
@@ -26,10 +24,10 @@ const DriverDispatchFilter = ({ tenderForm, setTenderForm }) => {
           isClearable={true}
           className="react-select"
           classNamePrefix="select"
-          name="driver_name"
+          name="driver_id"
           placeholder="Select Driver"
-          options={briefDriverData}
-          value={briefDriverData}
+          options={driverData}
+          value={driverData}
           tenderForm={tenderForm}
           setTenderForm={setTenderForm}
           // SetFormState={SetFormState}

@@ -63,13 +63,17 @@ import { docManagementService } from "../../_services/docManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import DriverDispatchFilter from "./DriverDispatchFilter";
 import { loadManagementService } from "../../_services/loadManagementService";
+import useGetDriverListing from "../../hooks/useDriverListing";
 
 const DriverDipatch = () => {
   const [tableData, setTableData] = useState([]);
+  const { driverData } = useGetDriverListing();
   const [tenderForm, setTenderForm] = useState({
     driver_id: "",
     year_month: "",
   });
+
+  console.log(tenderForm, ".......");
   const [viewId, setViewId] = useState(0);
   const [open, setOpen] = useState(false);
   const handleView = (viewData) => {
@@ -83,19 +87,15 @@ const DriverDipatch = () => {
 
   // isCreateDone, isEditDone, isDeleteDone
 
-  const docListing = async () => {
+  const docListing = async (
+    formValues = { driver_id: 7, year_month: "2025-06" }
+  ) => {
     try {
-      const formData = {
-        driver_id: "4",
-        year_month: "2025-06",
-      };
-      const res = await loadManagementService.driverDispatchListing(formData);
+      const res = await loadManagementService.driverDispatchListing(formValues);
       if (res.Success === true) {
-        // setLoading(false);
         setTableData(res?.Data);
       } else {
         setTableData([]);
-        // setLoading(false);
         ShowErrorToast("Something Went Wrong");
       }
     } catch (error) {
@@ -104,19 +104,10 @@ const DriverDipatch = () => {
   };
 
   const handleSearch = () => {
-    const filteredData = tableData.filter((item) => {
-      return (
-        (!tenderForm.year_month ||
-          item.year_month.toLowerCase() ===
-            tenderForm.year_month.toLowerCase()) &&
-        (!tenderForm.driver_name ||
-          item.driver_name
-            .toLowerCase()
-            .includes(tenderForm.driver_name.toLowerCase().trim()))
-      );
+    docListing({
+      driver_id: tenderForm.driver_id,
+      year_month: tenderForm.year_month,
     });
-
-    setTableData(filteredData);
   };
 
   const handleClear = () => {
@@ -300,6 +291,7 @@ const DriverDipatch = () => {
               tableData={tableData}
               tenderForm={tenderForm}
               setTenderForm={setTenderForm}
+              driverData={driverData}
             />
 
             <Button
