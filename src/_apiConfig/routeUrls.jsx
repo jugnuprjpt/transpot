@@ -20,6 +20,9 @@ export const RouteUrls = {
   loadCancel: "api/load/cancel_load",
   loadInProgress: "api/load/in_progress",
   progressComplated: "api/load/completion",
+  requestToTonu: "api/load/request_to_invoice_for_tonu",
+  pendingAll: "api/my_loads/get_my_loads",
+  // pendingTodayTomorrowThenextday: "api/my_loads/get_my_loads",
 
   // --------------Invoice--------------
   invoicePendingInvoiced: "api/invoice_summary/by-invoiced-status",

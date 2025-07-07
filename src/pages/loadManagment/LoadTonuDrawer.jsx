@@ -3,49 +3,56 @@ import SimpleBar from "simplebar-react";
 import Icon from "@/components/ui/Icon";
 import useGetDriverListing from "../../hooks/useDriverListing";
 import { ValidaterHelper } from "../components/validationFunction/ValidationCheck";
-import { ShowSuccessToast } from "../components/ToastMessage/ToastMessage";
+import {
+  ShowErrorToast,
+  ShowSuccessToast,
+} from "../components/ToastMessage/ToastMessage";
 import CommonSelectInput from "../components/InputField/CommonSelectInput";
 import CommonTextInput from "../components/InputField/CommonTextInput";
-import CommonFileInput from "../components/InputField/CommonFileInput";
+
 import { loadManagementService } from "../../_services/loadManagementService";
+import CommonFileInput from "../components/InputField/CommonFileInput";
 import Loading from "@/components/Loading";
 
-function LoadCancel({
-  getProgressData,
-  loadCancelData,
-  openLoadCancel,
-  setOpenLoadCancel,
-}) {
+function LoadTonuDrawer({ openComplate, setOpenComplate, getProgressData }) {
   const inputRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [FormState, SetFormState] = useState({
     new_load_number: { errors: "", valid: false },
     tonu: { errors: "", valid: false },
-    // tonu_charges: { errors: "", valid: false },
+    tonu_charges: { errors: "", valid: false },
     // requesting_user: { errors: "", valid: false },
-    // roc: { errors: "", valid: false },
+    roc: { errors: "", valid: false },
   });
   const [allData, setAllData] = useState({
+    driver_name: "",
+    load_id: 0,
+    old_load_number: "",
     new_load_number: "",
     tonu: "",
+    company_id: 0,
     tonu_charges: 0,
     // requesting_user: "",
     roc: "",
   });
 
-  const tonuData = [
+  const tonuSelect = [
     { value: "True", label: "Yes" },
     { value: "False", label: "No" },
   ];
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleCloseDrawer = () => {
-    setOpenLoadCancel(false);
+    setOpenComplate(false);
     setAllData({
+      driver_name: "",
+      load_id: 0,
+      old_load_number: "",
       new_load_number: "",
       tonu: "",
+      company_id: 0,
       tonu_charges: 0,
-      requesting_user: "",
+      // requesting_user: "",
       roc: "",
     });
   };
@@ -63,36 +70,31 @@ function LoadCancel({
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-
     setIsLoading(true);
     // if (isEditOpen == false) {
     const formdata = new FormData();
 
-    formdata.append("load_id", loadCancelData?.load_id);
-    formdata.append("driver_name", loadCancelData?.driver_name);
-    formdata.append("old_load_number", loadCancelData?.load_number);
+    formdata.append("driver_name", getProgressData?.driver_name);
+    formdata.append("load_id", getProgressData?.load_id);
+    formdata.append("old_load_number", getProgressData?.load_number);
     formdata.append("new_load_number", allData?.new_load_number);
-    formdata.append("company_id", loadCancelData?.company_id);
-
-    {
-      allData?.roc && formdata.append("roc", allData?.roc);
-    }
-
     formdata.append("tonu", allData?.tonu);
+    formdata.append("company_id", getProgressData?.company_id);
     formdata.append("tonu_charges", allData?.tonu_charges);
-    // formdata.append("requesting_user", allData.requesting_user);
+    // formdata.append("requesting_user", allData?.requesting_user);
+    formdata.append("roc", allData?.roc);
 
-    const res = await loadManagementService.loadCancel(formdata);
+    const res = await loadManagementService.requestToTonu(formdata);
 
     if (res.Success == true) {
       setIsLoading(false);
 
-      setOpenLoadCancel(false);
+      setOpenComplate(false);
       handleCloseDrawer();
       ShowSuccessToast(res?.Message);
     } else {
       setIsLoading(false);
-      ShowErrorToast(res?.Message);
+      ShowErrorToast("Something Went Wrong");
     }
     // }
   };
@@ -106,14 +108,14 @@ function LoadCancel({
           </div>
         )}{" "}
         <div>
-          {openLoadCancel === true && (
+          {openComplate === true && (
             <div
               className={`
 setting-wrapper fixed overflow-y-scroll ltr:right-0 rtl:left-0 top-0 md:w-[850px] w-[200px]
 bg-white dark:bg-slate-800 h-screen z-[99999]  md:pb-6 pb-[100px] shadow-base2
 dark:shadow-base3 border border-slate-200 dark:border-slate-700 transition-all duration-150 
 ${
-  openLoadCancel
+  openComplate
     ? "translate-x-0 opacity-100 visible"
     : "ltr:translate-x-full rtl:-translate-x-full opacity-0 invisible"
 }
@@ -124,7 +126,7 @@ ${
                 <header className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 -mx-6 px-6 py-2 mb-4">
                   <div>
                     <span className="text-[14px] xl:text-[16px] 2xl:text-[16px] font-bold text-gray-600 dark:text-gray-400 mb-[20px]">
-                      Load Cancel
+                      Tonu
                     </span>
                   </div>
                   <div className="cursor-pointer text-2xl text-gray-800 dark:text-gray-200">
@@ -154,7 +156,7 @@ ${
                     <div>
                       <div className="text-gray-400 text-xs">Load Number</div>
                       <div className="text-blue-700 font-semibold text-base">
-                        {loadCancelData.load_number}
+                        {getProgressData.load_number}
                       </div>
                     </div>
                   </div>
@@ -179,34 +181,12 @@ ${
                     <div>
                       <div className="text-gray-400 text-xs">Driver Name</div>
                       <div className="text-green-700 font-semibold text-base">
-                        {loadCancelData.driver_name}
+                        {getProgressData.driver_name}
                       </div>
                     </div>
                   </div>
                 </div>
-
                 <div className="grid xl:grid-cols-2 gap-4 py-2 text-sm">
-                  {/* <div className="flex flex-col gap-2">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">
-                      Driver Name*
-                    </label>
-                    <CommonSelectInput
-                      isClearable={true}
-                      className="react-select"
-                      classNamePrefix="select"
-                      name="driver_id"
-                      placeholder="Select Driver Name"
-                      options={driverData}
-                      value={driverData}
-                      tenderForm={allData}
-                      setTenderForm={setAllData}
-                      SetFormState={SetFormState}
-                      IsValidate={true}
-                    />
-                    <span className="text-red-500 text-sm">
-                      {FormState?.driver_id?.errors}
-                    </span>
-                  </div> */}
                   <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
                       Load Number
@@ -226,6 +206,7 @@ ${
                       {FormState?.new_load_number?.errors}
                     </span>
                   </div>
+
                   {/* <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
                       Requesting User
@@ -258,26 +239,25 @@ ${
                       tenderForm={allData}
                       setTenderForm={setAllData}
                       SetFormState={SetFormState}
-                      // IsValidate={true}
+                      IsValidate={true}
                     />
-                    {/* <span className="text-red-500 text-sm">
+                    <span className="text-red-500 text-sm">
                       {FormState?.tonu_charges?.errors}
-                    </span> */}
+                    </span>
                   </div>
 
                   <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
                       Tonu
                     </label>
-
                     <CommonSelectInput
                       isClearable={true}
                       className="react-select"
                       classNamePrefix="select"
                       name="tonu"
                       placeholder="Select Tonu"
-                      options={tonuData}
-                      value={tonuData}
+                      options={tonuSelect}
+                      value={tonuSelect}
                       tenderForm={allData}
                       setTenderForm={setAllData}
                       SetFormState={SetFormState}
@@ -303,9 +283,9 @@ ${
                       setTenderForm={setAllData}
                       inputRef={inputRef}
                     />
-                    {/* <span className="text-red-500 text-sm">
+                    <span className="text-red-500 text-sm">
                       {FormState?.roc?.errors}
-                    </span> */}
+                    </span>
                   </div>
                 </div>
 
@@ -335,4 +315,4 @@ ${
   );
 }
 
-export default LoadCancel;
+export default LoadTonuDrawer;

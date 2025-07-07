@@ -11,6 +11,7 @@ import {
   convertDate,
   convertDate2,
 } from "../../components/DateConvertor/DateConvertToFormate";
+import Loading from "@/components/Loading";
 
 function RequestToComplate({
   requestToInvoiceData,
@@ -28,8 +29,7 @@ function RequestToComplate({
     payment_recieved_date: "",
     check_number: 0,
   });
-
-  console.log(requestToInvoiceData, "......");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCloseDrawer = () => {
     setOpenRequest(false);
@@ -49,7 +49,7 @@ function RequestToComplate({
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    // setIsLoading(true);
+    setIsLoading(true);
     // if (isEditOpen == false) {
     // const formdata = new FormData();
 
@@ -66,13 +66,13 @@ function RequestToComplate({
     const res = await loadManagementService.requestToComplete(formdata);
 
     if (res.Success == true) {
-      // setIsLoading(false);
+      setIsLoading(false);
 
       setOpenRequest(false);
       handleCloseDrawer();
       ShowSuccessToast(res?.Message);
     } else {
-      // setIsLoading(false);
+      setIsLoading(false);
       ShowErrorToast("Something Went Wrong");
     }
     // }
@@ -81,7 +81,11 @@ function RequestToComplate({
     <>
       {" "}
       <>
-        {" "}
+        {isLoading && (
+          <div className="fixed inset-0 z-[999999] bg-black/40 backdrop-blur-sm flex items-center justify-center">
+            <Loading />
+          </div>
+        )}{" "}
         <div>
           {openRequest === true && (
             <div
@@ -117,16 +121,6 @@ ${
                       Payment Recieved Date
                     </label>
 
-                    {/* <SelectAllDateswithTime
-                      data={allData}
-                      setData={setAllData}
-                      name="payment_recieved_date"
-                      value={allData?.payment_recieved_date}
-                      className="form-control py-[7px] !bg-transparent"
-                      placeholder="Pick Up Date"
-                      SetFormState={SetFormState}
-                      IsValidate={true}
-                    /> */}
                     <CommonDatePickerwithoutTime
                       data={allData}
                       setData={setAllData}

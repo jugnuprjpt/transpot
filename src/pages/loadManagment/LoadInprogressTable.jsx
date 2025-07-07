@@ -34,7 +34,7 @@ const LoadInprogressTable = ({
   const [getProgressData, setGetProgressData] = useState([]);
 
   const handleComplated = (data) => {
-    setGetProgressData(data?.row?.original);
+    setGetProgressData(data?.original);
     setOpenComplate(true);
   };
 
@@ -42,13 +42,13 @@ const LoadInprogressTable = ({
     setModalOpen(false);
   };
   const handleDeleteClick = (data) => {
-    setLoadCancelData(data?.row?.original);
+    setLoadCancelData(data?.original);
     setOpenLoadCancel(true);
   };
 
   const handleView = (data) => {
     setOpen(true);
-    setDocViewData(data.row.original);
+    setDocViewData(data.original);
   };
   const COLUMNS = [
     {
@@ -233,54 +233,163 @@ const LoadInprogressTable = ({
         <div className="overflow-x-auto -mx-6">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden ">
+              {/* Table header only (no body content here) */}
               <table
                 className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700"
-                {...getTableProps}
+                {...getTableProps()}
               >
-                <thead className="bg-slate-200 dark:bg-slate-700">
-                  {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column) => (
-                        <th
-                          {...column.getHeaderProps(
-                            column.getSortByToggleProps()
-                          )}
-                          scope="col"
-                          className=" table-th "
-                        >
-                          {column.render("Header")}
-                          <span>
-                            {column.isSorted
-                              ? column.isSortedDesc
-                                ? " 🔽"
-                                : " 🔼"
-                              : ""}
-                          </span>
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody
-                  className="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700"
-                  {...getTableBodyProps}
-                >
+                {/* <thead className="bg-slate-200 dark:bg-slate-700">
+                          {headerGroups.map((headerGroup) => (
+                            <tr {...headerGroup.getHeaderGroupProps()}>
+                              {headerGroup.headers.map((column) => (
+                                <th
+                                  {...column.getHeaderProps(
+                                    column.getSortByToggleProps()
+                                  )}
+                                  scope="col"
+                                  className="table-th"
+                                >
+                                  {column.render("Header")}
+                                  <span>
+                                    {column.isSorted
+                                      ? column.isSortedDesc
+                                        ? " 🔽"
+                                        : " 🔼"
+                                      : ""}
+                                  </span>
+                                </th>
+                              ))}
+                            </tr>
+                          ))}
+                        </thead> */}
+              </table>
+
+              {/* Custom cards rendered below the table */}
+              <div className="px-4 mt-4">
+                <div className="flex flex-col gap-4 w-full">
                   {page.map((row) => {
                     prepareRow(row);
+                    const original = row.original;
+
                     return (
-                      <tr {...row.getRowProps()}>
-                        {row.cells.map((cell) => {
-                          return (
-                            <td {...cell.getCellProps()} className="table-td">
-                              {cell.render("Cell")}
-                            </td>
-                          );
-                        })}
-                      </tr>
+                      <div
+                        key={original.load_id}
+                        className="w-full rounded border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm text-sm text-gray-800 dark:text-gray-200"
+                      >
+                        {/* Main Content: Status | Route | Driver Info */}
+                        <div className="flex justify-between items-center px-4 py-3 bg-gray-50 dark:bg-slate-700">
+                          {/* Left: Status */}
+                          <div className="text-xs font-medium text-gray-600 dark:text-gray-300 w-1/5">
+                            Load Number :-
+                            <span className="font-medium text-red-500">
+                              {original.load_number}
+                            </span>
+                          </div>
+
+                          {/* Center: Route Info */}
+                          <div className="flex-1 mx-4 bg-gray-100 dark:bg-slate-600 px-4 py-2 rounded flex items-center justify-between">
+                            {/* From */}
+                            <div>
+                              <div className="text-sm font-semibold uppercase">
+                                {original.source}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {original.shipping_date}
+                              </div>
+                            </div>
+
+                            {/* Arrow */}
+                            <div className="text-xl text-gray-400">→</div>
+
+                            {/* To */}
+                            <div className="text-right">
+                              <div className="text-sm font-semibold uppercase">
+                                {original.destination}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {original.delivery_date}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Right: Driver + Tractor */}
+                          <div className="flex flex-col items-end gap-1 text-sm w-1/5">
+                            <div>
+                              <span className="text-gray-500">Driver:</span>{" "}
+                              <span className="font-medium">
+                                {original.driver_name || "--"}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Trailer #:</span>{" "}
+                              <span className="font-semibold">
+                                {original.trailer_used || "--"}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Rate #:</span>{" "}
+                              <span className="font-semibold">
+                                {original.base_price}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Footer: Load ID + Action Buttons */}
+                        <div className="flex justify-between items-center px-4 py-2 border-t border-gray-200 dark:border-slate-700 text-xs">
+                          <div className="text-gray-500">
+                            {/* Rate:{" "}
+                                           <span className="font-medium text-red-500">
+                                             {original.base_price}
+                                           </span> */}
+                          </div>
+
+                          <div className="flex gap-2">
+                            <Tooltip content="View" placement="top">
+                              <button
+                                className="p-1.5 rounded-full hover:bg-blue-100 dark:hover:bg-slate-600 transition"
+                                onClick={() => handleView(row)}
+                              >
+                                <Icon
+                                  icon="heroicons:eye"
+                                  className="w-5 h-5 text-blue-600"
+                                />
+                              </button>
+                            </Tooltip>
+                            <Tooltip content="Complete" placement="top">
+                              <button
+                                className="p-1.5 rounded-full hover:bg-green-100 dark:hover:bg-slate-600 transition"
+                                onClick={() => handleComplated(row)}
+                              >
+                                <Icon
+                                  icon="heroicons:check-circle"
+                                  className="w-5 h-5 text-green-600"
+                                />
+                              </button>
+                            </Tooltip>
+
+                            <Tooltip
+                              content="Cancel"
+                              placement="top"
+                              theme="danger"
+                            >
+                              <button
+                                className="p-1.5 rounded-full hover:bg-red-100 dark:hover:bg-slate-600 transition"
+                                onClick={() => handleDeleteClick(row)}
+                              >
+                                <Icon
+                                  icon="heroicons:x-mark"
+                                  className="w-5 h-5 text-red-600"
+                                />
+                              </button>
+                            </Tooltip>
+                          </div>
+                        </div>
+                      </div>
                     );
                   })}
-                </tbody>
-              </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>

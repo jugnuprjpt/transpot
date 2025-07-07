@@ -10,6 +10,7 @@ import {
 import CommonTextInput from "../components/InputField/CommonTextInput";
 import CommonFileInput from "../components/InputField/CommonFileInput";
 import { loadManagementService } from "../../_services/loadManagementService";
+import Loading from "@/components/Loading";
 
 function RequestToInvoice({
   requestToInvoiceData,
@@ -17,19 +18,19 @@ function RequestToInvoice({
   setOpenRequest,
   allData,
   setAllData,
+  showData,
 }) {
   const inputRef = useRef(null);
-
-  console.log(requestToInvoiceData, "requestToInvoiceData......");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [FormState, SetFormState] = useState({
     lumper_value: { errors: "", valid: false },
-    detention_value: { errors: "", valid: false },
-    scale_value: { errors: "", valid: false },
-    extra_stop_charge: { errors: "", valid: false },
-    trailer_wash: { errors: "", valid: false },
+    // detention_value: { errors: "", valid: false },
+    // scale_value: { errors: "", valid: false },
+    // extra_stop_charge: { errors: "", valid: false },
+    // trailer_wash: { errors: "", valid: false },
     amount: { errors: "", valid: false },
-    layover: { errors: "", valid: false },
+    // layover: { errors: "", valid: false },
     roc: { errors: "", valid: false },
   });
   // const [allData, setAllData] = useState({
@@ -72,18 +73,27 @@ function RequestToInvoice({
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    // setIsLoading(true);
+    setIsLoading(true);
     // if (isEditOpen == false) {
     const formdata = new FormData();
 
     formdata.append("load_id", requestToInvoiceData?.load_id);
-    formdata.append("load_number", requestToInvoiceData?.loadNumber);
+    formdata.append(
+      "load_number",
+      requestToInvoiceData?.loadNumber || requestToInvoiceData?.load_number
+    );
     formdata.append("lumper_value", allData?.lumper_value);
     formdata.append("detention_value", allData?.detention_value);
     formdata.append("scale_value", allData?.scale_value);
-    formdata.append("extra_stop_charge", allData?.extraStopCharge);
+    formdata.append(
+      "extra_stop_charge",
+      allData?.extraStopCharge || allData?.extra_stop_charge
+    );
     formdata.append("trailer_wash", allData?.trailer_wash);
-    formdata.append("driver_name", requestToInvoiceData?.driverName);
+    formdata.append(
+      "driver_name",
+      requestToInvoiceData?.driverName || requestToInvoiceData?.driver_name
+    );
     formdata.append("driver_id", requestToInvoiceData?.assigned_driver_id);
     formdata.append("company_id", requestToInvoiceData?.company_id);
     formdata.append("amount", allData?.amount);
@@ -93,22 +103,27 @@ function RequestToInvoice({
     const res = await loadManagementService.requestToInvoice(formdata);
 
     if (res.Success == true) {
-      // setIsLoading(false);
+      setIsLoading(false);
 
-      setOpenComplate(false);
+      setOpenRequest(false);
       handleCloseDrawer();
       ShowSuccessToast(res?.Message);
     } else {
-      // setIsLoading(false);
+      setIsLoading(false);
       ShowErrorToast("Something Went Wrong");
     }
     // }
   };
+
   return (
     <>
       {" "}
       <>
-        {" "}
+        {isLoading && (
+          <div className="fixed inset-0 z-[999999] bg-black/40 backdrop-blur-sm flex items-center justify-center">
+            <Loading />
+          </div>
+        )}{" "}
         <div>
           {openRequest === true && (
             <div
@@ -158,7 +173,9 @@ ${
                     <div>
                       <div className="text-gray-400 text-xs">Load Number</div>
                       <div className="text-blue-700 font-semibold text-base">
-                        {requestToInvoiceData.loadNumber}
+                        {requestToInvoiceData?.loadNumber}
+                        {requestToInvoiceData?.loadNumber ||
+                          requestToInvoiceData?.load_number}
                       </div>
                     </div>
                   </div>
@@ -183,12 +200,28 @@ ${
                     <div>
                       <div className="text-gray-400 text-xs">Driver Name</div>
                       <div className="text-green-700 font-semibold text-base">
-                        {requestToInvoiceData.driverName}
+                        {requestToInvoiceData?.driverName ||
+                          requestToInvoiceData?.driver_name}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="grid xl:grid-cols-2 gap-4 py-2 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Detention
+                    </label>
+
+                    <span>{showData?.isDetention === true ? "Yes" : "No"}</span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Lumper
+                    </label>
+
+                    <span>{showData?.isLayover === true ? "Yes" : "No"}</span>
+                  </div>
+
                   <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
                       Trailer Wash
@@ -240,11 +273,11 @@ ${
                       tenderForm={allData}
                       setTenderForm={setAllData}
                       SetFormState={SetFormState}
-                      IsValidate={true}
+                      // IsValidate={true}
                     />
-                    <span className="text-red-500 text-sm">
+                    {/* <span className="text-red-500 text-sm">
                       {FormState?.detention_value?.errors}
-                    </span>
+                    </span> */}
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
@@ -278,11 +311,11 @@ ${
                       tenderForm={allData}
                       setTenderForm={setAllData}
                       SetFormState={SetFormState}
-                      IsValidate={true}
+                      // IsValidate={true}
                     />
-                    <span className="text-red-500 text-sm">
+                    {/* <span className="text-red-500 text-sm">
                       {FormState?.extra_stop_charge?.errors}
-                    </span>
+                    </span> */}
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
@@ -297,11 +330,11 @@ ${
                       tenderForm={allData}
                       setTenderForm={setAllData}
                       SetFormState={SetFormState}
-                      IsValidate={true}
+                      // IsValidate={true}
                     />
-                    <span className="text-red-500 text-sm">
+                    {/* <span className="text-red-500 text-sm">
                       {FormState?.layover?.errors}
-                    </span>
+                    </span> */}
                   </div>
 
                   <div className="flex flex-col gap-2">
