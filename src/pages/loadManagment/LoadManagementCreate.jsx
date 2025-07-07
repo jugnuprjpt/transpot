@@ -14,6 +14,7 @@ import {
 } from "../components/ToastMessage/ToastMessage";
 import { loadManagementService } from "../../_services/loadManagementService";
 import { convertDate } from "../../components/DateConvertor/DateConvertToFormate";
+import Loading from "@/components/Loading";
 
 const LoadManagementCreate = ({
   open,
@@ -57,7 +58,7 @@ const LoadManagementCreate = ({
     final_price: { errors: "", valid: false },
     // driver_name: { errors: "", valid: false },
     roc: { errors: "", valid: false },
-    trailer_used: { errors: "", valid: false },
+    // trailer_used: { errors: "", valid: false },
     // assign_to: { errors: "", valid: false },
     company_name: { errors: "", valid: false },
     destination: { errors: "", valid: false },
@@ -148,12 +149,18 @@ const LoadManagementCreate = ({
     // }
   };
   return (
-    <div>
-      {" "}
+    <>
+      {isLoading && (
+        <div className="fixed inset-0 z-[999999] bg-black/40 backdrop-blur-sm flex items-center justify-center">
+          <Loading />
+        </div>
+      )}{" "}
       <div>
-        {open === true && (
-          <div
-            className={`
+        {" "}
+        <div>
+          {open === true && (
+            <div
+              className={`
 setting-wrapper fixed overflow-y-scroll ltr:right-0 rtl:left-0 top-0 md:w-[700px] w-[300px]
 bg-white dark:bg-slate-800 h-screen z-[99999]  md:pb-6 pb-[100px] shadow-base2
 dark:shadow-base3 border border-slate-200 dark:border-slate-700 transition-all duration-150 
@@ -164,156 +171,137 @@ ${
 }
 
 `}
-          >
-            <SimpleBar className="px-6">
-              <header className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 -mx-6 px-6 py-2 mb-4">
-                <div>
-                  <span className="text-[14px] xl:text-[16px] 2xl:text-[16px] font-bold text-gray-600 dark:text-gray-400 mb-[20px]">
-                    Add Load
-                  </span>
-                </div>
-                <div className="cursor-pointer text-2xl text-gray-800 dark:text-gray-200">
-                  <button onClick={handleCloseDrawer}>
-                    <Icon icon="heroicons-outline:x" />
-                  </button>
-                </div>
-              </header>
-              <div className="grid xl:grid-cols-2 gap-2 py-2 text-sm">
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Load numbers *
-                  </label>
-                  <CommonTextInput
-                    value={allData?.loadNumber}
-                    id="loadNumber"
-                    type="text"
-                    placeholder="Load Number"
-                    name="loadNumber"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.loadNumber?.errors}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Source *
-                  </label>
-                  <CommonTextInput
-                    value={allData?.source}
-                    id="source"
-                    type="text"
-                    placeholder="Source"
-                    name="source"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.source?.errors}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Destination *
-                  </label>
-                  <CommonTextInput
-                    value={allData?.destination}
-                    id="destination"
-                    type="text"
-                    placeholder="Destination"
-                    name="destination"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.destination?.errors}
-                  </span>
-                </div>
+            >
+              <SimpleBar className="px-6">
+                <header className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 -mx-6 px-6 py-2 mb-4">
+                  <div>
+                    <span className="text-[14px] xl:text-[16px] 2xl:text-[16px] font-bold text-gray-600 dark:text-gray-400 mb-[20px]">
+                      Add Load
+                    </span>
+                  </div>
+                  <div className="cursor-pointer text-2xl text-gray-800 dark:text-gray-200">
+                    <button onClick={handleCloseDrawer}>
+                      <Icon icon="heroicons-outline:x" />
+                    </button>
+                  </div>
+                </header>
+                <div className="grid xl:grid-cols-2 gap-2 py-2 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Load numbers *
+                    </label>
+                    <CommonTextInput
+                      value={allData?.loadNumber}
+                      id="loadNumber"
+                      type="text"
+                      placeholder="Load Number"
+                      name="loadNumber"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.loadNumber?.errors}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Source *
+                    </label>
+                    <CommonTextInput
+                      value={allData?.source}
+                      id="source"
+                      type="text"
+                      placeholder="Source"
+                      name="source"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.source?.errors}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Destination *
+                    </label>
+                    <CommonTextInput
+                      value={allData?.destination}
+                      id="destination"
+                      type="text"
+                      placeholder="Destination"
+                      name="destination"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.destination?.errors}
+                    </span>
+                  </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Pick Up Date *
-                  </label>
-                  <SelectAllDateswithTime
-                    data={allData}
-                    setData={setAllData}
-                    name="pick_up_date_string"
-                    value={allData?.pick_up_date_string}
-                    className="form-control py-[7px] !bg-transparent"
-                    placeholder="Pick Up Date"
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.pick_up_date_string?.errors}
-                  </span>
-                </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Pick Up Date *
+                    </label>
+                    <SelectAllDateswithTime
+                      data={allData}
+                      setData={setAllData}
+                      name="pick_up_date_string"
+                      value={allData?.pick_up_date_string}
+                      className="form-control py-[7px] !bg-transparent"
+                      placeholder="Pick Up Date"
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.pick_up_date_string?.errors}
+                    </span>
+                  </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Delievery Date *
-                  </label>
-                  <SelectAllDateswithTime
-                    data={allData}
-                    setData={setAllData}
-                    name="delievery_date_string"
-                    value={allData?.delievery_date_string}
-                    className="form-control py-[7px] !bg-transparent"
-                    placeholder="Pick Up Date"
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.delievery_date_string?.errors}
-                  </span>
-                </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Delievery Date *
+                    </label>
+                    <SelectAllDateswithTime
+                      data={allData}
+                      setData={setAllData}
+                      name="delievery_date_string"
+                      value={allData?.delievery_date_string}
+                      className="form-control py-[7px] !bg-transparent"
+                      placeholder="Pick Up Date"
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.delievery_date_string?.errors}
+                    </span>
+                  </div>
 
-                {/* <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Earliest Time Arrival
-                  </label>
-                  <CommonTextInput
-                    value={allData?.earliest_time_arrival}
-                    id="earliest_time_arrival"
-                    type="text"
-                    placeholder="Earliest Time Arrival"
-                    name="earliest_time_arrival"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.earliest_time_arrival?.errors}
-                  </span>
-                </div> */}
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Trailer Used *
-                  </label>
-                  <CommonTextInput
-                    value={allData?.trailer_used}
-                    id="trailer_used"
-                    type="text"
-                    placeholder="Trailer Used"
-                    name="trailer_used"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.trailer_used?.errors}
-                  </span>
-                </div>
-                {/* <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Trailer Used
+                    </label>
+                    <CommonTextInput
+                      value={allData?.trailer_used}
+                      id="trailer_used"
+                      type="text"
+                      placeholder="Trailer Used"
+                      name="trailer_used"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      // IsValidate={true}
+                    />
+                    {/* <span className="text-red-500 text-sm">
+                      {FormState?.trailer_used?.errors}
+                    </span> */}
+                  </div>
+                  {/* <div className="flex flex-col gap-2">
                   <label className="text-sm text-gray-600 dark:text-gray-400">
                     Assign To *
                   </label>
@@ -332,129 +320,130 @@ ${
                     {FormState?.assign_to?.errors}
                   </span>
                 </div> */}
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Driver Name*
-                  </label>
-                  <CommonSelectInput
-                    isClearable={true}
-                    className="react-select"
-                    classNamePrefix="select"
-                    name="driver_id"
-                    placeholder="Select Driver Name"
-                    options={driverData}
-                    value={driverData}
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    // IsValidate={true}
-                  />
-                  {/* <span className="text-red-500 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Driver Name*
+                    </label>
+                    <CommonSelectInput
+                      isClearable={true}
+                      className="react-select"
+                      classNamePrefix="select"
+                      name="driver_id"
+                      placeholder="Select Driver Name"
+                      options={driverData}
+                      value={driverData}
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      // IsValidate={true}
+                    />
+                    {/* <span className="text-red-500 text-sm">
                     {FormState?.driver_id?.errors}
                   </span> */}
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Base price *
-                  </label>
-                  <CommonTextInput
-                    value={allData?.base_price}
-                    id="base_price"
-                    type="text"
-                    placeholder=" Base price"
-                    name="base_price"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.base_price?.errors}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Company Name*
-                  </label>
-                  <CommonSelectInput
-                    isClearable={true}
-                    className="react-select"
-                    classNamePrefix="select"
-                    name="company_id"
-                    placeholder="Select Company Name"
-                    options={companyData}
-                    value={companyData}
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={false}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.company_id?.errors}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Final price*
-                  </label>
-                  <CommonTextInput
-                    value={allData?.final_price}
-                    id="final_price"
-                    type="text"
-                    placeholder="Final price"
-                    name="final_price"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.final_price?.errors}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Roc*
-                  </label>
-                  <CommonFileInput
-                    className="react-select text-[#000]"
-                    classNamePrefix="select"
-                    type="file"
-                    name="roc"
-                    placeholder="Roc"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    inputRef={inputRef}
-                  />
-                  {/* <span className="text-red-500 text-sm"> */}
-                  {/* {FormState?.driver_equipment_information?.errors} */}
-                  {/* </span> */}
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <button
-                  className="mt-2  text-white px-4 py-2 rounded hover:bg-success-500 text-success-500 bg-success-500"
-                  onClick={handleSubmit}
-                >
-                  <div className="flex items-center">
-                    <div className=" border-t-2 border-white-500 mr-2"></div>
-                    {/* {isEditOpen == true ? "Update" : "Submit"} */}
                   </div>
-                  Submit
-                </button>
-                <button
-                  className="mt-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-                  onClick={handleCloseDrawer}
-                >
-                  Cancel
-                </button>
-              </div>
-            </SimpleBar>
-          </div>
-        )}
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Base price *
+                    </label>
+                    <CommonTextInput
+                      value={allData?.base_price}
+                      id="base_price"
+                      type="text"
+                      placeholder=" Base price"
+                      name="base_price"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.base_price?.errors}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Company Name*
+                    </label>
+                    <CommonSelectInput
+                      isClearable={true}
+                      className="react-select"
+                      classNamePrefix="select"
+                      name="company_id"
+                      placeholder="Select Company Name"
+                      options={companyData}
+                      value={companyData}
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      IsValidate={false}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.company_id?.errors}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Final price*
+                    </label>
+                    <CommonTextInput
+                      value={allData?.final_price}
+                      id="final_price"
+                      type="text"
+                      placeholder="Final price"
+                      name="final_price"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.final_price?.errors}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Roc*
+                    </label>
+                    <CommonFileInput
+                      className="react-select text-[#000]"
+                      classNamePrefix="select"
+                      type="file"
+                      name="roc"
+                      placeholder="Roc"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      inputRef={inputRef}
+                    />
+                    {/* <span className="text-red-500 text-sm"> */}
+                    {/* {FormState?.driver_equipment_information?.errors} */}
+                    {/* </span> */}
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    className="mt-2  text-white px-4 py-2 rounded hover:bg-success-500 text-success-500 bg-success-500"
+                    onClick={handleSubmit}
+                  >
+                    <div className="flex items-center">
+                      <div className=" border-t-2 border-white-500 mr-2"></div>
+                      {/* {isEditOpen == true ? "Update" : "Submit"} */}
+                    </div>
+                    Submit
+                  </button>
+                  <button
+                    className="mt-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                    onClick={handleCloseDrawer}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </SimpleBar>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

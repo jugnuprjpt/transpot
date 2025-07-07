@@ -50,7 +50,7 @@ const InvoicePending = ({
   });
 
   const [openRequest, setOpenRequest] = useState(false);
-
+  const [showData, setShowData] = useState([]);
   const [requestToInvoiceData, setRequestToInvoiceData] = useState(null);
 
   const handleRequest = async (data) => {
@@ -70,39 +70,16 @@ const InvoicePending = ({
         detention_value: res?.Data?.detentionValue,
         trailer_wash: res?.Data?.trailerWashValue,
         scale_value: res?.Data?.scaleValue,
-        extraStopCharge: res?.Data?.extraStopCharge,
+        extra_stop_charge: res?.Data?.extraStopCharge,
+        amount: data.row.original?.base_price,
       });
-      console.log(res.Data, "res........");
-      console.log(allData, "........");
+      setShowData(res.Data);
       // setRequestToInvoiceData(res.Data);
     } else {
       ShowErrorToast(res.Message);
     }
   };
 
-  const handleRequestToInvoice = () => {
-    console.log(requestToInvoiceData, "deleteData.......");
-    if (requestToInvoiceData) {
-      loadManagementService
-        .requestToInvoiceId(requestToInvoiceData.row.original.load_id)
-        .then((res) => {
-          if (res.Success == true) {
-            ShowSuccessToast(successMessage);
-            // ShowSuccessToast(res?.Data);
-            setIsDeleteDone((prev) => prev + 1);
-            setOpenRequest(false);
-          } else {
-            ShowErrorToast(res.Message);
-            setOpenRequest(false);
-          }
-        });
-    }
-    setOpenRequest(false);
-  };
-
-  const closeModalHandler = () => {
-    setModalOpen(false);
-  };
   const COLUMNS = [
     {
       Header: "load Number",
@@ -403,34 +380,8 @@ const InvoicePending = ({
         requestToInvoiceData={requestToInvoiceData}
         allData={allData}
         setAllData={setAllData}
+        showData={showData}
       />
-      {/* ------------------------------ Modal ---------------------------------------- */}
-      {/* <Modal
-        title="Request To Invoice Confirmation"
-        activeModal={modalOpen}
-        onClose={closeModalHandler}
-        uncontrol={false}
-        centered
-        // className="max-w-xl relative"
-      >
-        <div className="text-base text-slate-600 dark:text-slate-300 mt-4">
-          Are you sure want to Request To Invoice?
-        </div>
-        <div className="flex justify-end space-x-2 mt-4">
-          <button
-            className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600"
-            onClick={closeModalHandler}
-          >
-            Cancel
-          </button>
-          <button
-            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-            onClick={handleRequestToInvoice}
-          >
-            Request To invoice
-          </button>
-        </div>
-      </Modal> */}
     </>
   );
 };

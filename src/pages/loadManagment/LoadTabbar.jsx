@@ -11,6 +11,7 @@ import LoadComplateTable from "./LoadComplateTable";
 import { loadManagementService } from "../../_services/loadManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import LoadCancel from "./LoadCancel";
+import LoadTonuTable from "./LoadTonuTable";
 
 const LoadTabbar = ({
   buttons,
@@ -18,6 +19,7 @@ const LoadTabbar = ({
   tabId,
   setTabId,
   tableData,
+  setTableData,
 }) => {
   //   const { id } = useParams();
 
@@ -139,6 +141,7 @@ const LoadTabbar = ({
                         {item.title === "Assigned"}
                         {item.title === "In Progress"}
                         {item.title === "Complete"}
+                        {item.title === "Tonu"}
                       </span>
                     )}
                   </button>
@@ -155,6 +158,7 @@ const LoadTabbar = ({
                 setOpenLoadCancel={setOpenLoadCancel}
                 loadCancelData={loadCancelData}
                 setLoadCancelData={setLoadCancelData}
+                setTableData={setTableData}
               />
             </Tab.Panel>
 
@@ -179,6 +183,10 @@ const LoadTabbar = ({
 
             <Tab.Panel>
               <LoadComplateTable tableData={tableData} />
+            </Tab.Panel>
+
+            <Tab.Panel>
+              <LoadTonuTable tableData={tableData} />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

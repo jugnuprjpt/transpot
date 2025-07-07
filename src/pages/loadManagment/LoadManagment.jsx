@@ -40,6 +40,11 @@ const LoadManagment = () => {
       icon: "heroicons-outline:cog",
       status: 4,
     },
+    {
+      title: "Tonu",
+      icon: "heroicons-outline:cog",
+      status: 5,
+    },
   ];
 
   // useEffect(() => {
@@ -113,6 +118,7 @@ const LoadManagment = () => {
           handleButtonClick={handleButtonClick}
           tabId={tabId}
           buttons={buttons}
+          setTableData={setTableData}
         />
       </div>
       <LoadManagementCreate

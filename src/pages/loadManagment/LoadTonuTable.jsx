@@ -11,13 +11,83 @@ import {
   usePagination,
 } from "react-table";
 
-import { advancedTable } from "../../constant/table-data";
 import GlobalFilter from "../table/react-tables/GlobalFilter";
 import LoadView from "./LoadView";
 
-const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
+import LoadTonuDrawer from "./LoadTonuDrawer";
+import RequestToInvoice from "../InvoiceManagement/RequestToInvoice";
+import { loadManagementService } from "../../_services/loadManagementService";
+
+const LoadTonuTable = ({
+  title = "Tonu",
+  tableData,
+  openLoadCancel,
+  setOpenLoadCancel,
+  loadCancelData,
+  setLoadCancelData,
+}) => {
+  const [allData, setAllData] = useState({
+    driver_name: "",
+    driver_id: "",
+    load_id: 0,
+    load_number: "",
+    lumper_value: 0,
+    lumper_paid_by: "",
+    detention_value: 0,
+    scale_value: 0,
+    extra_stop_charge: 0,
+    trailer_wash: 0,
+    detention_at: "",
+    company_id: "",
+    amount: 0,
+    layover: "",
+    roc: "",
+  });
   const [open, setOpen] = useState(false);
   const [dovViewData, setDocViewData] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const [showData, setShowData] = useState([]);
+
+  const [openRequest, setOpenRequest] = useState(false);
+  const [requestToInvoiceData, setRequestToInvoiceData] = useState(null);
+
+  const [openComplate, setOpenComplate] = useState(false);
+  const [getProgressData, setGetProgressData] = useState([]);
+
+  const handleComplated = (data) => {
+    setGetProgressData(data?.original);
+    setOpenComplate(true);
+  };
+
+  const handleRequest = async (data) => {
+    setOpenRequest(true);
+    setRequestToInvoiceData(data.original);
+    // handleRequestToInvoice();
+
+    const res = await loadManagementService.requestToInvoiceId(
+      data.original.load_id
+    );
+
+    if (res.Success === true) {
+      setAllData({
+        // ...res?.Data,
+        lumper_value: res?.Data?.lumperValue,
+        layover: res?.Data?.layover,
+        detention_value: res?.Data?.detentionValue,
+        trailer_wash: res?.Data?.trailerWashValue,
+        scale_value: res?.Data?.scaleValue,
+        extra_stop_charge: res?.Data?.extraStopCharge,
+        amount: data.original?.base_price,
+      });
+      setShowData(res.Data);
+
+      // setRequestToInvoiceData(res.Data);
+    } else {
+      ShowErrorToast(res.Message);
+    }
+  };
+
   const handleView = (data) => {
     setOpen(true);
     setDocViewData(data.original);
@@ -102,7 +172,6 @@ const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
         return <span>{row?.cell?.value}</span>;
       },
     },
-
     {
       Header: "action",
       accessor: "action",
@@ -121,6 +190,21 @@ const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
                 onClick={() => handleView(row)}
               >
                 <Icon icon="heroicons:eye" />
+              </button>
+            </Tooltip>
+
+            <Tooltip
+              content="Request to Tonu"
+              placement="top"
+              arrow
+              animation="shift-away"
+            >
+              <button
+                className="action-btn"
+                type="button"
+                onClick={() => handleComplated(row)}
+              >
+                <Icon icon="heroicons:cog" />
               </button>
             </Tooltip>
           </div>
@@ -181,29 +265,29 @@ const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
                 {...getTableProps()}
               >
                 {/* <thead className="bg-slate-200 dark:bg-slate-700">
-                                  {headerGroups.map((headerGroup) => (
-                                    <tr {...headerGroup.getHeaderGroupProps()}>
-                                      {headerGroup.headers.map((column) => (
-                                        <th
-                                          {...column.getHeaderProps(
-                                            column.getSortByToggleProps()
-                                          )}
-                                          scope="col"
-                                          className="table-th"
-                                        >
-                                          {column.render("Header")}
-                                          <span>
-                                            {column.isSorted
-                                              ? column.isSortedDesc
-                                                ? " 🔽"
-                                                : " 🔼"
-                                              : ""}
-                                          </span>
-                                        </th>
-                                      ))}
-                                    </tr>
-                                  ))}
-                                </thead> */}
+                       {headerGroups.map((headerGroup) => (
+                         <tr {...headerGroup.getHeaderGroupProps()}>
+                           {headerGroup.headers.map((column) => (
+                             <th
+                               {...column.getHeaderProps(
+                                 column.getSortByToggleProps()
+                               )}
+                               scope="col"
+                               className="table-th"
+                             >
+                               {column.render("Header")}
+                               <span>
+                                 {column.isSorted
+                                   ? column.isSortedDesc
+                                     ? " 🔽"
+                                     : " 🔼"
+                                   : ""}
+                               </span>
+                             </th>
+                           ))}
+                         </tr>
+                       ))}
+                     </thead> */}
               </table>
 
               {/* Custom cards rendered below the table */}
@@ -281,9 +365,9 @@ const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
                         <div className="flex justify-between items-center px-4 py-2 border-t border-gray-200 dark:border-slate-700 text-xs">
                           <div className="text-gray-500">
                             {/* Rate:{" "}
-                                                   <span className="font-medium text-red-500">
-                                                     {original.base_price}
-                                                   </span> */}
+                                 <span className="font-medium text-red-500">
+                                   {original.base_price}
+                                 </span> */}
                           </div>
 
                           <div className="flex gap-2">
@@ -298,6 +382,38 @@ const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
                                 />
                               </button>
                             </Tooltip>
+                            {row.original.tonu === true && (
+                              <Tooltip
+                                content="Request to Tonu"
+                                placement="top"
+                              >
+                                <button
+                                  className="p-1.5 rounded-full hover:bg-green-100 dark:hover:bg-slate-600 transition"
+                                  onClick={() => handleComplated(row)}
+                                >
+                                  <Icon
+                                    icon="heroicons:cog"
+                                    className="w-5 h-5 text-green-600"
+                                  />
+                                </button>
+                              </Tooltip>
+                            )}
+                            {row.original.tonu === false && (
+                              <Tooltip
+                                content="Request to Invoice"
+                                placement="top"
+                              >
+                                <button
+                                  className="p-1.5 rounded-full hover:bg-green-100 dark:hover:bg-slate-600 transition"
+                                  onClick={() => handleRequest(row)}
+                                >
+                                  <Icon
+                                    icon="heroicons:cog"
+                                    className="w-5 h-5 text-green-600"
+                                  />
+                                </button>
+                              </Tooltip>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -394,8 +510,21 @@ const LoadComplateTable = ({ title = "Load Complate", tableData }) => {
         {/*end*/}
       </Card>
       <LoadView open={open} setOpen={setOpen} dovViewData={dovViewData} />
+      <LoadTonuDrawer
+        openComplate={openComplate}
+        setOpenComplate={setOpenComplate}
+        getProgressData={getProgressData}
+      />
+      <RequestToInvoice
+        openRequest={openRequest}
+        setOpenRequest={setOpenRequest}
+        requestToInvoiceData={requestToInvoiceData}
+        allData={allData}
+        setAllData={setAllData}
+        showData={showData}
+      />
     </>
   );
 };
 
-export default LoadComplateTable;
+export default LoadTonuTable;

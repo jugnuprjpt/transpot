@@ -12,6 +12,7 @@ import {
 } from "../components/ToastMessage/ToastMessage";
 import CommonTextInput from "../components/InputField/CommonTextInput";
 import { docManagementService } from "../../_services/docManagementService";
+import Loading from "@/components/Loading";
 
 const DocumentManagementCreate = ({
   open,
@@ -160,12 +161,18 @@ const DocumentManagementCreate = ({
     // }
   };
   return (
-    <div>
-      {" "}
+    <>
+      {isLoading && (
+        <div className="fixed inset-0 z-[999999] bg-black/40 backdrop-blur-sm flex items-center justify-center">
+          <Loading />
+        </div>
+      )}{" "}
       <div>
-        {open === true && (
-          <div
-            className={`
+        {" "}
+        <div>
+          {open === true && (
+            <div
+              className={`
 setting-wrapper fixed overflow-y-scroll ltr:right-0 rtl:left-0 top-0 md:w-[700px] w-[300px]
 bg-white dark:bg-slate-800 h-screen z-[99999]  md:pb-6 pb-[100px] shadow-base2
 dark:shadow-base3 border border-slate-200 dark:border-slate-700 transition-all duration-150 
@@ -176,259 +183,260 @@ ${
 }
 
 `}
-          >
-            <SimpleBar className="px-6 h-[calc(100%-80px)]">
-              <header className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 -mx-6 px-6 py-2 mb-4">
-                <div>
-                  <span className="text-[14px] xl:text-[16px] 2xl:text-[16px] font-bold text-gray-600 dark:text-gray-400 mb-[20px]">
-                    Add Document
-                  </span>
-                </div>
-                <div className="cursor-pointer text-2xl text-gray-800 dark:text-gray-200">
-                  <button onClick={handleCloseDrawer}>
-                    <Icon icon="heroicons-outline:x" />
-                  </button>
-                </div>
-              </header>
-              <div className="grid xl:grid-cols-2 gap-2 py-2 text-sm">
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Load Number
-                  </label>
-                  <CommonTextInput
-                    value={allData?.load_number}
-                    id="load_number"
-                    type="text"
-                    placeholder="Load Number"
-                    name="load_number"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={true}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.load_number?.errors}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Driver Name
-                  </label>
-                  <CommonSelectInput
-                    isClearable={true}
-                    className="react-select"
-                    classNamePrefix="select"
-                    name="driver_id"
-                    placeholder="Select Driver Name"
-                    options={driverData}
-                    value={driverData}
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    SetFormState={SetFormState}
-                    IsValidate={false}
-                  />
-                  <span className="text-red-500 text-sm">
-                    {FormState?.driver_id?.errors}
-                  </span>
-                </div>
+            >
+              <SimpleBar className="px-6 h-[calc(100%-80px)]">
+                <header className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 -mx-6 px-6 py-2 mb-4">
+                  <div>
+                    <span className="text-[14px] xl:text-[16px] 2xl:text-[16px] font-bold text-gray-600 dark:text-gray-400 mb-[20px]">
+                      Add Document
+                    </span>
+                  </div>
+                  <div className="cursor-pointer text-2xl text-gray-800 dark:text-gray-200">
+                    <button onClick={handleCloseDrawer}>
+                      <Icon icon="heroicons-outline:x" />
+                    </button>
+                  </div>
+                </header>
+                <div className="grid xl:grid-cols-2 gap-2 py-2 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Load Number
+                    </label>
+                    <CommonTextInput
+                      value={allData?.load_number}
+                      id="load_number"
+                      type="text"
+                      placeholder="Load Number"
+                      name="load_number"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.load_number?.errors}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Driver Name
+                    </label>
+                    <CommonSelectInput
+                      isClearable={true}
+                      className="react-select"
+                      classNamePrefix="select"
+                      name="driver_id"
+                      placeholder="Select Driver Name"
+                      options={driverData}
+                      value={driverData}
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      IsValidate={false}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.driver_id?.errors}
+                    </span>
+                  </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Roc
-                  </label>
-                  <CommonFileInput
-                    className="react-select text-[#000]"
-                    classNamePrefix="select"
-                    type="file"
-                    name="roc"
-                    placeholder="Roc"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    inputRef={inputRef}
-                    // disabled={isAnyFileSelected && allData.roc === ""}
-                  />
-                  {/* <span className="text-red-500 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Roc
+                    </label>
+                    <CommonFileInput
+                      className="react-select text-[#000]"
+                      classNamePrefix="select"
+                      type="file"
+                      name="roc"
+                      placeholder="Roc"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      inputRef={inputRef}
+                      // disabled={isAnyFileSelected && allData.roc === ""}
+                    />
+                    {/* <span className="text-red-500 text-sm">
                     {FormState?.roc?.errors}
                   </span> */}
-                </div>
+                  </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Pod
-                  </label>
-                  <CommonFileInput
-                    className="react-select text-[#000]"
-                    classNamePrefix="select"
-                    type="file"
-                    name="pod"
-                    placeholder="Pod"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    inputRef={inputRef}
-                    // disabled={isAnyFileSelected && allData.pod === ""}
-                  />
-                  {/* <span className="text-red-500 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Pod
+                    </label>
+                    <CommonFileInput
+                      className="react-select text-[#000]"
+                      classNamePrefix="select"
+                      type="file"
+                      name="pod"
+                      placeholder="Pod"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      inputRef={inputRef}
+                      // disabled={isAnyFileSelected && allData.pod === ""}
+                    />
+                    {/* <span className="text-red-500 text-sm">
                     {FormState?.pod?.errors}
                   </span> */}
-                </div>
+                  </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Fuel Reciept
-                  </label>
-                  <CommonFileInput
-                    className="react-select text-[#000]"
-                    classNamePrefix="select"
-                    type="file"
-                    name="fuel_reciept"
-                    placeholder="Fuel Reciept"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    inputRef={inputRef}
-                    // disabled={isAnyFileSelected && allData.fuel_reciept === ""}
-                  />
-                  {/* <span className="text-red-500 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Fuel Reciept
+                    </label>
+                    <CommonFileInput
+                      className="react-select text-[#000]"
+                      classNamePrefix="select"
+                      type="file"
+                      name="fuel_reciept"
+                      placeholder="Fuel Reciept"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      inputRef={inputRef}
+                      // disabled={isAnyFileSelected && allData.fuel_reciept === ""}
+                    />
+                    {/* <span className="text-red-500 text-sm">
                     {FormState?.fuel_reciept?.errors}
                   </span> */}
-                </div>
+                  </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Annual Dot inspection
-                  </label>
-                  <CommonFileInput
-                    className="react-select text-[#000]"
-                    classNamePrefix="select"
-                    type="file"
-                    name="annual_dot_inspection"
-                    placeholder="Annual Dot inspection"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    inputRef={inputRef}
-                    // disabled={
-                    //   isAnyFileSelected && allData.annual_dot_inspection === ""
-                    // }
-                  />
-                  {/* <span className="text-red-500 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Annual Dot inspection
+                    </label>
+                    <CommonFileInput
+                      className="react-select text-[#000]"
+                      classNamePrefix="select"
+                      type="file"
+                      name="annual_dot_inspection"
+                      placeholder="Annual Dot inspection"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      inputRef={inputRef}
+                      // disabled={
+                      //   isAnyFileSelected && allData.annual_dot_inspection === ""
+                      // }
+                    />
+                    {/* <span className="text-red-500 text-sm">
                     {FormState?.annual_dot_inspection?.errors}
                   </span> */}
-                </div>
+                  </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Truck and Trailer Repair
-                  </label>
-                  <CommonFileInput
-                    className="react-select text-[#000]"
-                    classNamePrefix="select"
-                    type="file"
-                    name="truck_and_trailer_repair"
-                    placeholder="Truck and Trailer Repair"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    inputRef={inputRef}
-                    // disabled={
-                    //   isAnyFileSelected &&
-                    //   allData.truck_and_trailer_repair === ""
-                    // }
-                  />
-                  {/* <span className="text-red-500 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Truck and Trailer Repair
+                    </label>
+                    <CommonFileInput
+                      className="react-select text-[#000]"
+                      classNamePrefix="select"
+                      type="file"
+                      name="truck_and_trailer_repair"
+                      placeholder="Truck and Trailer Repair"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      inputRef={inputRef}
+                      // disabled={
+                      //   isAnyFileSelected &&
+                      //   allData.truck_and_trailer_repair === ""
+                      // }
+                    />
+                    {/* <span className="text-red-500 text-sm">
                     {FormState?.truck_and_trailer_repair?.errors}
                   </span> */}
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Ifta Quaterly
-                  </label>
-                  <CommonFileInput
-                    className="react-select text-[#000]"
-                    classNamePrefix="select"
-                    type="file"
-                    name="ifta_quaterly"
-                    placeholder="Ifta Quaterly"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    inputRef={inputRef}
-                    // disabled={isAnyFileSelected && allData.ifta_quaterly === ""}
-                  />
-                  {/* <span className="text-red-500 text-sm">
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Ifta Quaterly
+                    </label>
+                    <CommonFileInput
+                      className="react-select text-[#000]"
+                      classNamePrefix="select"
+                      type="file"
+                      name="ifta_quaterly"
+                      placeholder="Ifta Quaterly"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      inputRef={inputRef}
+                      // disabled={isAnyFileSelected && allData.ifta_quaterly === ""}
+                    />
+                    {/* <span className="text-red-500 text-sm">
                     {FormState?.ifta_quaterly?.errors}
                   </span> */}
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Truck Trailer Serivices
-                  </label>
-                  <CommonFileInput
-                    className="react-select text-[#000]"
-                    classNamePrefix="select"
-                    type="file"
-                    name="truck_trailer_serivices"
-                    placeholder="Truck Trailer Serivices"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    inputRef={inputRef}
-                    // disabled={
-                    //   isAnyFileSelected &&
-                    //   allData.truck_trailer_serivices === ""
-                    // }
-                  />
-                  {/* <span className="text-red-500 text-sm">
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Truck Trailer Serivices
+                    </label>
+                    <CommonFileInput
+                      className="react-select text-[#000]"
+                      classNamePrefix="select"
+                      type="file"
+                      name="truck_trailer_serivices"
+                      placeholder="Truck Trailer Serivices"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      inputRef={inputRef}
+                      // disabled={
+                      //   isAnyFileSelected &&
+                      //   allData.truck_trailer_serivices === ""
+                      // }
+                    />
+                    {/* <span className="text-red-500 text-sm">
                     {FormState?.truck_trailer_serivices?.errors}
                   </span> */}
-                </div>
+                  </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-gray-600 dark:text-gray-400">
-                    Driver Equipment Information
-                  </label>
-                  <CommonFileInput
-                    className="react-select text-[#000]"
-                    classNamePrefix="select"
-                    type="file"
-                    name="driver_equipment_information"
-                    placeholder="Driver Equipment Information"
-                    tenderForm={allData}
-                    setTenderForm={setAllData}
-                    inputRef={inputRef}
-                    // disabled={
-                    //   isAnyFileSelected &&
-                    //   allData.driver_equipment_information === ""
-                    // }
-                  />
-                  {/* <span className="text-red-500 text-sm">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Driver Equipment Information
+                    </label>
+                    <CommonFileInput
+                      className="react-select text-[#000]"
+                      classNamePrefix="select"
+                      type="file"
+                      name="driver_equipment_information"
+                      placeholder="Driver Equipment Information"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      inputRef={inputRef}
+                      // disabled={
+                      //   isAnyFileSelected &&
+                      //   allData.driver_equipment_information === ""
+                      // }
+                    />
+                    {/* <span className="text-red-500 text-sm">
                     {FormState?.driver_equipment_information?.errors}
                   </span> */}
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <button
-                  className={`mt-2 text-white px-4 py-2 rounded ${
-                    isFileUploaded
-                      ? "bg-success-500 hover:bg-success-600"
-                      : "bg-gray-400 cursor-not-allowed opacity-70"
-                  }`}
-                  onClick={handleSubmit}
-                >
-                  <div className="flex items-center">
-                    <div className=" border-t-2 border-white-500 mr-2"></div>
-                    {/* {isEditOpen == true ? "Update" : "Submit"} */}
                   </div>
-                  Submit
-                </button>
-                <button
-                  className="mt-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-                  onClick={handleCloseDrawer}
-                >
-                  Cancel
-                </button>
-              </div>
-            </SimpleBar>
-          </div>
-        )}
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    className={`mt-2 text-white px-4 py-2 rounded ${
+                      isFileUploaded
+                        ? "bg-success-500 hover:bg-success-600"
+                        : "bg-gray-400 cursor-not-allowed opacity-70"
+                    }`}
+                    onClick={handleSubmit}
+                  >
+                    <div className="flex items-center">
+                      <div className=" border-t-2 border-white-500 mr-2"></div>
+                      {/* {isEditOpen == true ? "Update" : "Submit"} */}
+                    </div>
+                    Submit
+                  </button>
+                  <button
+                    className="mt-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                    onClick={handleCloseDrawer}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </SimpleBar>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

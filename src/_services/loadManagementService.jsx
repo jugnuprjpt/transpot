@@ -12,12 +12,14 @@ export const loadManagementService = {
   loadCancel,
   loadInProgress,
   progressComplated,
+  requestToTonu,
   driverDispatchListing,
   invoicePendingInvoiced,
   invoiceComplete,
   requestToInvoiceId,
   requestToInvoice,
   requestToComplete,
+  pendingAll,
   // driverDispatchListing,
   // loadCancel,
 };
@@ -74,6 +76,12 @@ function progressComplated(data) {
   });
 }
 
+function requestToTonu(data) {
+  return http.post(`${RouteUrls.requestToTonu}`, data, true, {
+    "Content-Type": "multipart/form-data",
+  });
+}
+
 function invoicePendingInvoiced(data) {
   return http.get(`${RouteUrls.invoicePendingInvoiced}/${data}`, true);
 }
@@ -106,4 +114,8 @@ function driverDispatchListing(data) {
     `${RouteUrls.driverDispatchListing}/${data?.driver_id}/${data?.year_month}`,
     true
   );
+}
+
+function pendingAll(data) {
+  return http.get(`${RouteUrls.pendingAll}/${data}`, true);
 }

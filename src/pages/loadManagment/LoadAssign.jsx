@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SimpleBar from "simplebar-react";
 import Icon from "@/components/ui/Icon";
 import useGetDriverListing from "../../hooks/useDriverListing";
@@ -9,15 +9,11 @@ import {
 } from "../components/ToastMessage/ToastMessage";
 import CommonSelectInput from "../components/InputField/CommonSelectInput";
 import { loadManagementService } from "../../_services/loadManagementService";
+import Loading from "@/components/Loading";
 
-function LoadAssign({
-  loadAssignOpen,
-  setLoadAssignOpen,
-  assigmentData,
-  isEditOpen,
-}) {
+function LoadAssign({ loadAssignOpen, setLoadAssignOpen, assigmentData }) {
+  const [isLoading, setIsLoading] = useState(false);
   const { driverData } = useGetDriverListing();
-
   const [FormState, SetFormState] = useState({
     driver_name: { errors: "", valid: false },
   });
@@ -32,8 +28,6 @@ function LoadAssign({
     });
   };
 
-  console.log(assigmentData, "assigmentData....");
-
   const handleSubmit = async () => {
     const isFormValid = ValidaterHelper.ValidateFromState(
       FormState,
@@ -47,10 +41,7 @@ function LoadAssign({
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    // setIsLoading(true);
-    // if (isEditOpen == false) {
-    // const formdata = new FormData();
-
+    setIsLoading(true);
     const formData = {
       driver_name: allData?.driver_name,
       driver_id: allData?.driver_id,
@@ -60,26 +51,18 @@ function LoadAssign({
       load_id: assigmentData?.loadId,
       load_doc_base_path: assigmentData?.documentPath,
       driver_doc_base_path: "",
+      driver_documents_id: assigmentData?.driver_documents_id,
     };
-
-    // formdata.append("driver_name", allData?.driver_name);
-    // formdata.append("driver_id", allData?.driver_id);
-    // formdata.append("old_driver_name", assigmentData?.driverName);
-    // formdata.append("load_number", assigmentData?.loadNumber);
-    // formdata.append("file_name", assigmentData?.originalDocumentName);
-    // formdata.append("load_id", assigmentData?.loadId);
-    // formdata.append("load_doc_base_path", assigmentData?.documentPath);
-    // formdata.append("driver_doc_base_path", allData?.driver_doc_base_path);
 
     const res = await loadManagementService.loadAssign(formData);
 
     if (res.Success == true) {
-      // setIsLoading(false);
+      setIsLoading(false);
       ShowSuccessToast(res?.Message);
       setLoadAssignOpen(false);
       handleCloseDrawer();
     } else {
-      // setIsLoading(false);
+      setIsLoading(false);
       ShowErrorToast("Something Went Wrong");
     }
     // }
@@ -88,7 +71,11 @@ function LoadAssign({
     <>
       {" "}
       <>
-        {" "}
+        {isLoading && (
+          <div className="fixed inset-0 z-[999999] bg-black/40 backdrop-blur-sm flex items-center justify-center">
+            <Loading />
+          </div>
+        )}{" "}
         <div>
           {loadAssignOpen === true && (
             <div
