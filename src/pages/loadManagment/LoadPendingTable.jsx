@@ -18,6 +18,8 @@ import LoadView from "./LoadView";
 import { loadManagementService } from "../../_services/loadManagementService";
 import LoadCancel from "./LoadCancel";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
+import axios from "axios";
+import { http } from "../../_apiConfig/http";
 
 const LoadPendingTable = ({
   title = "Load Pending",
@@ -75,6 +77,7 @@ const LoadPendingTable = ({
   const [dovViewData, setDocViewData] = useState([]);
 
   const [assigmentData, setAssigmentData] = useState([]);
+  const token = localStorage.getItem("token");
 
   const handleDeleteClick = (data) => {
     console.log(data, "data..........");
@@ -95,7 +98,7 @@ const LoadPendingTable = ({
     setOpen(true);
     setDocViewData(data.original);
   };
-
+  console.log(tabId, "...");
   const handleButtonClick = async (title, index) => {
     setTabId(index);
     const statusId = Pendingbuttons[index]?.status;
@@ -114,6 +117,67 @@ const LoadPendingTable = ({
     }
   };
 
+  // const handleExportToPdf = async () => {
+  //   const resp = await loadManagementService.loadExportPdf(
+  //     formatDate(todayDate)
+  //   );
+  //   console.log(resp, "...");
+  //   if (resp.ok) {
+  //     const blob = await resp.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.setAttribute("download", `Manual Document-${data.tender_id}.zip`);
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     link.parentNode.removeChild(link);
+
+  //     URL.revokeObjectURL(url);
+  //   } else {
+  //     ShowErrorToast("No Document Found");
+  //     console.error("Failed to download the document");
+  //   }
+  // };
+
+  const handleExportToPdf = async (data) => {
+    try {
+      // setIsLoading(true);
+      const url = `https://1d6f48d0e710.ngrok-free.app/api/my_loads/my_load_report/pdf/${formatDate(
+        todayDate
+      )}`;
+
+      const res = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+
+        responseType: "blob",
+        withCredentials: true,
+        mode: "cors",
+      });
+
+      console.log(res, "ds...");
+
+      if (res.status === 200) {
+        const blob = new Blob([res.data]);
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `Today.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        ShowErrorToast("No Document Found");
+        console.error("Failed to download the document");
+      }
+    } catch (error) {
+      console.error("Error fetching the document", error);
+    } finally {
+      // setIsLoading(false);
+    }
+  };
   const COLUMNS = [
     {
       Header: "load Id",
@@ -300,10 +364,11 @@ const LoadPendingTable = ({
           <Tab.Group defaultIndex={0}>
             <Tab.List className="lg:space-x-8 md:space-x-4 space-x-0 rtl:space-x-reverse border-b border-[#d7d7d7] mb-[10px]">
               {Pendingbuttons.map((item, i) => (
-                <Tab as={Fragment} key={i}>
-                  {({ selected }) => (
-                    <button
-                      className={`sm:text-[15px] md:text-[15px] lg:text-[15px] xl:text-[15px] 2xl:text-lg font-medium mb-2 capitalize 
+                <>
+                  <Tab as={Fragment} key={i}>
+                    {({ selected }) => (
+                      <button
+                        className={`sm:text-[15px] md:text-[15px] lg:text-[15px] xl:text-[15px] 2xl:text-lg font-medium mb-2 capitalize 
             dark:bg-slate-800 ring-0 foucs:ring-0 focus:outline-none px-2
             transition duration-150 before:transition-all  before:duration-150 relative 
             before:absolute before:left-1/2 before:bottom-[-9px] before:h-[2px] before:bg-[#46ab27]
@@ -313,17 +378,27 @@ const LoadPendingTable = ({
                 ? "text-[#46ab27] before:w-full"
                 : "text-[#000] before:w-0 dark:text-slate-300"
             }`}
-                      onClick={() => handleButtonClick(item.title, i)}
-                    >
-                      {item.title}
-                    </button>
-                  )}
-                </Tab>
+                        onClick={() => handleButtonClick(item.title, i)}
+                      >
+                        {item.title}
+                      </button>
+                    )}
+                  </Tab>
+                </>
               ))}
             </Tab.List>
           </Tab.Group>
 
-          <div>
+          <div className="flex items-center justify-between mb-4 space-x-6">
+            {tabId === 1 && (
+              <button
+                onClick={handleExportToPdf}
+                className="inline-block min-w-[80px] text-center  border border-success-500 text-[14px] font-medium px-[16px] py-[4px] bg-transparent text-success-600 hover:bg-success-100 transition"
+              >
+                Export To PDF
+              </button>
+            )}
+
             <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
           </div>
         </div>

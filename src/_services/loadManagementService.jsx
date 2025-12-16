@@ -1,3 +1,4 @@
+import api from "../_apiConfig/baseapi";
 import { http } from "../_apiConfig/http";
 import { RouteUrls } from "../_apiConfig/routeUrls";
 
@@ -21,7 +22,7 @@ export const loadManagementService = {
   requestToComplete,
   pendingAll,
   // driverDispatchListing,
-  // loadCancel,
+  loadExportPdf,
 };
 
 function loadAssigment(data) {
@@ -118,4 +119,16 @@ function driverDispatchListing(data) {
 
 function pendingAll(data) {
   return http.get(`${RouteUrls.pendingAll}/${data}`, true);
+}
+
+async function loadExportPdf(data) {
+  const response = await fetch(
+    `${api.defaults.baseURL}${RouteUrls.loadExportPdf}/${data}`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return response;
 }

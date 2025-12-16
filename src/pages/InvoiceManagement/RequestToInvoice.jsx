@@ -224,6 +224,26 @@ ${
 
                   <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Rate
+                    </label>
+                    <CommonTextInput
+                      value={allData?.amount}
+                      id="amount"
+                      type="text"
+                      placeholder="Amount"
+                      name="amount"
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.amount?.errors}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
                       Trailer Wash
                     </label>
                     <CommonTextInput
@@ -335,26 +355,6 @@ ${
                     {/* <span className="text-red-500 text-sm">
                       {FormState?.layover?.errors}
                     </span> */}
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">
-                      Amount
-                    </label>
-                    <CommonTextInput
-                      value={allData?.amount}
-                      id="amount"
-                      type="text"
-                      placeholder="Amount"
-                      name="amount"
-                      tenderForm={allData}
-                      setTenderForm={setAllData}
-                      SetFormState={SetFormState}
-                      IsValidate={true}
-                    />
-                    <span className="text-red-500 text-sm">
-                      {FormState?.amount?.errors}
-                    </span>
                   </div>
 
                   <div className="flex flex-col gap-2">
