@@ -1,7 +1,6 @@
 // import axios from "axios";
 
-// const apiurl =
-//   "https://c2f5-2409-40c2-129c-f4b3-c4a6-b07-8fee-ab8e.ngrok-free.app";
+// const apiurl = "https://ded575057d1d.ngrok-free.app";
 
 // export default axios.create({
 //   baseURL: apiurl,

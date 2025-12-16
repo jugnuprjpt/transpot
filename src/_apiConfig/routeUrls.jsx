@@ -22,7 +22,7 @@ export const RouteUrls = {
   progressComplated: "api/load/completion",
   requestToTonu: "api/load/request_to_invoice_for_tonu",
   pendingAll: "api/my_loads/get_my_loads",
-  // pendingTodayTomorrowThenextday: "api/my_loads/get_my_loads",
+  loadExportPdf: "api/my_loads/my_load_report/pdf",
 
   // --------------Invoice--------------
   invoicePendingInvoiced: "api/invoice_summary/by-invoiced-status",

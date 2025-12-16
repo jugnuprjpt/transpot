@@ -392,7 +392,7 @@ const LoadTonuTable = ({
                                   onClick={() => handleComplated(row)}
                                 >
                                   <Icon
-                                    icon="heroicons:cog"
+                                    icon="heroicons:truck"
                                     className="w-5 h-5 text-green-600"
                                   />
                                 </button>

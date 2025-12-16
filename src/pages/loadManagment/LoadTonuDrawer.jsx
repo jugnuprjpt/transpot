@@ -20,7 +20,7 @@ function LoadTonuDrawer({ openComplate, setOpenComplate, getProgressData }) {
 
   const [FormState, SetFormState] = useState({
     new_load_number: { errors: "", valid: false },
-    tonu: { errors: "", valid: false },
+    // tonu: { errors: "", valid: false },
     tonu_charges: { errors: "", valid: false },
     // requesting_user: { errors: "", valid: false },
     roc: { errors: "", valid: false },
@@ -78,7 +78,7 @@ function LoadTonuDrawer({ openComplate, setOpenComplate, getProgressData }) {
     formdata.append("load_id", getProgressData?.load_id);
     formdata.append("old_load_number", getProgressData?.load_number);
     formdata.append("new_load_number", allData?.new_load_number);
-    formdata.append("tonu", allData?.tonu);
+    formdata.append("tonu", getProgressData?.tonu);
     formdata.append("company_id", getProgressData?.company_id);
     formdata.append("tonu_charges", allData?.tonu_charges);
     // formdata.append("requesting_user", allData?.requesting_user);
@@ -246,7 +246,7 @@ ${
                     </span>
                   </div>
 
-                  <div className="flex flex-col gap-2">
+                  {/* <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
                       Tonu
                     </label>
@@ -266,7 +266,7 @@ ${
                     <span className="text-red-500 text-sm">
                       {FormState?.tonu?.errors}
                     </span>
-                  </div>
+                  </div> */}
 
                   <div className="flex flex-col gap-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">
@@ -286,6 +286,13 @@ ${
                     <span className="text-red-500 text-sm">
                       {FormState?.roc?.errors}
                     </span>
+                  </div>
+                  <div className="flex flex-col gap-2 mt-4">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Tonu
+                    </label>
+
+                    <span>{getProgressData?.tonu === true ? "Yes" : "No"}</span>
                   </div>
                 </div>
 

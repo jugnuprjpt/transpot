@@ -37,8 +37,8 @@ function LoadComplatedDrawer({
     pod: { errors: "", valid: false },
     // load_approval: { errors: "", valid: false },
     // scale_reciept: { errors: "", valid: false },
-    // is_detention: { errors: "", valid: false },
-    // is_layover: { errors: "", valid: false },
+    // detention_flag: { errors: "", valid: false },
+    // layover_flag: { errors: "", valid: false },
   });
   const [allData, setAllData] = useState({
     driver_name: "",
@@ -57,8 +57,9 @@ function LoadComplatedDrawer({
     layover_value: 0,
     pod: "",
     load_approval: 0,
-    detention: "",
-    layover: "",
+    detention_flag: "",
+    layover_flag: "",
+    log_applicable_flag: 0,
   });
 
   const detentionData = [
@@ -72,6 +73,11 @@ function LoadComplatedDrawer({
   ];
 
   const loadSelect = [
+    { value: "True", label: "Yes" },
+    { value: "False", label: "No" },
+  ];
+
+  const logAppicable = [
     { value: "True", label: "Yes" },
     { value: "False", label: "No" },
   ];
@@ -94,8 +100,9 @@ function LoadComplatedDrawer({
       amount: 0,
       layover_value: 0,
       pod: "",
-      detention: "",
-      layover: "",
+      detention_flag: "",
+      layover_flag: "",
+      log_applicable_flag: 0,
     });
   };
 
@@ -139,14 +146,18 @@ function LoadComplatedDrawer({
     formdata.append("company_id", getProgressData?.company_id);
     formdata.append("amount", allData?.amount);
     formdata.append("layover_value", allData?.layover_value);
+    formdata.append("log_applicable_flag", allData?.log_applicable_flag);
+
+    formdata.append("load_approval", allData?.load_approval);
+
     formdata.append("pod", allData?.pod);
     formdata.append(
-      "detention",
-      allData?.detention === "" ? "False" : allData?.detention
+      "detention_flag",
+      allData?.detention_flag === "" ? "False" : allData?.detention_flag
     );
     formdata.append(
-      "layover",
-      allData?.layover === "" ? "False" : allData?.layover
+      "layover_flag",
+      allData?.layover_flag === "" ? "False" : allData?.layover_flag
     );
 
     const res = await loadManagementService.progressComplated(formdata);
@@ -310,6 +321,28 @@ ${
                     />
                     <span className="text-red-500 text-sm">
                       {FormState?.load_approval?.errors}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Log Appilicable
+                    </label>
+
+                    <CommonSelectInput
+                      isClearable={true}
+                      className="react-select"
+                      classNamePrefix="select"
+                      name="log_applicable_flag"
+                      placeholder="Log Appilicable"
+                      options={logAppicable}
+                      value={logAppicable}
+                      tenderForm={allData}
+                      setTenderForm={setAllData}
+                      SetFormState={SetFormState}
+                      IsValidate={true}
+                    />
+                    <span className="text-red-500 text-sm">
+                      {FormState?.log_applicable_flag?.errors}
                     </span>
                   </div>
 
@@ -477,7 +510,7 @@ ${
                           isClearable={true}
                           className="react-select"
                           classNamePrefix="select"
-                          name="layover"
+                          name="layover_flag"
                           placeholder="Lumper"
                           options={layoverData}
                           value={layoverData}
@@ -487,7 +520,7 @@ ${
                           IsValidate={true}
                         />
                         <span className="text-red-500 text-sm">
-                          {FormState?.layover?.errors}
+                          {FormState?.layover_flag?.errors}
                         </span>
                       </div>
                       <div className="flex flex-col gap-2">
@@ -498,7 +531,7 @@ ${
                           isClearable={true}
                           className="react-select"
                           classNamePrefix="select"
-                          name="detention"
+                          name="detention_flag"
                           placeholder="Select Is Detention"
                           options={detentionData}
                           value={detentionData}
@@ -508,7 +541,7 @@ ${
                           IsValidate={true}
                         />
                         <span className="text-red-500 text-sm">
-                          {FormState?.detention?.errors}
+                          {FormState?.detention_flag?.errors}
                         </span>
                       </div>
                     </>
