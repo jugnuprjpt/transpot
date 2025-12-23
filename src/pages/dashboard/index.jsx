@@ -10,9 +10,20 @@ import RecentActivity from "@/components/partials/widget/recent-activity";
 import MostSales from "../../components/partials/widget/most-sales";
 import RadarChart from "../../components/partials/widget/chart/radar-chart";
 import HomeBredCurbs from "./HomeBredCurbs";
+import Grid from "@/components/skeleton/Grid";
 
-const Dashboard = () => {
+const Dashboard = ({ loading = false }) => {
   const [filterMap, setFilterMap] = useState("usa");
+  
+  if (loading) {
+    return (
+      <div>
+        <HomeBredCurbs title="Dashboard" />
+        <Grid count={6} />
+      </div>
+    );
+  }
+  
   return (
     <div>
       <HomeBredCurbs title="Dashboard" />

@@ -15,9 +15,12 @@ import {
 import BriefCaseFilter from "./BriefCaseFilter";
 import { docManagementService } from "../../_services/docManagementService";
 import DocView from "../documentManagement/DocView";
+import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
+import SkeletonTable from "@/components/skeleton/Table";
 
 const BriefCase = () => {
   const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [tenderForm, setTenderForm] = useState({
     document_month: "",
     document_year: "",
@@ -32,7 +35,7 @@ const BriefCase = () => {
   };
 
   useEffect(() => {
-    // setLoading(true);
+    setLoading(true);
     docListing();
   }, []);
 
@@ -42,15 +45,16 @@ const BriefCase = () => {
     try {
       const res = await docManagementService.docManagementListing();
       if (res.Success === true) {
-        // setLoading(false);
+        setLoading(false);
         setTableData(res?.Data);
       } else {
         setTableData([]);
-        // setLoading(false);
+        setLoading(false);
         ShowErrorToast("Something Went Wrong");
       }
     } catch (error) {
       console.error("Error:", error);
+      setLoading(false);
     }
   };
 
@@ -202,6 +206,17 @@ const BriefCase = () => {
   } = tableInstance;
 
   const { globalFilter, pageIndex, pageSize } = state;
+
+  if (loading) {
+    return (
+      <Card noborder>
+        <div className="md:flex pb-6 items-center">
+          <h6 className="flex-1 md:mb-0 mb-3">BriefCase</h6>
+        </div>
+        <SkeletonTable columns={8} count={8} />
+      </Card>
+    );
+  }
 
   return (
     <>
