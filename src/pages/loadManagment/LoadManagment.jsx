@@ -4,6 +4,7 @@ import LoadManagementCreate from "./LoadManagementCreate";
 import { loadManagementService } from "../../_services/loadManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import LoadTabbar from "./LoadTabbar";
+import PageLayout from "@/components/page/PageLayout";
 
 const LoadManagment = () => {
   const [open, setOpen] = useState(false);
@@ -78,6 +79,7 @@ const LoadManagment = () => {
   }, [isEditDone, isCreateDone]);
   // Keep this after
   const handleButtonClick = async (title, index) => {
+    setLoading(true);
     setTabId(index);
     const statusId = buttons[index]?.status;
 
@@ -87,59 +89,60 @@ const LoadManagment = () => {
       );
       if (res.Success) {
         setTableData(res.Data);
+        setLoading(false);
       } else {
         setTableData([]);
+        setLoading(false);
         ShowErrorToast("Something went wrong");
       }
     } catch (error) {
       console.error("Error:", error);
+      setLoading(false);
       ShowErrorToast("API Error");
     }
   };
+  
+  const actions = [
+    <span
+      key="add-load"
+      className="float-left inline-block min-w-[90px] text-center mx-auto rounded-[999px] bg-success-500 text-[16px] font-semibold px-[30px] py-[7px] text-[#fff] cursor-pointer"
+      onClick={handleCreate}
+    >
+      <Icon
+        icon="heroicons:plus"
+        className="w-5 h-5 float-left mr-[5px] mt-[2px]"
+      />
+      Add Load
+    </span>,
+  ];
+
   return (
-    <div className="float-left w-full">
-      <div className="text-[20px] font-bold text-[#000] w-full float-right">
-        <div className="float-right">
-          <span
-            className="float-left inline-block min-w-[90px] text-center mx-auto rounded-[999px]  bg-success-500  text-[16px] font-semibold px-[30px] py-[7px] text-[#fff] cursor-pointer"
-            onClick={handleCreate}
-          >
-            <Icon
-              icon="heroicons:plus"
-              className="w-5 h-5 float-left mr-[5px] mt-[2px]"
-            />
-            Add Load
-          </span>
-        </div>
-      </div>
-      <div className=" float-left w-full">
+    <>
+      <PageLayout
+        title="Load Management"
+        actions={actions}
+        loading={false}
+        showHeaderSkeleton={false}
+      >
         <LoadTabbar
           tableData={tableData}
           handleButtonClick={handleButtonClick}
           tabId={tabId}
           buttons={buttons}
           setTableData={setTableData}
+          loading={loading}
         />
-      </div>
+      </PageLayout>
       <LoadManagementCreate
         open={open}
         setOpen={setOpen}
         isEditOpen={isEditOpen}
         setIsEditOpen={setIsEditOpen}
         handleButtonClick={handleButtonClick}
-        // loadListing={loadListing}
-        // isCreateOpen={isCreateOpen}
-        // setIsCreateOpen={setIsCreateOpen}
         isCreateDone={isCreateDone}
         setIsCreateDone={setIsCreateDone}
-        // editId={editId}
-        // setEditId={setEditId}
-        // isEditOpen={isEditOpen}
-        // setIsEditOpen={setIsEditOpen}
-        // isEditDone={isEditDone}
-        // setIsEditDone={setIsEditDone}
       />
-    </div>
+    </>
   );
 };
 

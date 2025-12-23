@@ -9,6 +9,7 @@ import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import InvoicePending from "./InvoicePending";
 import InvoiceComplete from "./InvoiceComplete";
 import InvoiceInvoiced from "./InvoiceInvoiced";
+import SkeletonTable from "@/components/skeleton/Table";
 
 const buttons = [
   {
@@ -34,6 +35,7 @@ const InvoiceTabbar = () => {
   //   const { id } = useParams();
   const [tableData, setTableData] = useState([]);
   const [tabId, setTabId] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const [page, setPage] = useState(1);
   const [tenderCount, setTenderCount] = useState({
@@ -66,6 +68,7 @@ const InvoiceTabbar = () => {
   }, []);
   // Keep this after
   const handleButtonClick = async (title, index) => {
+    setLoading(true);
     setTabId(index);
     const statusId = buttons[index]?.status;
 
@@ -83,12 +86,15 @@ const InvoiceTabbar = () => {
 
       if (res.Success) {
         setTableData(res.Data);
+        setLoading(false);
       } else {
         setTableData([]);
+        setLoading(false);
         ShowErrorToast("Something went wrong");
       }
     } catch (error) {
       console.error("Error:", error);
+      setLoading(false);
       ShowErrorToast("API Error");
     }
   };
@@ -141,32 +147,44 @@ const InvoiceTabbar = () => {
 
           <Tab.Panels>
             <Tab.Panel>
-              <InvoicePending
-                tableData={tableData}
-                handleView={handleView}
-                open={open}
-                setOpen={setOpen}
-                pendingData={pendingData}
-              />
+              {loading ? (
+                <SkeletonTable columns={7} count={8} />
+              ) : (
+                <InvoicePending
+                  tableData={tableData}
+                  handleView={handleView}
+                  open={open}
+                  setOpen={setOpen}
+                  pendingData={pendingData}
+                />
+              )}
             </Tab.Panel>
             <Tab.Panel>
-              <InvoiceInvoiced
-                tableData={tableData}
-                handleView={handleView}
-                open={open}
-                setOpen={setOpen}
-                pendingData={pendingData}
-              />
+              {loading ? (
+                <SkeletonTable columns={7} count={8} />
+              ) : (
+                <InvoiceInvoiced
+                  tableData={tableData}
+                  handleView={handleView}
+                  open={open}
+                  setOpen={setOpen}
+                  pendingData={pendingData}
+                />
+              )}
             </Tab.Panel>
 
             <Tab.Panel>
-              <InvoiceComplete
-                tableData={tableData}
-                handleView={handleView}
-                open={open}
-                setOpen={setOpen}
-                pendingData={pendingData}
-              />
+              {loading ? (
+                <SkeletonTable columns={7} count={8} />
+              ) : (
+                <InvoiceComplete
+                  tableData={tableData}
+                  handleView={handleView}
+                  open={open}
+                  setOpen={setOpen}
+                  pendingData={pendingData}
+                />
+              )}
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

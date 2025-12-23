@@ -1,47 +1,31 @@
 import React from "react";
 
-const SkeletionTable = ({ items, count }) => {
-  items = items || Array.from({ length: count });
+const SkeletonTable = ({ items, count = 5, columns = 5, showHeader = true }) => {
+  const rows = items || Array.from({ length: count || 5 });
+  const cols = Array.from({ length: columns || 5 });
+
   return (
     <div className="w-full bg-white dark:bg-slate-700 shadow-base p-6 rounded-md">
       <table className="animate-pulse w-full border-separate border-spacing-4 table-fixed">
-        <thead>
-          <tr>
-            <th scope="col">
-              <div className="h-4 bg-[#C4C4C4] dark:bg-slate-500"></div>
-            </th>
-            <th scope="col">
-              <div className="h-4 bg-[#C4C4C4] dark:bg-slate-500"></div>
-            </th>
-            <th scope="col">
-              <div className="h-4 bg-[#C4C4C4] dark:bg-slate-500"></div>
-            </th>
-            <th scope="col">
-              <div className="h-4 bg-[#C4C4C4] dark:bg-slate-500"></div>
-            </th>
-            <th scope="col">
-              <div className="h-4 bg-[#C4C4C4] dark:bg-slate-500"></div>
-            </th>
-          </tr>
-        </thead>
+        {showHeader && (
+          <thead>
+            <tr>
+              {cols.map((_, colIndex) => (
+                <th key={colIndex} scope="col">
+                  <div className="h-4 bg-[#C4C4C4] dark:bg-slate-500 rounded"></div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+        )}
         <tbody className="table-group-divider">
-          {items.map((item, i) => (
+          {rows.map((item, i) => (
             <tr key={i}>
-              <td>
-                <div className="h-2 bg-[#C4C4C4] dark:bg-slate-500"></div>
-              </td>
-              <td>
-                <div className="h-2 bg-[#C4C4C4] dark:bg-slate-500"></div>
-              </td>
-              <td>
-                <div className="h-2 bg-[#C4C4C4] dark:bg-slate-500"></div>
-              </td>
-              <td>
-                <div className="h-2 bg-[#C4C4C4] dark:bg-slate-500"></div>
-              </td>
-              <td>
-                <div className="h-2 bg-[#C4C4C4] dark:bg-slate-500"></div>
-              </td>
+              {cols.map((_, colIndex) => (
+                <td key={colIndex}>
+                  <div className="h-2 bg-[#C4C4C4] dark:bg-slate-500 rounded"></div>
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>
@@ -50,4 +34,4 @@ const SkeletionTable = ({ items, count }) => {
   );
 };
 
-export default SkeletionTable;
+export default SkeletonTable;

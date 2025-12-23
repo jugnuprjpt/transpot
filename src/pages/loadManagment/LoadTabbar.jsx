@@ -12,6 +12,8 @@ import { loadManagementService } from "../../_services/loadManagementService";
 import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import LoadCancel from "./LoadCancel";
 import LoadTonuTable from "./LoadTonuTable";
+import SkeletonTable from "@/components/skeleton/Table";
+import CardListSkeleton from "@/components/skeleton/CardListSkeleton";
 
 const LoadTabbar = ({
   buttons,
@@ -20,6 +22,7 @@ const LoadTabbar = ({
   setTabId,
   tableData,
   setTableData,
+  loading = false,
 }) => {
   //   const { id } = useParams();
 
@@ -152,41 +155,65 @@ const LoadTabbar = ({
 
           <Tab.Panels>
             <Tab.Panel>
-              <LoadPendingTable
-                tableData={tableData}
-                openLoadCancel={openLoadCancel}
-                setOpenLoadCancel={setOpenLoadCancel}
-                loadCancelData={loadCancelData}
-                setLoadCancelData={setLoadCancelData}
-                setTableData={setTableData}
-              />
+              {loading ? (
+                <Card>
+                  <div className="px-4 mt-4">
+                    <CardListSkeleton count={5} />
+                  </div>
+                </Card>
+              ) : (
+                <LoadPendingTable
+                  tableData={tableData}
+                  openLoadCancel={openLoadCancel}
+                  setOpenLoadCancel={setOpenLoadCancel}
+                  loadCancelData={loadCancelData}
+                  setLoadCancelData={setLoadCancelData}
+                  setTableData={setTableData}
+                />
+              )}
             </Tab.Panel>
 
             <Tab.Panel>
-              <LoadAssigntTable
-                tableData={tableData}
-                openLoadCancel={openLoadCancel}
-                setOpenLoadCancel={setOpenLoadCancel}
-                loadCancelData={loadCancelData}
-                setLoadCancelData={setLoadCancelData}
-              />
+              {loading ? (
+                <SkeletonTable columns={12} count={8} />
+              ) : (
+                <LoadAssigntTable
+                  tableData={tableData}
+                  openLoadCancel={openLoadCancel}
+                  setOpenLoadCancel={setOpenLoadCancel}
+                  loadCancelData={loadCancelData}
+                  setLoadCancelData={setLoadCancelData}
+                />
+              )}
             </Tab.Panel>
             <Tab.Panel>
-              <LoadInprogressTable
-                tableData={tableData}
-                openLoadCancel={openLoadCancel}
-                setOpenLoadCancel={setOpenLoadCancel}
-                loadCancelData={loadCancelData}
-                setLoadCancelData={setLoadCancelData}
-              />
+              {loading ? (
+                <SkeletonTable columns={12} count={8} />
+              ) : (
+                <LoadInprogressTable
+                  tableData={tableData}
+                  openLoadCancel={openLoadCancel}
+                  setOpenLoadCancel={setOpenLoadCancel}
+                  loadCancelData={loadCancelData}
+                  setLoadCancelData={setLoadCancelData}
+                />
+              )}
             </Tab.Panel>
 
             <Tab.Panel>
-              <LoadComplateTable tableData={tableData} />
+              {loading ? (
+                <SkeletonTable columns={11} count={8} />
+              ) : (
+                <LoadComplateTable tableData={tableData} />
+              )}
             </Tab.Panel>
 
             <Tab.Panel>
-              <LoadTonuTable tableData={tableData} />
+              {loading ? (
+                <SkeletonTable columns={12} count={8} />
+              ) : (
+                <LoadTonuTable tableData={tableData} />
+              )}
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

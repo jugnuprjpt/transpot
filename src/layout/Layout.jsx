@@ -13,7 +13,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import MobileMenu from "../components/partials/sidebar/MobileMenu";
 import useMobileMenu from "@/hooks/useMobileMenu";
 import MobileFooter from "@/components/partials/footer/MobileFooter";
-import Loading from "@/components/Loading";
+import LayoutSkeleton from "@/components/skeleton/LayoutSkeleton";
 import { motion } from "framer-motion";
 const Layout = () => {
   const { width, breakpoints } = useWidth();
@@ -70,7 +70,7 @@ const Layout = () => {
               contentWidth === "boxed" ? "container mx-auto" : "container-fluid"
             }
           >
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<LayoutSkeleton />}>
               <motion.div
                 key={location.pathname}
                 initial="pageInitial"

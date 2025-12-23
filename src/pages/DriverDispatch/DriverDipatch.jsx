@@ -64,9 +64,11 @@ import { ShowErrorToast } from "../components/ToastMessage/ToastMessage";
 import DriverDispatchFilter from "./DriverDispatchFilter";
 import { loadManagementService } from "../../_services/loadManagementService";
 import useGetDriverListing from "../../hooks/useDriverListing";
+import SkeletonTable from "@/components/skeleton/Table";
 
 const DriverDipatch = () => {
   const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { driverData } = useGetDriverListing();
   const [tenderForm, setTenderForm] = useState({
     driver_id: "",
@@ -82,6 +84,7 @@ const DriverDipatch = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     docListing();
   }, []);
 
@@ -93,17 +96,21 @@ const DriverDipatch = () => {
     try {
       const res = await loadManagementService.driverDispatchListing(formValues);
       if (res.Success === true) {
+        setLoading(false);
         setTableData(res?.Data);
       } else {
         setTableData([]);
+        setLoading(false);
         ShowErrorToast("Something Went Wrong");
       }
     } catch (error) {
       console.error("Error:", error);
+      setLoading(false);
     }
   };
 
   const handleSearch = () => {
+    setLoading(true);
     docListing({
       driver_id: tenderForm.driver_id,
       year_month: tenderForm.year_month,
@@ -111,6 +118,7 @@ const DriverDipatch = () => {
   };
 
   const handleClear = () => {
+    setLoading(true);
     setTenderForm({
       driver_id: "",
       year_month: "",
@@ -278,6 +286,17 @@ const DriverDipatch = () => {
   } = tableInstance;
 
   const { globalFilter, pageIndex, pageSize } = state;
+
+  if (loading) {
+    return (
+      <Card noborder>
+        <div className="md:flex pb-6 items-center">
+          <h6 className="flex-1 md:mb-0 mb-3">Driver Dispatch</h6>
+        </div>
+        <SkeletonTable columns={14} count={8} />
+      </Card>
+    );
+  }
 
   return (
     <>
