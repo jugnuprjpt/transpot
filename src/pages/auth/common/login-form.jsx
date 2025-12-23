@@ -33,6 +33,7 @@ const LoginForm = () => {
     formState: { errors },
     handleSubmit,
     setValue,
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
     //
@@ -76,28 +77,46 @@ const LoginForm = () => {
   //   }
   // };
 
-  const onSubmit = async () => {
+  const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const res = await loginService.login(formData);
+      const res = await loginService.login(data);
+      console.log("Login response:", res);
 
-      if (res.Success === true) {
+      if (res.Success) {
         ShowSuccessToast("Login Successfully");
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1500);
         localStorage.setItem("token", res?.Data?.token);
-        localStorage.setItem("isAuth", "true");
-
-        // fetchModuleMaster(res.Data.role_id);
+        dispatch(handleLogin(true));
+        
+          navigate("/dashboard");
+        
       } else {
-        ShowErrorToast("something went wrong");
-      }
+        // Check if it's an authentication error (invalid username/password)
+        const errorMessage = res.Message || "Something went wrong";
+        const isAuthError = 
+          errorMessage.toLowerCase().includes("invalid") ||
+          errorMessage.toLowerCase().includes("username") ||
+          errorMessage.toLowerCase().includes("password") ||
+          errorMessage.toLowerCase().includes("credentials") ||
+          errorMessage.toLowerCase().includes("unauthorized");
 
-      // setResponse(res.data);
+        if (isAuthError) {
+          // Show error in form field
+          setError("password", {
+            type: "manual",
+            message: errorMessage || "Invalid username or password",
+          });
+        } else {
+          // Show other errors in toast
+          ShowErrorToast(errorMessage);
+        }
+      }
     } catch (error) {
       console.error("Error:", error);
-      // setResponse({ error: "Request failed" });
+      // Network errors and other exceptions show in toast
+      ShowErrorToast(error.message || "Network error. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -136,6 +155,7 @@ const LoginForm = () => {
         error={errors.login_user_id}
         className="h-[48px]"
         onChange={handleOnchange}
+        disabled={isLoading}
       />
 
       <Textinput
@@ -148,9 +168,16 @@ const LoginForm = () => {
         className="h-[48px]"
         onChange={handleOnchange}
         hasicon={true}
+        disabled={isLoading}
       />
 
-      <button className="btn btn-dark block w-full text-center">Sign in</button>
+      <button 
+        type="submit"
+        className="btn btn-dark block w-full text-center"
+        disabled={isLoading}
+      >
+        {isLoading ? "Signing in..." : "Sign in"}
+      </button>
     </form>
   );
 };

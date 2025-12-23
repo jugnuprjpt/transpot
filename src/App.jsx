@@ -5,6 +5,7 @@ import Loading from "@/components/Loading";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import InvoiceManagement from "./pages/InvoiceManagement/InvoiceManagement";
 import DriverDipatch from "./pages/DriverDispatch/DriverDipatch";
+import { ToastContainer } from "react-toastify";
 
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Login = lazy(() => import("./pages/auth/login"));
@@ -21,6 +22,7 @@ const BriefCase = lazy(() => import("./pages/BriefCase/BriefCase"));
 function App() {
   return (
     <main className="App relative">
+      <ToastContainer />
       <Routes>
         {/* Public route */}
         <Route

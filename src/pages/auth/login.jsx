@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import LoginForm from "./common/login-form";
 // import Social from "./common/social";
 import useDarkMode from "@/hooks/useDarkMode";
-import { ToastContainer } from "react-toastify";
 
 // image import
 import LogoWhite from "@/assets/images/logo/logo.png";
@@ -14,7 +13,6 @@ const login = () => {
   const [isDark] = useDarkMode();
   return (
     <>
-      <ToastContainer />
       <div className="loginwrapper">
         <div className="lg-inner-column">
           <div className="left-column relative z-[1]">
