@@ -34,9 +34,8 @@ function App() {
           }
         />
 
-        {/* Protected routes */}
+        {/* Protected routes with Layout */}
         <Route element={<ProtectedRoute />}>
-          {" "}
           <Route path="/*" element={<Layout />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="loadManagement" element={<LoadManagment />} />
@@ -46,13 +45,24 @@ function App() {
             <Route path="invoiceManagement" element={<InvoiceManagement />} />
             <Route path="driverDispatch" element={<DriverDipatch />} />
             {/* <Route path="loadTab" element={<LoadTab />} /> */}
-            <Route path="*" element={<Navigate to="/404" />} />
+            {/* 404 for authenticated users (with Layout/sidebar) */}
+            <Route path="404" element={
+              <Suspense fallback={<Loading />}>
+                <Error />
+              </Suspense>
+            } />
+            <Route path="*" element={
+              <Suspense fallback={<Loading />}>
+                <Error />
+              </Suspense>
+            } />
           </Route>
         </Route>
 
-        {/* Error page */}
+        {/* Error page for non-authenticated users (full page, no Layout) */}
+        {/* This catch-all handles unknown routes for non-authenticated users */}
         <Route
-          path="/404"
+          path="*"
           element={
             <Suspense fallback={<Loading />}>
               <Error />

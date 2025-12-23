@@ -1,5 +1,5 @@
-import React, { useEffect, Suspense, Fragment, useRef } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import React, { Suspense, useRef } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "@/components/partials/header";
 import Sidebar from "@/components/partials/sidebar";
 import Settings from "@/components/partials/settings";
@@ -13,22 +13,12 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import MobileMenu from "../components/partials/sidebar/MobileMenu";
 import useMobileMenu from "@/hooks/useMobileMenu";
 import MobileFooter from "@/components/partials/footer/MobileFooter";
-import { useSelector } from "react-redux";
 import Loading from "@/components/Loading";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 const Layout = () => {
   const { width, breakpoints } = useWidth();
   const [collapsed] = useSidebar();
-  const navigate = useNavigate();
-  const { isAuth } = useSelector((state) => state.auth);
-
-  console.log(isAuth, "is............");
-
-  useEffect(() => {
-    if (!isAuth) {
-      navigate("/loadManagement");
-    }
-  }, [isAuth, navigate]);
+  const location = useLocation();
   const switchHeaderClass = () => {
     if (menuType === "horizontal" || menuHidden) {
       return "ltr:ml-0 rtl:mr-0";
@@ -107,7 +97,7 @@ const Layout = () => {
                 }}
               >
                 {/* <Breadcrumbs /> */}
-                {<Outlet />}
+                <Outlet />
               </motion.div>
             </Suspense>
           </div>
