@@ -3,7 +3,8 @@ export const RouteUrls = {
 
   // --------------Doc-management--------------
 
-  docManagementListing: "api/driver_document_management/get",
+  // docManagementListing: "api/driver_document_management/get",
+  docManagementListing: "api/driver_document_management/filter",
   documentInsert: "api/driver_document_management/insert",
   documentInsertMonthbulkWise:
     "api/driver_document_management/insert/bulk/month_wise",
